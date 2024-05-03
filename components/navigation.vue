@@ -20,10 +20,10 @@
         <li>
           <NuxtLink class="font-semibold mr-4 p-2 hover:text-primary" active-class="text-primary" to="/photography">PHOTOGRAPHY</NuxtLink>
         </li>
-        <li>
+        <li class="hidden">
           <NuxtLink class="font-semibold mr-4 p-2 hover:text-primary" active-class="text-primary" to="/drone">DRONE STUFF</NuxtLink>
         </li>
-        <li>
+        <li  class="hidden">
           <NuxtLink class="font-semibold mr-4 p-2 hover:text-primary" active-class="text-primary" to="/3d-printing">3D PRINTING</NuxtLink>
         </li>
         <li>
