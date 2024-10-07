@@ -53,7 +53,7 @@ const handleKeyup = (event) => {
 };
 
 const openLightbox = (image) => {
-  selectedImage.value = { ...image, src: image.src };
+  selectedImage.value = {...image, src: image.src};
 };
 
 const closeLightbox = () => {

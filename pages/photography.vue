@@ -9,7 +9,7 @@ import FooterComponent from "~/components/footerComponent.vue";
 
   </navigation>
 
-  <hero title="Photography" description="WILDLIFE / NATURE / PEOPLE / ABSTRACT" image="https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG"></hero>
+  <hero title="Photography" description="WILDLIFE / NATURE / PEOPLE / ABSTRACT" image="https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=960x0"></hero>
 
   <h2 class="flex justify-center text-5xl  text-primary font-semibold my-10 uppercase">
      Wildlife
