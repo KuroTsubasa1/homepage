@@ -1,29 +1,12 @@
 <template>
+  <navigation></navigation>
 
-  <navigation>
-
-  </navigation>
-
-  <!-- Back Button -->
-  <div class="w-1/2 flex justify-center mx-auto my-10">
-    <button @click="$router.go(-1)" class="btn px-4 py-2 text-lg font-bold text-white bg-primary rounded hover:bg-primary-dark transition-colors">
-      Go Back
-    </button>
-  </div>
-
-  <h2 class="font-semibold text-primary text-5xl my-10 text-center">
-    {{ projectData.title }}
-  </h2>
-
-  <div class="w-3/4 mx-auto p-4 flex justify-center">
-
-    <div class="w-1/2">
+  <main class="flex flex-col md:flex-row gap-10 p-10">
+    <div class="w-full md:w-1/2">
       <!-- Video Section -->
       <div v-if="projectData.videos" class="video-container mb-4">
         <video class="w-full h-auto" controls>
-          <source
-              :src="`${projectData.videos[0]}`"
-              type="video/mp4">
+          <source :src="`${projectData.videos[0]}`" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       </div>
@@ -31,15 +14,15 @@
       <!-- Images Section -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         <img v-for="(image, index) in projectData.images" :key="index" :alt="'Image ' + (index + 1)"
-             :src="`${image}`" class="w-full h-auto fooo"
-             loading="lazy">
+             :src="`${image}`" class="w-full h-auto" loading="lazy">
       </div>
-
     </div>
 
-    <div class="w-1/4  flex flex-wrap justify-end">
+    <div class="w-full md:w-1/2">
+      <h2 class="font-semibold text-primary text-5xl my-10 text-center">{{ projectData.title }}</h2>
+
       <!-- Info Card Section -->
-      <div class="info-card bg-gray-100 p-4 rounded-lg w-3/4 card shadow-xl">
+      <div class="info-card bg-gray-100 p-4 rounded-lg w-full card shadow-xl">
         <h2 class="text-xl font-bold mb-2">Project Information</h2>
         <ul>
           <li><strong>Role:</strong> {{ projectData.role }}</li>
@@ -51,33 +34,24 @@
           <li><strong>To:</strong> {{ projectData.toDate }}</li>
           <!-- Add more info as needed -->
         </ul>
+      </div>
 
+      <!-- Description Section -->
+      <div class="mt-10">
+        <p class="text-lg">{{ projectData.longDescription }}</p>
+      </div>
+
+      <!-- Link Section -->
+      <div class="mt-10">
+        <a :href="projectData.link"
+           class="btn px-4 py-2 text-lg font-bold text-white bg-primary rounded hover:bg-primary-dark transition-colors">
+          View Project
+        </a>
       </div>
     </div>
+  </main>
 
-  </div>
-
-  <!-- Description Section -->
-  <div class="w-1/2 flex justify-center mx-auto my-10">
-    <div class="mb-4">
-      <p class="text-lg">
-        {{ projectData.longDescription }}
-      </p>
-    </div>
-  </div>
-
-  <!-- Link Section -->
-  <div class="w-1/2 flex justify-center mx-auto my-10">
-    <a :href="projectData.link" class="btn px-4 py-2 text-lg font-bold text-white bg-primary rounded hover:bg-primary-dark transition-colors">
-      View Project
-    </a>
-  </div>
-
-
-  <footer-component>
-
-  </footer-component>
-
+  <footer-component></footer-component>
 </template>
 
 <script setup>
