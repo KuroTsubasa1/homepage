@@ -9,7 +9,7 @@
     <NuxtLink class="" to="/">
       <div class="flex justify-center text-center items-center w-[150px] h-[150px] my-10">
         <img class="rounded-full border-4 border-primary" loading="lazy"
-             src="https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/apekawb8my5xl5w/img_9077_topaz_denoiseraw_sharpen_no3Chl3kmx.jpg" alt="">
+             src="https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/apekawb8my5xl5w/img_9077_topaz_denoiseraw_sharpen_no3Chl3kmx.jpg?thumb=300x300" alt="">
       </div>
     </NuxtLink>
 
