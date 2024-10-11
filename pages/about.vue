@@ -18,7 +18,7 @@ useSeoMeta({
     <h2 class="flex justify-center text-5xl my-5 text-primary font-semibold">
      Lasse Harm
     </h2>
-    <h3 class="flex justify-center text-2xl my-5 text-primary font-semibold">
+    <h3 class="flex justify-center text-2xl my-5 text-primary font-semibold text-center md:text-left">
       Programmer | Photographer | Certified FPV Drone Pilot
     </h3>
 
