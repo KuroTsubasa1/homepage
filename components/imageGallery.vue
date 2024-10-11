@@ -53,11 +53,13 @@ const handleKeyup = (event) => {
 };
 
 const openLightbox = (image) => {
-  selectedImage.value = {...image, src: image.src};
+  selectedImage.value = { ...image, src: image.src };
+  document.body.classList.add('no-scroll');
 };
 
 const closeLightbox = () => {
   selectedImage.value = null;
+  document.body.classList.remove('no-scroll');
 };
 
 onMounted(() => {
@@ -119,6 +121,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  z-index: 999; /* Set z-index to 999 */
 }
 
 .close-button {
@@ -161,5 +164,7 @@ onBeforeUnmount(() => {
   left: 0;
 }
 
-
+.no-scroll {
+  overflow: hidden;
+}
 </style>
