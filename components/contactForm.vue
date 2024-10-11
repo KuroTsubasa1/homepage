@@ -1,7 +1,6 @@
 <template>
   <div class="w-full flex-col flex justify-center items-center mb-10">
-
-    <h2 class="font-semibold text-primary text-5xl my-10">
+    <h2 class="font-semibold text-primary text-5xl my-10 text-center w-full">
       Say Hello. Let’s Work Together.
     </h2>
 

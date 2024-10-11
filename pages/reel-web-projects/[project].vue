@@ -44,7 +44,7 @@
          class="flex flex-wrap ">
       <!-- Info Card Section -->
       <div class="info-card bg-gray-100 p-4 rounded-lg w-3/4 card shadow-xl">
-        <h2 class="text-xl font-bold mb-2">Project Information</h2>
+        <h2 class="text-xl font-bold mb-2 break-words">Project Information</h2>
         <ul>
           <li><strong>Role:</strong> {{ projectData.role }}</li>
           <div class="divider"></div>

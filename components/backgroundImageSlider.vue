@@ -39,9 +39,6 @@ function getImageBrightness(url: string, callback: (brightness: number) => void)
   };
 }
 
-
-
-
 // mounted
 onMounted(() => {
   setInterval(() => {
@@ -65,20 +62,12 @@ onMounted(() => {
 
 })
 
-// todos
-// fetch logo from api
-// fetch social media from api
-// fetch images from api
-// link to work page
-
-
 </script>
 
 <template>
-  <div>
+  <div class="relative min-h-screen w-full">
 
-    <div class="hero min-h-screen border-4 border-primary">
-
+    <div class="hero min-h-screen w-full border-4 border-primary">
 
       <!-- slides -->
       <div
@@ -111,7 +100,9 @@ onMounted(() => {
             Web Developer & Photographer
           </p>
 
-          <NuxtLink class="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.4)] btn btn-primary btn-outline rounded-3xl border-2 font-bold" to="/reel-web-projects">Watch My
+          <NuxtLink
+              class="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.4)] btn btn-primary btn-outline rounded-3xl border-2 font-bold"
+              to="/reel-web-projects">Watch My
             Work
           </NuxtLink>
 

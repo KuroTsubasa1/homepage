@@ -23,4 +23,7 @@ export default defineNuxtConfig({
     '~/plugins/vue-lazyload.js'
   ],
   ssr: false,
+  server: {
+    port: 3666, // Change this to your desired port
+  },
 })
