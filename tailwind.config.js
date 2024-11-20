@@ -19,7 +19,7 @@ export default {
                     'secondary': '#52C67A',     // A lighter shade of green for secondary elements
                     'accent': '#083D25',        // A dark green, great for accents and text
                     'neutral': '#A3BCB6',       // A muted green-grey, perfect for neutral backgrounds and surfaces
-                    'base-100': '#E3F9E5',
+                    'base-100': '#9cc19d',
                     'base-200': '#52C67A',
                     'base-300': '#0D6E4F',
                     'base-content': '#083D25',

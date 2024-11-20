@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+Ï<script lang="ts" setup>
 
 </script>
 

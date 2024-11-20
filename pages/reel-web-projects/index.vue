@@ -18,11 +18,11 @@ useSeoMeta({
 
   <!-- Hero Section -->
   <section class="hero relative">
-    <div class="hero-content">
-      <h1 class="text-6xl md:text-8xl font-bold tracking-wide text-primary">
+    <div class="">
+      <h1 class="text-6xl md:text-8xl font-bold tracking-wide text-primary hero-content">
         Web Projects
       </h1>
-      <p class="mt-6 text-xl text-secondary max-w-3xl">
+      <p class="mt-6 text-xl text-gray-100 max-w-3xl">
         Welcome to my collection of creative and innovative web solutions / work samples. Scroll down to explore some of my best projects.
       </p>
 
@@ -55,7 +55,7 @@ useSeoMeta({
   overflow: hidden;
 }
 
-.hero-content h1 {
+.hero-content{
   background: linear-gradient(90deg,  #52C67A,#0D6E4F);
   -webkit-background-clip: text;
   color: transparent;

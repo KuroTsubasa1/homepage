@@ -4,26 +4,26 @@
       Say Hello. Let’s Work Together.
     </h2>
 
-    <form @submit.prevent="handleSubmit" class="card bg-base-100 shadow-xl p-4 w-1/2 border-primary border-2">
+    <form @submit.prevent="handleSubmit" class="card bg-white shadow-xl p-4 w-1/2 border-primary border-2">
       <div class="form-control">
         <label class="label" for="name">
           <span class="label-text">Name:</span>
         </label>
-        <input type="text" id="name" v-model="form.name" class="input input-bordered" required>
+        <input type="text" id="name" v-model="form.name" class="input input-bordered bg-white" required>
       </div>
 
       <div class="form-control">
         <label class="label" for="email">
           <span class="label-text">Email:</span>
         </label>
-        <input type="email" id="email" v-model="form.email" class="input input-bordered" required>
+        <input type="email" id="email" v-model="form.email" class="input input-bordered bg-white" required>
       </div>
 
       <div class="form-control">
         <label class="label" for="message">
           <span class="label-text">Message:</span>
         </label>
-        <textarea id="message" v-model="form.message" class="textarea textarea-bordered" required></textarea>
+        <textarea id="message" v-model="form.message" class="textarea textarea-bordered bg-white" required></textarea>
       </div>
 
       <div class="form-control mt-4">
