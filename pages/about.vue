@@ -21,7 +21,7 @@ const journeyData = [
 <template>
   <navigation></navigation>
 
-  <!-- Hero Section -->#
+  <!-- Hero Section -->
   <section class="hero relativ bg-primary text-white text-center py-20">
     <div class="container mx-auto px-6">
       <h1 class="text-6xl font-bold mb-4 hero-content">Lasse Harm</h1>
