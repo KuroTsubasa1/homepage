@@ -4,7 +4,7 @@
       Say Hello. Let’s Work Together.
     </h2>
 
-    <form @submit.prevent="handleSubmit" class="card bg-white shadow-xl p-4 w-1/2 border-primary border-2">
+    <form @submit.prevent="handleSubmit" class="card bg-white shadow-xl p-4 md:w-1/2 w-3/4 border-primary border-2">
       <div class="form-control">
         <label class="label" for="name">
           <span class="label-text">Name:</span>
