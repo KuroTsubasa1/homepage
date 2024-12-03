@@ -52,15 +52,17 @@ const handleKeyup = (event) => {
   }
 };
 
-const openLightbox = (image) => {
-  selectedImage.value = { ...image, src: image.src };
-  document.body.classList.add('no-scroll');
+const openLightbox = (image, index) => {
+  selectedImage.value = image;
+  selectedIndex.value = index;
+  document.body.classList.add('no-scroll'); // Add class to disable scrolling
 };
 
 const closeLightbox = () => {
   selectedImage.value = null;
-  document.body.classList.remove('no-scroll');
+  document.body.classList.remove('no-scroll'); // Remove class to re-enable scrolling
 };
+
 
 onMounted(() => {
   if (process.client) {
@@ -85,28 +87,46 @@ onBeforeUnmount(() => {
     <div class="w-3/4 ">
       <div :class="masonryClass">
         <!-- Image grid -->
-        <div v-for="image in images" :key="image.id" class="break-inside cursor-pointer mb-5 flex justify-center"
-             @click="openLightbox(image)">
+        <div
+            v-for="(image, index) in images"
+            :key="image.id"
+            class="break-inside cursor-pointer mb-5 flex justify-center"
+            @click="openLightbox(image, index)"
+        >
           <div v-if="image.loading" class="loading-container">
-            <img v-lazy="image.thumbnail" :alt="image.alt" class="loading-image" @load="handleImageLoad(image)">
+            <img
+                v-lazy="image.thumbnail"
+                :alt="image.alt"
+                class="loading-image"
+                @load="handleImageLoad(image)"
+            >
           </div>
-          <img v-else v-lazy="image.thumbnail" :alt="image.alt" @load="handleImageLoad(image)">
+          <img
+              v-else
+              v-lazy="image.thumbnail"
+              :alt="image.alt"
+              @load="handleImageLoad(image)"
+          >
         </div>
-      </div>
-      <!-- Lightbox Modal -->
-      <div v-if="selectedImage" class="lightbox">
-        <!-- Close Button -->
-        <button class="close-button" @click="closeLightbox">✖</button>
-        <!-- Left arrow -->
-        <button class="arrow left-arrow" @click="navigate(-1)">←</button>
-        <!-- Image display -->
-        <img v-lazy="selectedImage.src" :alt="selectedImage.alt" class="max-w-full max-h-full object-contain">
-        <!-- Right arrow -->
-        <button class="arrow right-arrow" @click="navigate(1)">→</button>
       </div>
     </div>
   </div>
+
+  <!-- Use teleport to render the lightbox at the root of the document -->
+  <teleport to="body">
+    <div v-if="selectedImage" class="lightbox">
+      <!-- Close Button -->
+      <button class="close-button" @click="closeLightbox">✖</button>
+      <!-- Left arrow -->
+      <button class="arrow left-arrow" @click="navigate(-1)">←</button>
+      <!-- Image display -->
+      <img v-lazy="selectedImage.src" :alt="selectedImage.alt" class="max-w-full max-h-full object-contain">
+      <!-- Right arrow -->
+      <button class="arrow right-arrow" @click="navigate(1)">→</button>
+    </div>
+  </teleport>
 </template>
+
 
 <style scoped>
 .break-inside {
