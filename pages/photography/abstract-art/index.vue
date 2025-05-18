@@ -28,18 +28,18 @@
   <div class="container mx-auto px-4 mb-16 fade-in">
     <h2 class="text-3xl font-semibold text-primary mb-8 text-center">Abstract Gallery</h2>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="masonry-gallery">
       <div 
         v-for="image in images" 
         :key="image.id" 
-        class="cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+        class="masonry-item cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
         @click="openDetail(image.id)"
       >
-        <div class="relative aspect-square">
+        <div class="relative">
           <img 
             :src="image.thumbnail" 
             :alt="image.alt" 
-            class="object-cover w-full h-full transition-transform duration-500 hover:scale-110"
+            class="w-full transition-transform duration-500 hover:scale-110"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
             <p class="text-white text-sm font-medium">{{ image.alt }}</p>
@@ -104,6 +104,37 @@ useSeoMeta({
 @keyframes fadeIn {
   to {
     opacity: 1;
+  }
+}
+
+.masonry-gallery {
+  columns: 1;
+  column-gap: 1.5rem;
+}
+
+.masonry-item {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  break-inside: avoid;
+}
+
+/* Responsive columns */
+@media (min-width: 640px) {
+  .masonry-gallery {
+    columns: 2;
+  }
+}
+
+@media (min-width: 768px) {
+  .masonry-gallery {
+    columns: 3;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry-gallery {
+    columns: 4;
   }
 }
 </style>
