@@ -9,7 +9,10 @@
       "Bash(cat:*)",
       "WebFetch(domain:docs.anthropic.com)",
       "Bash(npm run dev:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(for i in {1..6})",
+      "Bash(do cp /Users/lasseharm/PhpstormProjects/homepage/public/images/testimonials/default-avatar.svg /Users/lasseharm/PhpstormProjects/homepage/public/images/testimonials/avatar$i.jpg)",
+      "Bash(done)"
     ],
     "deny": []
   }

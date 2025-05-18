@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
   category: {
@@ -120,9 +120,10 @@ onUnmounted(() => {
           <div class="testimonial-item bg-white rounded-lg shadow-lg p-8 transition-opacity duration-500">
             <div class="flex flex-col md:flex-row items-start md:items-center mb-6">
               <div class="w-16 h-16 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 flex-shrink-0">
-                <img :src="filteredTestimonials[currentTestimonialIndex].avatar" alt="Client avatar" 
-                  class="w-full h-full object-cover" 
-                  onerror="this.src='/images/testimonials/default-avatar.jpg'">
+                <img :src="filteredTestimonials[currentTestimonialIndex].avatar || '/images/testimonials/default-avatar.svg'" 
+                     alt="Client avatar" 
+                     class="w-full h-full object-cover" 
+                     @error="$event.target.src = '/images/testimonials/default-avatar.svg'">
               </div>
               <div>
                 <h3 class="text-xl font-semibold">{{ filteredTestimonials[currentTestimonialIndex].name }}</h3>
