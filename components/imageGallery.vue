@@ -1,10 +1,16 @@
 <script lang="ts" setup>
+import { useRouter } from 'vue-router';
 
 // Define the prop
 const props = defineProps({
-  category: String
+  category: String,
+  useDetailPages: {
+    type: Boolean,
+    default: true
+  }
 });
 
+const router = useRouter();
 const images = ref([]);
 const loading = ref(true);
 
@@ -24,8 +30,42 @@ onMounted(async () => {
 
   loading.value = false;
 });
+
 const handleImageLoad = (image) => {
   image.loading = false;
+};
+
+const handleImageClick = (image, index) => {
+  if (props.useDetailPages) {
+    // Map category to the correct URL path
+    let basePath = '';
+    switch (props.category) {
+      case 'wildlife':
+        basePath = '/photography/wildlife/';
+        break;
+      case 'nature':
+        basePath = '/photography/landscape-nature/';
+        break;
+      case 'people':
+        basePath = '/photography/portraits-people/';
+        break;
+      case 'abstract':
+        basePath = '/photography/abstract-art/';
+        break;
+      case 'weddings':
+        basePath = '/photography/weddings/';
+        break;
+      default:
+        basePath = '/photography/';
+    }
+    
+    // Navigate to detail page - log for debugging
+    console.log(`Navigating to: ${basePath}${image.id}`);
+    router.push(`${basePath}${image.id}`);
+  } else {
+    // Fall back to lightbox if detail pages are disabled
+    openLightbox(image, index);
+  }
 };
 
 const selectedImage = ref(null);
@@ -91,7 +131,7 @@ onBeforeUnmount(() => {
             v-for="(image, index) in images"
             :key="image.id"
             class="break-inside cursor-pointer mb-5 flex justify-center"
-            @click="openLightbox(image, index)"
+            @click="handleImageClick(image, index)"
         >
           <div v-if="image.loading" class="loading-container">
             <img

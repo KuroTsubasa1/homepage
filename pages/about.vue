@@ -75,12 +75,13 @@
 import FooterComponent from "~/components/footerComponent.vue";
 
 useSeoMeta({
-  title: 'About - Lasse Harm',
-  ogTitle: 'About - Lasse Harm',
-  description: 'Discover the story of Lasse Harm, a web developer, photographer, and certified FPV drone pilot.',
-  ogDescription: 'Discover the story of Lasse Harm, a web developer, photographer, and certified FPV drone pilot.',
+  title: 'About Lasse Harm | Web Developer & Drone Photographer',
+  ogTitle: 'About Lasse Harm | Web Developer & Drone Photographer',
+  description: 'Learn about Lasse Harm, a passionate web developer, professional photographer, and certified FPV drone pilot based in Copenhagen, Denmark.',
+  ogDescription: 'Learn about Lasse Harm, a passionate web developer, professional photographer, and certified FPV drone pilot based in Copenhagen, Denmark.',
   ogImage: 'https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/q8dewf7gwhbqpk2/20240319_182201_N85s671DEL.jpg?thumb=960x0',
   twitterCard: 'summary_large_image',
+  keywords: 'Lasse Harm, web developer, drone photographer, FPV pilot, Copenhagen, professional photographer, web development, 3D printing',
 });
 
 const journeyData = [

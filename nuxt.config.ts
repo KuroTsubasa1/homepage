@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
     '@vesp/nuxt-fontawesome',
+    '@nuxtjs/sitemap',
   ],
   fontawesome: {
     icons: {
@@ -34,10 +35,51 @@ export default defineNuxtConfig({
     '~/plugins/vue-lazyload.js'
   ],
 
-  ssr: false,
+  ssr: true, // Changed to true for better SEO
 
   server: {
     port: 3666, // Change this to your desired port
+  },
+
+
+  sitemap: {
+    hostname: 'https://lasseharm.space',
+    gzip: true,
+    exclude: [
+      '/404'
+    ],
+    routes: [
+      // Photography routes
+      '/photography',
+      '/photography/wildlife',
+      '/photography/landscape',
+      '/photography/portrait',
+      '/photography/abstract',
+      '/photography/wedding',
+      // Drone routes
+      '/drone',
+      // 3D Printing routes
+      '/3d-printing',
+      // About and Contact
+      '/about',
+      '/contact',
+      // Web Projects
+      '/reel-web-projects'
+    ]
+  },
+
+  app: {
+    head: {
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      meta: [
+        { name: 'author', content: 'Lasse Harm' },
+        { name: 'theme-color', content: '#4a7eb3' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ]
+    }
   },
 
   compatibilityDate: '2024-11-20',

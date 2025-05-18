@@ -13,7 +13,8 @@
     "@fortawesome/free-brands-svg-icons": "^6.7.0",
     "@fortawesome/free-regular-svg-icons": "^6.7.0",
     "@fortawesome/free-solid-svg-icons": "^6.7.0",
-    "@nuxt/devtools": "latest",
+    "@nuxt/devtools": "^2.4.1",
+    "@nuxtjs/sitemap": "^7.2.10",
     "@nuxtjs/tailwindcss": "^6.10.0",
     "@vesp/nuxt-fontawesome": "^1.1.0",
     "autoprefixer": "^10.4.16",
@@ -25,8 +26,10 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@nuxtjs/i18n": "^9.5.4",
     "daisyui": "^4.4.2",
     "pocketbase": "^0.19.0",
+    "vue-i18n": "^9.14.4",
     "vue-lazyload": "^3.0.0"
   }
 }

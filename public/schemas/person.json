@@ -1,0 +1,52 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "https://lasseharm.space/#person",
+  "name": "Lasse Harm",
+  "url": "https://lasseharm.space",
+  "image": "https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/q8dewf7gwhbqpk2/20240319_182201_N85s671DEL.jpg",
+  "description": "Professional web developer, photographer, and certified FPV drone pilot based in Copenhagen, Denmark.",
+  "jobTitle": "Web Developer & Photographer",
+  "knowsAbout": [
+    "Web Development",
+    "Photography",
+    "Drone Photography",
+    "FPV Drones", 
+    "3D Printing"
+  ],
+  "workLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Copenhagen",
+      "addressRegion": "Copenhagen",
+      "addressCountry": "Denmark"
+    }
+  },
+  "hasOccupation": [
+    {
+      "@type": "Occupation",
+      "name": "Web Developer",
+      "description": "Creates custom websites and web applications with modern technologies",
+      "skills": "JavaScript, Vue.js, Nuxt.js, React, PHP, Node.js, CSS, HTML"
+    },
+    {
+      "@type": "Occupation",
+      "name": "Photographer",
+      "description": "Professional photographer specializing in wildlife, landscape, portrait, and wedding photography",
+      "skills": "Digital photography, photo editing, composition, lighting"
+    },
+    {
+      "@type": "Occupation",
+      "name": "Drone Pilot",
+      "description": "Certified FPV drone pilot specializing in aerial photography and videography",
+      "skills": "Aerial photography, drone videography, drone navigation, FPV flying"
+    },
+    {
+      "@type": "Occupation",
+      "name": "3D Printing Specialist",
+      "description": "Creates custom 3D printed models, prototypes and functional parts",
+      "skills": "3D modeling, 3D printing, prototype design"
+    }
+  ]
+}

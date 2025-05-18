@@ -5,12 +5,12 @@
   <header class="sticky top-0 bg-white shadow-md z-10">
     <div class="container mx-auto flex justify-between items-center px-4 py-3">
       <h1 class="text-2xl font-bold text-primary">{{ projectData.title }}</h1>
-      <button
+      <a
+          href="/reel-web-projects"
           class="btn px-4 py-2 text-white bg-primary rounded hover:bg-primary-dark"
-          @click="$router.go(-1)"
       >
         Back to Projects
-      </button>
+      </a>
     </div>
   </header>
 
@@ -142,25 +142,32 @@ const challenges = ref([]);
 const route = useRoute();
 
 onMounted(async () => {
-  const id = route.params.project;
-  const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_projects/records/${id}`);
-  const data = await response.json();
+  console.log('Web project detail page mounted, All route params:', route.params);
+  const id = route.params.project || '';
+  console.log('Web project detail - Using ID:', id);
+  
+  try {
+    const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_projects/records/${id}`);
+    const data = await response.json();
 
-  projectData.value = {
-    title: data.name,
-    role: data.role,
-    longDescription: data.long_desc,
-    category: data.category,
-    fromDate: data.from_date,
-    toDate: data.to_date,
-    images: data.images.map(image => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${image}`),
-    videos: data.videos.map(video => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${video}`),
-    link: data.link
-  };
+    projectData.value = {
+      title: data.name,
+      role: data.role,
+      longDescription: data.long_desc,
+      category: data.category,
+      fromDate: data.from_date,
+      toDate: data.to_date,
+      images: data.images.map(image => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${image}`),
+      videos: data.videos.map(video => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${video}`),
+      link: data.link
+    };
 
-  timelineData.value = data.timeline || [];
-  technologies.value = data.technologies || [];
-  challenges.value = data.challenges || [];
+    timelineData.value = data.timeline || [];
+    technologies.value = data.technologies || [];
+    challenges.value = data.challenges || [];
+  } catch (error) {
+    console.error('Error fetching project data:', error);
+  }
 });
 </script>
 
