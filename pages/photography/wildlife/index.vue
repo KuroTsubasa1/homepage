@@ -2,7 +2,7 @@
   <navigation></navigation>
 
   <hero 
-    title="Wildlife Photography" 
+    :title="$t('photoCategories.wildlife') + ' ' + $t('nav.photography')" 
     description="CAPTURING THE BEAUTY OF ANIMALS IN THEIR NATURAL HABITATS" 
     image="https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=960x0" 
     class="fade-in"
@@ -10,7 +10,7 @@
 
   <div class="container mx-auto py-16 fade-in">
     <div class="max-w-3xl mx-auto px-4 mb-16">
-      <h2 class="text-3xl font-semibold text-primary mb-6">About Wildlife Photography</h2>
+      <h2 class="text-3xl font-semibold text-primary mb-6">{{ $t('photography.aboutPhotography') }}</h2>
       <p class="text-lg mb-4">
         Wildlife photography requires patience, technical skill, and a deep appreciation for nature. 
         Each image represents hours of waiting for the perfect moment, understanding animal behavior, 
@@ -25,7 +25,7 @@
 
   <!-- Gallery Grid -->
   <div class="container mx-auto px-4 mb-16 fade-in">
-    <h2 class="text-3xl font-semibold text-primary mb-8 text-center">Wildlife Gallery</h2>
+    <h2 class="text-3xl font-semibold text-primary mb-8 text-center">{{ $t('photoCategories.wildlife') }} {{ $t('photography.gallery') }}</h2>
     
     <div class="masonry-gallery">
       <div 
@@ -51,7 +51,7 @@
   <div class="container mx-auto pb-16 fade-in">
     <div class="flex justify-center mb-8">
       <NuxtLink to="/photography" class="btn btn-primary">
-        Back to Photography Collections
+        {{ $t('photography.backToCollections') }}
       </NuxtLink>
     </div>
   </div>

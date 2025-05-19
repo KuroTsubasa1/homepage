@@ -17,7 +17,7 @@ useSeoMeta({
     <!-- Services Section -->
     <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-2">Professional Services</h2>
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-2">{{ $t('home.services') }}</h2>
         <div class="w-24 h-1 bg-primary mx-auto mb-12"></div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -28,9 +28,9 @@ useSeoMeta({
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
               </svg>
             </div>
-            <h3 class="text-xl font-semibold mb-2">Web Development</h3>
-            <p class="text-gray-600 mb-4">Custom websites and web applications built with modern technologies.</p>
-            <NuxtLink to="/reel-web-projects" class="text-primary hover:underline">View projects →</NuxtLink>
+            <h3 class="text-xl font-semibold mb-2">{{ $t('home.webDev.title') }}</h3>
+            <p class="text-gray-600 mb-4">{{ $t('home.webDev.description') }}</p>
+            <NuxtLink to="/reel-web-projects" class="text-primary hover:underline">{{ $t('home.viewProjects') }} →</NuxtLink>
           </div>
           
           <!-- Drone Photography -->
@@ -40,9 +40,9 @@ useSeoMeta({
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-4.5-6.5L15 8" />
               </svg>
             </div>
-            <h3 class="text-xl font-semibold mb-2">Drone Photography</h3>
-            <p class="text-gray-600 mb-4">Certified FPV drone pilot specializing in aerial photography and videography.</p>
-            <NuxtLink to="/drone" class="text-primary hover:underline">Learn more →</NuxtLink>
+            <h3 class="text-xl font-semibold mb-2">{{ $t('home.drone.title') }}</h3>
+            <p class="text-gray-600 mb-4">{{ $t('home.drone.description') }}</p>
+            <NuxtLink to="/drone" class="text-primary hover:underline">{{ $t('home.learnMore') }} →</NuxtLink>
           </div>
           
           <!-- Photography -->
@@ -53,9 +53,9 @@ useSeoMeta({
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h3 class="text-xl font-semibold mb-2">Photography</h3>
-            <p class="text-gray-600 mb-4">Professional photography services for events, real estate, products and more.</p>
-            <NuxtLink to="/photography" class="text-primary hover:underline">View portfolio →</NuxtLink>
+            <h3 class="text-xl font-semibold mb-2">{{ $t('home.photography.title') }}</h3>
+            <p class="text-gray-600 mb-4">{{ $t('home.photography.description') }}</p>
+            <NuxtLink to="/photography" class="text-primary hover:underline">{{ $t('home.explorePortfolio') }} →</NuxtLink>
           </div>
           
           <!-- 3D Printing -->
@@ -65,9 +65,9 @@ useSeoMeta({
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
-            <h3 class="text-xl font-semibold mb-2">3D Printing</h3>
-            <p class="text-gray-600 mb-4">Custom 3D printing services for prototypes, models, and functional parts.</p>
-            <NuxtLink to="/3d-printing" class="text-primary hover:underline">Explore services →</NuxtLink>
+            <h3 class="text-xl font-semibold mb-2">{{ $t('home.printing.title') }}</h3>
+            <p class="text-gray-600 mb-4">{{ $t('home.printing.description') }}</p>
+            <NuxtLink to="/3d-printing" class="text-primary hover:underline">{{ $t('home.exploreServices') }} →</NuxtLink>
           </div>
         </div>
       </div>

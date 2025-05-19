@@ -106,7 +106,7 @@ onMounted(() => {
           <NuxtLink
               class="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.4)] btn btn-primary btn-outline rounded-3xl border-2 font-bold"
               to="/reel-web-projects">
-            {{ locale === 'en' ? 'Watch My Work' : 'Meine Arbeit ansehen' }}
+            {{ $t('hero.watchWork') }}
           </NuxtLink>
 
         </div>
