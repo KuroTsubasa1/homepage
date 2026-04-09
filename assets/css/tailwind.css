@@ -2,6 +2,103 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    body {
+        @apply bg-dark text-gray-200 antialiased;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    ::selection {
+        @apply bg-neon-green/30 text-white;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        @apply bg-dark;
+    }
+    ::-webkit-scrollbar-thumb {
+        @apply bg-dark-300 rounded-full;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-neon-green/50;
+    }
+}
+
+@layer components {
+    /* Glassmorphism card */
+    .glass-card {
+        @apply bg-dark-100/60 backdrop-blur-xl border border-white/10 rounded-2xl;
+    }
+
+    /* Neon border glow - now green */
+    .neon-border {
+        @apply border border-neon-green/30;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.08), inset 0 0 15px rgba(0, 255, 136, 0.03);
+    }
+
+    .neon-border:hover {
+        @apply border-neon-green/60;
+        box-shadow: 0 0 25px rgba(0, 255, 136, 0.15), inset 0 0 25px rgba(0, 255, 136, 0.05);
+    }
+
+    /* Gradient text - green to cyan to purple */
+    .gradient-text {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple;
+        background-size: 200% auto;
+    }
+
+    /* Neon glow button - green */
+    .btn-neon {
+        @apply relative px-8 py-3 font-bold text-dark bg-neon-green rounded-xl transition-all duration-300 overflow-hidden;
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+    .btn-neon:hover {
+        box-shadow: 0 0 40px rgba(0, 255, 136, 0.5), 0 0 80px rgba(0, 255, 136, 0.2);
+        transform: translateY(-2px);
+    }
+
+    /* Neon outline button - green */
+    .btn-neon-outline {
+        @apply relative px-8 py-3 font-bold text-neon-green border-2 border-neon-green/60 rounded-xl transition-all duration-300;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+    }
+    .btn-neon-outline:hover {
+        @apply bg-neon-green/10;
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* Section heading */
+    .section-heading {
+        @apply text-3xl md:text-4xl font-bold text-center mb-2 text-white;
+    }
+
+    .section-divider {
+        @apply w-24 h-1 mx-auto mb-12 rounded-full;
+        background: linear-gradient(90deg, #00ff88, #00f0ff, #8b5cf6);
+    }
+
+    /* Animated underline for links */
+    .link-glow {
+        @apply relative text-gray-300 transition-colors duration-300;
+    }
+    .link-glow:hover {
+        @apply text-neon-green;
+        text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    }
+    .link-glow::after {
+        content: '';
+        @apply absolute bottom-0 left-0 w-0 h-0.5 rounded-full transition-all duration-300;
+        background: linear-gradient(90deg, #00ff88, #00f0ff);
+    }
+    .link-glow:hover::after {
+        @apply w-full;
+    }
+}
+
 @layer utilities {
     .masonry {
         column-gap: 0.5em;
@@ -17,5 +114,27 @@
     }
     .break-inside {
         break-inside: avoid;
+    }
+
+    /* Grid background pattern - green tinted */
+    .bg-grid {
+        background-image:
+            linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+    }
+
+    /* Noise texture overlay */
+    .bg-noise {
+        position: relative;
+    }
+    .bg-noise::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
     }
 }

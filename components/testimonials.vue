@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps({
   category: {
@@ -9,69 +12,17 @@ const props = defineProps({
 });
 
 const testimonials = ref([
-  {
-    id: 1,
-    category: 'photography',
-    name: 'Emma Johnson',
-    role: 'Marketing Director',
-    company: 'Creative Solutions',
-    text: "Lasse's photography perfectly captured the essence of our brand. The images are being used across all our marketing materials and have received countless compliments.",
-    avatar: '/images/testimonials/avatar1.jpg'
-  },
-  {
-    id: 2,
-    category: 'drone',
-    name: 'Thomas Nielsen',
-    role: 'Real Estate Agent',
-    company: 'Premium Properties',
-    text: 'The aerial footage provided by Lasse gave our listings an incredible advantage. Properties with his drone shots sold 30% faster than our regular listings.',
-    avatar: '/images/testimonials/avatar2.jpg'
-  },
-  {
-    id: 3,
-    category: '3d-printing',
-    name: 'Sarah Martinez',
-    role: 'Product Designer',
-    company: 'Innovative Designs',
-    text: "The 3D printed prototypes were delivered ahead of schedule and with incredible precision. Lasse's attention to detail helped us finalize our design much faster than expected.",
-    avatar: '/images/testimonials/avatar3.jpg'
-  },
-  {
-    id: 4,
-    category: 'web',
-    name: 'Michael Berg',
-    role: 'CEO',
-    company: 'TechStart',
-    text: 'Our website redesign by Lasse exceeded all expectations. Conversion rates improved by 45% within the first month after launch.',
-    avatar: '/images/testimonials/avatar4.jpg'
-  },
-  {
-    id: 5,
-    category: 'photography',
-    name: 'Laura Hansen',
-    role: 'Event Coordinator',
-    company: 'Elite Events',
-    text: 'Having Lasse photograph our corporate event was one of the best decisions we made. The images perfectly captured the energy and professionalism of our brand.',
-    avatar: '/images/testimonials/avatar5.jpg'
-  },
-  {
-    id: 6,
-    category: 'drone',
-    name: 'David Andersen',
-    role: 'Construction Manager',
-    company: 'BuildRight',
-    text: 'The aerial progress documentation saved us countless hours of site visits and provided valuable insights for our project management team.',
-    avatar: '/images/testimonials/avatar6.jpg'
-  }
+  { id: 1, category: 'photography', clientKey: 'emmaJohnson', avatar: '/images/testimonials/avatar1.jpg' },
+  { id: 2, category: 'drone', clientKey: 'thomasNielsen', avatar: '/images/testimonials/avatar2.jpg' },
+  { id: 3, category: '3d-printing', clientKey: 'sarahMartinez', avatar: '/images/testimonials/avatar3.jpg' },
+  { id: 4, category: 'web', clientKey: 'michaelBerg', avatar: '/images/testimonials/avatar4.jpg' },
+  { id: 5, category: 'photography', clientKey: 'lauraHansen', avatar: '/images/testimonials/avatar5.jpg' },
+  { id: 6, category: 'drone', clientKey: 'davidAndersen', avatar: '/images/testimonials/avatar6.jpg' }
 ]);
 
 const filteredTestimonials = computed(() => {
-  if (props.category === 'general') {
-    return testimonials.value;
-  }
-  return testimonials.value.filter(testimonial => 
-    testimonial.category === props.category
-  );
+  if (props.category === 'general') return testimonials.value;
+  return testimonials.value.filter(t => t.category === props.category);
 });
 
 const currentTestimonialIndex = ref(0);
@@ -86,9 +37,7 @@ const prevTestimonial = () => {
 };
 
 const startAutoScroll = () => {
-  intervalId.value = setInterval(() => {
-    nextTestimonial();
-  }, 8000);
+  intervalId.value = setInterval(nextTestimonial, 8000);
 };
 
 const stopAutoScroll = () => {
@@ -99,9 +48,7 @@ const stopAutoScroll = () => {
 };
 
 onMounted(() => {
-  if (filteredTestimonials.value.length > 1) {
-    startAutoScroll();
-  }
+  if (filteredTestimonials.value.length > 1) startAutoScroll();
 });
 
 onUnmounted(() => {
@@ -110,83 +57,87 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="py-16 bg-gray-50">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-2">What Our Clients Say</h2>
-      <div class="w-24 h-1 bg-primary mx-auto mb-12"></div>
+  <section class="py-24 bg-dark-100 relative overflow-hidden">
+    <div class="absolute inset-0 bg-grid opacity-10"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-neon-purple/5 rounded-full blur-[120px]"></div>
 
-      <div v-if="filteredTestimonials.length > 0" class="relative">
-        <div class="testimonial-carousel relative max-w-4xl mx-auto">
-          <div class="testimonial-item bg-white rounded-lg shadow-lg p-8 transition-opacity duration-500">
-            <div class="flex flex-col md:flex-row items-start md:items-center mb-6">
-              <div class="w-16 h-16 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 flex-shrink-0">
-                <img :src="filteredTestimonials[currentTestimonialIndex].avatar || '/images/testimonials/default-avatar.svg'" 
-                     alt="Client avatar" 
-                     class="w-full h-full object-cover" 
-                     @error="$event.target.src = '/images/testimonials/default-avatar.svg'">
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold">{{ filteredTestimonials[currentTestimonialIndex].name }}</h3>
-                <p class="text-gray-600">{{ filteredTestimonials[currentTestimonialIndex].role }} at {{ filteredTestimonials[currentTestimonialIndex].company }}</p>
-              </div>
+    <div class="container mx-auto px-4 relative z-10">
+      <h2 class="section-heading">{{ t('testimonials.title') }}</h2>
+      <div class="section-divider"></div>
+
+      <div v-if="filteredTestimonials.length > 0" class="relative max-w-3xl mx-auto">
+        <!-- Testimonial card -->
+        <div class="glass-card neon-border p-8 md:p-10 relative">
+          <!-- Quote icon -->
+          <div class="absolute -top-4 -left-2 w-10 h-10 bg-neon-green/20 rounded-full flex items-center justify-center">
+            <svg class="w-5 h-5 text-neon-green" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+            </svg>
+          </div>
+
+          <div class="flex flex-col md:flex-row items-start md:items-center mb-6 gap-4">
+            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-neon-purple/40 flex-shrink-0">
+              <img
+                :src="filteredTestimonials[currentTestimonialIndex].avatar || '/images/testimonials/default-avatar.svg'"
+                alt="Client avatar"
+                class="w-full h-full object-cover"
+                @error="$event.target.src = '/images/testimonials/default-avatar.svg'"
+              >
             </div>
-            
-            <div class="quote relative">
-              <svg class="absolute -top-4 -left-2 w-10 h-10 text-gray-200" fill="currentColor" viewBox="0 0 32 32">
-                <path d="M10 8c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zM10 26c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"></path>
-                <path d="M16 8c0 0 0 2-2 2-2 0-2-2-2-2s0-2 2-2c2 0 2 2 2 2z"></path>
-                <path d="M24 8c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zM24 26c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"></path>
-                <path d="M30 8c0 0 0 2-2 2-2 0-2-2-2-2s0-2 2-2c2 0 2 2 2 2z"></path>
-              </svg>
-              
-              <p class="text-lg pl-6 italic text-gray-700">{{ filteredTestimonials[currentTestimonialIndex].text }}</p>
+            <div>
+              <h3 class="text-lg font-bold text-white">
+                {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.name`) }}
+              </h3>
+              <p class="text-sm text-neon-purple">
+                {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.role`) }}
+                {{ t('testimonials.at') }}
+                {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.company`) }}
+              </p>
             </div>
           </div>
 
-          <div v-if="filteredTestimonials.length > 1" 
-               class="absolute top-1/2 -left-6 transform -translate-y-1/2">
-            <button @click="prevTestimonial" class="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-          </div>
-
-          <div v-if="filteredTestimonials.length > 1" 
-               class="absolute top-1/2 -right-6 transform -translate-y-1/2">
-            <button @click="nextTestimonial" class="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+          <p class="text-gray-300 leading-relaxed italic text-lg">
+            "{{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.text`) }}"
+          </p>
         </div>
 
-        <div v-if="filteredTestimonials.length > 1" class="flex justify-center mt-6">
-          <div 
-            v-for="(_, index) in filteredTestimonials" 
+        <!-- Navigation arrows -->
+        <template v-if="filteredTestimonials.length > 1">
+          <button
+            @click="prevTestimonial"
+            class="absolute top-1/2 -left-4 md:-left-6 -translate-y-1/2 w-10 h-10 rounded-full bg-dark-200 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-green hover:border-neon-green/40 transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            @click="nextTestimonial"
+            class="absolute top-1/2 -right-4 md:-right-6 -translate-y-1/2 w-10 h-10 rounded-full bg-dark-200 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-green hover:border-neon-green/40 transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </template>
+
+        <!-- Dots -->
+        <div v-if="filteredTestimonials.length > 1" class="flex justify-center mt-8 gap-2">
+          <button
+            v-for="(_, index) in filteredTestimonials"
             :key="index"
             @click="currentTestimonialIndex = index"
-            class="w-3 h-3 mx-1 rounded-full cursor-pointer transition-colors"
-            :class="currentTestimonialIndex === index ? 'bg-primary' : 'bg-gray-300'"
-          ></div>
+            class="w-2 h-2 rounded-full transition-all duration-300"
+            :class="currentTestimonialIndex === index
+              ? 'bg-neon-green w-6 shadow-[0_0_10px_rgba(0,240,255,0.5)]'
+              : 'bg-dark-400 hover:bg-dark-300'"
+          ></button>
         </div>
       </div>
 
       <div v-else class="text-center text-gray-500 py-12">
-        No testimonials available for this category yet.
+        {{ t('testimonials.noTestimonials') }}
       </div>
     </div>
   </section>
 </template>
-
-<style scoped>
-.testimonial-item {
-  opacity: 1;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.testimonial-item.fade-out {
-  opacity: 0;
-}
-</style>

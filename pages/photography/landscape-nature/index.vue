@@ -4,20 +4,20 @@
   <hero 
     title="Landscape & Nature" 
     description="BREATHTAKING VIEWS AND INTIMATE DETAILS OF THE NATURAL WORLD" 
-    image="https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=960x0" 
+    :image="heroImage"
     class="fade-in"
   ></hero>
 
   <div class="container mx-auto py-16 fade-in">
     <div class="max-w-3xl mx-auto px-4 mb-16">
-      <h2 class="text-3xl font-semibold text-primary mb-6">About Landscape & Nature Photography</h2>
-      <p class="text-lg mb-4">
+      <h2 class="text-3xl font-semibold text-neon-cyan mb-6">About Landscape & Nature Photography</h2>
+      <p class="text-lg text-gray-300 mb-4">
         From expansive mountain ranges to delicate wildflowers, landscape and nature photography 
         captures the beauty of our world in both grand vistas and intimate details. These images 
         invite viewers to appreciate the quiet majesty of natural scenes and recognize the importance 
         of preserving these environments.
       </p>
-      <p class="text-lg">
+      <p class="text-lg text-gray-300">
         My approach emphasizes finding the perfect light, composition, and perspective to showcase 
         the unique character of each location, whether it's a dramatic sunset over rolling hills or 
         the intricate patterns in leaves and flowers.
@@ -27,13 +27,13 @@
 
   <!-- Gallery Grid -->
   <div class="container mx-auto px-4 mb-16 fade-in">
-    <h2 class="text-3xl font-semibold text-primary mb-8 text-center">Landscape & Nature Gallery</h2>
+    <h2 class="text-3xl font-semibold text-white mb-8 text-center">Landscape & Nature Gallery</h2>
     
     <div class="masonry-gallery">
       <div 
         v-for="image in images" 
         :key="image.id" 
-        class="masonry-item cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+        class="masonry-item cursor-pointer overflow-hidden rounded-xl border border-white/10 hover:border-neon-cyan/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.1)]"
         @click="openDetail(image.id)"
       >
         <div class="relative">
@@ -52,7 +52,7 @@
 
   <div class="container mx-auto pb-16 fade-in">
     <div class="flex justify-center mb-8">
-      <NuxtLink to="/photography" class="btn btn-primary">
+      <NuxtLink to="/photography" class="btn-neon-outline inline-block">
         Back to Photography Collections
       </NuxtLink>
     </div>
@@ -67,6 +67,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const images = ref([]);
+const heroImage = ref('');
 
 onMounted(async () => {
   const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_images/records?filter=(category='nature')&perPage=1000`);
@@ -78,6 +79,7 @@ onMounted(async () => {
     src: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}`,
     alt: item.alt || 'Landscape & Nature Photography',
   }));
+  if (images.value.length > 0) heroImage.value = images.value[0].src;
 });
 
 const openDetail = (id) => {

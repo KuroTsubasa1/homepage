@@ -2,194 +2,105 @@
 import Navigation from "~/components/navigation.vue";
 import FooterComponent from "~/components/footerComponent.vue";
 import ProjectGrid from "~/components/projectGrid.vue";
-import { ref } from 'vue';
 
 useSeoMeta({
-  title: 'Drone Photography & Videography - Lasse Harm',
-  ogTitle: 'Drone Photography & Videography - Lasse Harm',
-  description: 'Professional drone photography and videography services by Lasse Harm. Aerial footage for real estate, events, and creative projects.',
-  ogDescription: 'Professional drone photography and videography services by Lasse Harm. Aerial footage for real estate, events, and creative projects.',
+  title: 'FPV Drones - Lasse Harm',
+  ogTitle: 'FPV Drones - Lasse Harm',
+  description: 'FPV freestyle, cinematic flying, drone racing, and building custom quads. A look into my passion for first-person-view drones.',
+  ogDescription: 'FPV freestyle, cinematic flying, drone racing, and building custom quads.',
   ogImage: 'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/a2y4hbqpuo6a40p/dji_0066_tAGACeMmVN.jpg?thumb=960x0',
   twitterCard: 'summary_large_image',
 });
-
-const drones = ref([
-  { 
-    name: 'DJI Air 2S', 
-    description: 'Professional 1-inch sensor, 5.4K video, MasterShots intelligent shooting modes. Perfect for real estate and landscape photography.',
-    image: 'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/a2y4hbqpuo6a40p/dji_0066_tAGACeMmVN.jpg?thumb=300x300',
-    features: ['5.4K Video', '1" CMOS Sensor', '12km Range', '31min Flight Time'] 
-  },
-  { 
-    name: '5" Freestyle FPV', 
-    description: 'Custom-built for dynamic and cinematic movements. Ideal for creative filmmaking and dynamic aerial footage.',
-    image: 'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/a2y4hbqpuo6a40p/dji_0066_tAGACeMmVN.jpg?thumb=300x300',
-    features: ['HD Digital Video', 'Manual Mode', 'Custom Build', 'GoPro Mount'] 
-  },
-  { 
-    name: 'Cinewhoop FPV', 
-    description: 'Protected design for indoor flying. Perfect for immersive interior real estate tours and event coverage.',
-    image: 'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/a2y4hbqpuo6a40p/dji_0066_tAGACeMmVN.jpg?thumb=300x300',
-    features: ['Protected Props', 'HD Video', 'Interior Safe', 'Smooth Movement'] 
-  }
-]);
-
-const services = ref([
-  {
-    title: 'Real Estate Aerial Photography',
-    description: 'Showcase properties from their best angle with stunning aerial photography. Perfect for highlighting large properties, land plots, and scenic surroundings.',
-    icon: 'fa-solid-home'
-  },
-  {
-    title: 'Property Video Tours',
-    description: 'Immersive property tours combining aerial footage with smooth interior fly-throughs. Create a comprehensive viewing experience that sets your listings apart.',
-    icon: 'fa-solid-video'
-  },
-  {
-    title: 'Event Coverage',
-    description: 'Capture weddings, festivals, sports events, and corporate gatherings from unique perspectives that ground-based photography can\'t achieve.',
-    icon: 'fa-solid-calendar'
-  },
-  {
-    title: 'Industrial Inspections',
-    description: 'Safe and cost-effective inspections of roofs, buildings, towers, and other hard-to-reach structures. High-resolution imagery for detailed assessment.',
-    icon: 'fa-solid-cog'
-  }
-]);
 </script>
 
 <template>
   <navigation></navigation>
 
-  <!-- Hero Section -->
-  <section class="relative h-screen">
-    <div class="absolute inset-0 bg-black opacity-50 z-10"></div>
+  <!-- Hero -->
+  <section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/40 to-dark z-10"></div>
+    <div class="absolute inset-0 bg-grid opacity-20 z-10"></div>
     <div class="absolute inset-0 z-0">
-      <video class="w-full h-full object-cover" autoplay muted loop>
-        <source src="https://pocket.lasseharm.space/api/files/video-placeholder.mp4" type="video/mp4">
-        <!-- Fallback image if video can't load -->
-        <img src="https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/a2y4hbqpuo6a40p/dji_0066_tAGACeMmVN.jpg" alt="Drone aerial view" class="w-full h-full object-cover">
-      </video>
+      <img src="https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/a2y4hbqpuo6a40p/dji_0066_tAGACeMmVN.jpg" alt="FPV drone" class="w-full h-full object-cover">
     </div>
-    <div class="absolute inset-0 flex items-center justify-center z-20">
-      <div class="text-center text-white px-4">
-        <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-fade-in">Aerial Photography & Videography</h1>
-        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Capturing breathtaking perspectives from above</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#services" class="btn btn-primary px-6 py-3 rounded-full text-lg">View Services</a>
-          <a href="/contact" class="btn bg-white text-primary px-6 py-3 rounded-full text-lg hover:bg-gray-100">Get a Quote</a>
-        </div>
-      </div>
-    </div>
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20">
-      <div class="animate-bounce">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </div>
+    <div class="relative z-20 text-center px-4">
+      <h1 class="text-5xl md:text-7xl font-black mb-4">
+        <span class="gradient-text">FPV Drones</span>
+      </h1>
+      <p class="text-xl text-gray-300 max-w-xl mx-auto">Flying, building, crashing, rebuilding. Repeat.</p>
     </div>
   </section>
 
-  <!-- Equipment Section -->
-  <section class="py-20 bg-gray-50">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-primary mb-4">Professional Drone Fleet</h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">Equipped with the latest technology to capture stunning aerial imagery for any project</p>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div v-for="(drone, index) in drones" :key="index" class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <img :src="drone.image" :alt="drone.name" class="w-full h-56 object-cover">
-          <div class="p-6">
-            <h3 class="text-2xl font-bold text-primary mb-2">{{ drone.name }}</h3>
-            <p class="text-gray-600 mb-4">{{ drone.description }}</p>
-            <div class="grid grid-cols-2 gap-2">
-              <div v-for="(feature, fidx) in drone.features" :key="fidx" class="bg-gray-100 px-3 py-1 rounded text-sm text-gray-700">
-                {{ feature }}
-              </div>
-            </div>
+  <!-- Main Content - flowing, personal -->
+  <section class="py-20 bg-dark relative overflow-hidden">
+    <div class="absolute inset-0 bg-grid opacity-10"></div>
+    <div class="absolute top-0 left-0 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px]"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="max-w-3xl mx-auto space-y-16">
+
+        <!-- What FPV feels like -->
+        <div>
+          <h2 class="text-2xl font-bold text-white mb-6">The feeling</h2>
+          <div class="text-gray-300 leading-relaxed space-y-4">
+            <p>FPV stands for First Person View. You wear goggles that show a live camera feed from the drone, so you see what the drone sees. It feels like you're actually flying.</p>
+            <p>I fly both <span class="text-neon-cyan">freestyle</span> and <span class="text-neon-purple">cinematic</span>. Freestyle is creative expression — flips, rolls, power loops, diving through gaps. Cinematic is smooth, sweeping movements that make footage feel like it came out of a movie.</p>
+            <p>There's a feeling of freedom to it that's hard to describe. When you're locked in, flying a line you've been visualizing, everything else fades away. Just you and the sky.</p>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Services Section -->
-  <section id="services" class="py-20">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-primary mb-4">Drone Services</h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">Specialized aerial photography and videography services for various applications</p>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div v-for="(service, index) in services" :key="index" class="bg-white p-8 rounded-lg shadow-lg border-l-4 border-primary transition-all duration-300 hover:shadow-xl">
-          <h3 class="text-2xl font-bold text-primary mb-4">{{ service.title }}</h3>
-          <p class="text-gray-600 mb-6">{{ service.description }}</p>
-          <a href="/contact" class="text-primary font-semibold flex items-center hover:underline">
-            Get a Quote
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-          </a>
+        <!-- Building -->
+        <div>
+          <h2 class="text-2xl font-bold text-white mb-6">Building them is half the fun</h2>
+          <div class="text-gray-300 leading-relaxed space-y-4">
+            <p>Every quad I fly started as a pile of parts on my desk. Picking a frame, choosing motors, soldering the flight controller and ESC stack, wiring up the VTX and camera — it's deeply satisfying.</p>
+            <p>Then comes the software side: flashing Betaflight, configuring rates, dialing in PID values until the quad responds exactly how you want. And honestly, the build is never truly finished. You're always swapping props, trying different cameras, adjusting filters.</p>
+            <p>I prefer 5-inch true-X frames for freestyle. There's something about the way they fly — responsive, aggressive, but still smooth enough for cinematic lines when you want them.</p>
+          </div>
         </div>
+
+        <!-- Sims -->
+        <div>
+          <h2 class="text-2xl font-bold text-white mb-6">Sim time</h2>
+          <div class="text-gray-300 leading-relaxed space-y-4">
+            <p>Before sending a quad into the sky, I spend hours in simulators. They're the safest and cheapest way to build muscle memory and try new tricks without breaking parts.</p>
+            <p><span class="text-neon-cyan font-medium">Liftoff</span> is my main sim for freestyle practice. The physics feel very close to real life, and the track editor is great for building custom courses. <span class="text-neon-green font-medium">Velocidrone</span> is the go-to for racing — the timing systems and competitive multiplayer make it the closest thing to a real race without leaving the house.</p>
+            <p>I plug in my actual radio controller and fly with the same sticks, same rates. When I go outside to fly for real, the transition is seamless.</p>
+          </div>
+        </div>
+
+        <!-- Racing -->
+        <div>
+          <h2 class="text-2xl font-bold text-white mb-6">Racing</h2>
+          <div class="text-gray-300 leading-relaxed space-y-4">
+            <p>Tiny quads ripping through gates at over 120 km/h. Drone racing is one of the most intense hobbies I've picked up. It's less about creativity and more about precision, consistency, and split-second decisions. You fly a course over and over, shaving fractions of a second off your lap times.</p>
+            <p>What really makes it special is the community. Local race days are full of people sharing tips, lending parts, and cheering each other on. Everyone's there because they love the same weird, wonderful hobby. Whether you finish first or last, you leave wanting to come back.</p>
+          </div>
+        </div>
+
+        <!-- My fleet -->
+        <div>
+          <h2 class="text-2xl font-bold text-white mb-6">What I fly</h2>
+          <div class="text-gray-300 leading-relaxed space-y-4">
+            <p>My <span class="text-neon-cyan font-medium">DJI Air 2S</span> is the go-to for landscape and travel shots. One-inch sensor, gorgeous detail, and intelligent modes that make getting cinematic results easy when I'm exploring new places.</p>
+            <p>The <span class="text-neon-green font-medium">5" Freestyle quad</span> is custom-built for ripping through the sky. Full manual flight, GoPro mounted on top. There's nothing like it.</p>
+            <p>And the <span class="text-neon-purple font-medium">Cinewhoop</span> — ducted props make it safe for indoor flying. I love using it for smooth, slow proximity flights through tight spaces. Perfect for those buttery cinematic shots.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Sample Work -->
-  <section class="py-20 bg-gray-50">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-primary mb-4">Featured Drone Projects</h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">Browse through a selection of our best aerial photography and videography work</p>
-      </div>
-      
+  <!-- Footage -->
+  <section class="py-20 bg-dark-100 relative overflow-hidden">
+    <div class="absolute inset-0 bg-grid opacity-10"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <h2 class="section-heading">Some footage</h2>
+      <div class="section-divider"></div>
       <project-grid category="drone"></project-grid>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="py-16 bg-gradient-to-r from-primary to-secondary text-white text-center">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-6">Ready to elevate your perspective?</h2>
-      <p class="text-xl mb-8 max-w-3xl mx-auto">Contact me today to discuss your drone photography and videography needs</p>
-      <a href="/contact" class="btn px-8 py-3 font-bold bg-white text-primary rounded-full text-lg hover:bg-gray-100 transition-transform inline-block">
-        Get in Touch
-      </a>
     </div>
   </section>
 
   <footer-component></footer-component>
 </template>
-
-<style scoped>
-.animate-fade-in {
-  animation: fadeIn 1.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-bounce {
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-</style>

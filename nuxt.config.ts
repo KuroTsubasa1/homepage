@@ -74,7 +74,7 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1',
       meta: [
         { name: 'author', content: 'Lasse Harm' },
-        { name: 'theme-color', content: '#4a7eb3' }
+        { name: 'theme-color', content: '#0a0a0f' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }

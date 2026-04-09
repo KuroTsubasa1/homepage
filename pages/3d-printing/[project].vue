@@ -1,11 +1,11 @@
 <template>
   <navigation></navigation>
 
-  <main class="flex flex-col md:flex-row gap-10 p-10">
+  <main class="flex flex-col md:flex-row gap-10 p-10 pt-20">
     <div class="w-full md:w-1/2">
       <!-- Video Section -->
       <div v-if="projectData.videos" class="video-container mb-4">
-        <video class="w-full h-auto" controls>
+        <video class="w-full h-auto rounded-2xl border border-white/10" controls>
           <source :src="`${projectData.videos[0]}`" type="video/mp4">
           Your browser does not support the video tag.
         </video>
@@ -14,37 +14,38 @@
       <!-- Images Section -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         <img v-for="(image, index) in projectData.images" :key="index" :alt="'Image ' + (index + 1)"
-             :src="`${image}`" class="w-full h-auto" loading="lazy">
+             :src="`${image}`" class="w-full h-auto rounded-2xl border border-white/10" loading="lazy">
       </div>
     </div>
 
     <div class="w-full md:w-1/2">
-      <h2 class="font-semibold text-primary text-5xl my-10 text-center">{{ projectData.title }}</h2>
+      <h2 class="font-semibold text-5xl my-10 text-center">
+        <span class="gradient-text">{{ projectData.title }}</span>
+      </h2>
 
       <!-- Info Card Section -->
-      <div class="info-card bg-gray-100 p-4 rounded-lg w-full card shadow-xl">
-        <h2 class="text-xl font-bold mb-2">Project Information</h2>
-        <ul>
-          <li><strong>Role:</strong> {{ projectData.role }}</li>
-          <div class="divider"></div>
-          <li><strong>Duration:</strong> {{ projectData.fromDate }} - {{ projectData.toDate }}</li>
-          <div class="divider"></div>
-          <li><strong>From:</strong> {{ projectData.fromDate }}</li>
-          <div class="divider"></div>
-          <li><strong>To:</strong> {{ projectData.toDate }}</li>
+      <div class="glass-card neon-border p-4 w-full">
+        <h2 class="text-xl font-bold mb-2 text-neon-cyan">Project Information</h2>
+        <ul class="text-gray-300">
+          <li><strong class="text-white">Role:</strong> {{ projectData.role }}</li>
+          <div class="divider divider-neutral"></div>
+          <li><strong class="text-white">Duration:</strong> {{ projectData.fromDate }} - {{ projectData.toDate }}</li>
+          <div class="divider divider-neutral"></div>
+          <li><strong class="text-white">From:</strong> {{ projectData.fromDate }}</li>
+          <div class="divider divider-neutral"></div>
+          <li><strong class="text-white">To:</strong> {{ projectData.toDate }}</li>
           <!-- Add more info as needed -->
         </ul>
       </div>
 
       <!-- Description Section -->
       <div class="mt-10">
-        <p class="text-lg">{{ projectData.longDescription }}</p>
+        <p class="text-lg text-gray-300">{{ projectData.longDescription }}</p>
       </div>
 
       <!-- Link Section -->
       <div class="mt-10">
-        <a :href="projectData.link"
-           class="btn px-4 py-2 text-lg font-bold text-white bg-primary rounded hover:bg-primary-dark transition-colors">
+        <a :href="projectData.link" class="btn-neon text-sm">
           View Project
         </a>
       </div>

@@ -2,287 +2,236 @@
 import Navigation from "~/components/navigation.vue";
 import FooterComponent from "~/components/footerComponent.vue";
 import ProjectGrid from "~/components/projectGrid.vue";
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 useSeoMeta({
   title: 'Web Development Portfolio | Lasse Harm',
   ogTitle: 'Web Development Portfolio | Lasse Harm',
-  description: 'Explore my web development portfolio featuring responsive websites, interactive applications, and innovative digital solutions built with modern technologies.',
-  ogDescription: 'Explore my web development portfolio featuring responsive websites, interactive applications, and innovative digital solutions built with modern technologies.',
+  description: 'Explore my web development portfolio — enterprise apps, open source projects, and a career timeline spanning 10+ years of professional development.',
+  ogDescription: 'Explore my web development portfolio — enterprise apps, open source projects, and a career timeline spanning 10+ years of professional development.',
   ogImage: 'https://pocket.lasseharm.space/api/files/web_projects_image.jpg?thumb=960x0',
   twitterCard: 'summary_large_image',
-  keywords: 'web development, portfolio, front-end development, UI/UX design, Nuxt.js, Vue.js, JavaScript, responsive design',
+  keywords: 'web development, portfolio, Vue.js, Nuxt.js, TypeScript, PHP, Symfony, Laravel',
 });
 
 const skills = ref([
-  { name: 'Front-End Development', icon: 'laptop-code', percentage: 95, color: '#4CAF50' },
-  { name: 'UI/UX Design', icon: 'pencil-ruler', percentage: 85, color: '#2196F3' },
-  { name: 'Back-End Development', icon: 'server', percentage: 80, color: '#9C27B0' },
-  { name: 'Responsive Design', icon: 'mobile-alt', percentage: 90, color: '#FF9800' },
-  { name: 'JavaScript/TypeScript', icon: 'js', percentage: 90, color: '#F7DF1E' },
-  { name: 'Vue.js/Nuxt.js', icon: 'vuejs', percentage: 95, color: '#42B883' },
+  { name: 'JavaScript / TypeScript', percentage: 95, color: '#00ff88' },
+  { name: 'Vue.js / Nuxt.js', percentage: 95, color: '#42B883' },
+  { name: 'PHP (Symfony, Laravel)', percentage: 90, color: '#8b5cf6' },
+  { name: 'CSS (Tailwind, Bootstrap)', percentage: 90, color: '#00f0ff' },
+  { name: 'Databases (MySQL, PostgreSQL)', percentage: 85, color: '#ff00aa' },
+  { name: 'Node.js / Python', percentage: 75, color: '#ffb800' },
 ]);
 
-const activeFilter = ref('all');
-const filters = ref([
-  { value: 'all', label: 'All Projects' },
-  { value: 'frontend', label: 'Front-End' },
-  { value: 'fullstack', label: 'Full Stack' },
-  { value: 'ecommerce', label: 'E-Commerce' },
-  { value: 'corporate', label: 'Corporate' },
+const career = ref([
+  {
+    period: 'Feb 2025 — Now',
+    company: 'DIU MarTech Solutions GmbH',
+    role: 'Web Developer',
+    current: true,
+    projects: [
+      { id: 'suzuki-hit', name: 'Suzuki HIT', desc: 'Händler Informations Tool — enterprise dealer information platform. Maintained and developed.', tags: ['Vue.js', 'Enterprise'] },
+      { id: 'suzuki-ssbp-nxt', name: 'Suzuki SSBP-Nxt', desc: 'Antrags Plattform — complete rewrite of the application platform. Front-end architecture, modernized stack.', tags: ['Vue.js', 'Complete Rewrite'] },
+    ]
+  },
+  {
+    period: 'Jun 2024 — Jan 2025',
+    company: 'Groenewold - IT Solutions',
+    role: 'Web Developer',
+    projects: [
+      { id: 'lotto-thueringen', name: 'LOTTO Thüringen', desc: 'Ported 3 internal apps — payout tracking, admin system, and training platform.', tags: ['PHP 8', 'Laravel 11', 'Bootstrap 5'] },
+    ]
+  },
+  {
+    period: 'Dec 2023 — May 2024',
+    company: 'Tritum GmbH',
+    role: 'Web Developer',
+    projects: [
+      { id: 'aok-familiencoach', name: 'AOK Familiencoach Pflege', desc: 'Redesign of an online self-help program for caregivers with interactive exercises and multimedia content.', tags: ['PHP', 'TYPO3 v11'] },
+    ]
+  },
+  {
+    period: 'May — Oct 2023',
+    company: 'EOS Uptrade GmbH',
+    role: 'Web Developer',
+    projects: [
+      { id: 'eos-ticketingsuite', name: 'eos.ticketingsuite', desc: 'Mobility ticketing and distribution platform for public transport and modern mobility services.', tags: ['PHP', 'Symfony 1/5', 'MySQL'] },
+    ]
+  },
+  {
+    period: 'Jan — Apr 2023',
+    company: 'TimberTec GmbH',
+    role: 'Web Developer',
+    projects: [
+      { id: 'timbertec-tias', name: 'TIAS', desc: 'Local UI for industrial plant control systems used by production companies.', tags: ['TypeScript', 'Vue 3', 'Quasar'] },
+    ]
+  },
+  {
+    period: 'Aug 2018 — Dec 2022',
+    company: 'LYNET GmbH',
+    role: 'Web Developer',
+    projects: [
+      { id: 'exxonmobil-emdes', name: 'Exxonmobil EMDES', desc: 'Portal for end customers to book oil changes and workshop services.', tags: ['PHP 7/8', 'Symfony 4', 'Vue 2'] },
+      { id: 'exxonmobil-intranet', name: 'Exxonmobil Intranet', desc: 'Learning and information platform for partner workshops.', tags: ['PHP 8', 'Symfony 5', 'React'] },
+      { id: 'lynet-cookie-banner', name: 'LYNET Cookie-Banner', desc: 'GDPR-compliant cookie consent solution.', tags: ['JavaScript', 'HTML', 'CSS'] },
+    ]
+  },
+  {
+    period: 'Aug 2015 — Aug 2018',
+    company: 'Gutzmann GmbH, Lübeck',
+    role: 'Apprentice — IT Application Developer',
+    projects: [
+      { id: 'mars-petprofi', name: 'Mars PetProfi', desc: 'Knowledge and sales portal for Mars Germany GmbH.', tags: ['PHP 5.6', 'MySQL'] },
+      { id: 'drk-server', name: 'DRK-Server', desc: 'Resource management system for the German Red Cross.', tags: ['Java SE 8', 'Spring Boot'] },
+    ]
+  },
 ]);
 
-const setFilter = (filter) => {
-  activeFilter.value = filter;
-};
-
-const services = ref([
-  {
-    title: 'Custom Web Development',
-    description: 'Tailor-made websites designed to reflect your brand identity and meet your business needs with a focus on performance and user experience.',
-    icon: 'code'
-  },
-  {
-    title: 'E-Commerce Solutions',
-    description: 'Robust online stores with secure payment gateways, inventory management, and customer-focused shopping experiences.',
-    icon: 'shopping-cart'
-  },
-  {
-    title: 'Web Application Development',
-    description: 'Interactive and dynamic web applications built with modern JavaScript frameworks to provide rich user experiences.',
-    icon: 'desktop'
-  },
-  {
-    title: 'Responsive Design',
-    description: 'Mobile-first websites that adapt flawlessly to any device, ensuring your content looks great on everything from smartphones to desktop monitors.',
-    icon: 'mobile-alt'
-  },
+const personalProjects = ref([
+  { name: 'Katachi', url: 'https://github.com/KuroTsubasa1/katachi', description: 'Shape-based project' },
+  { name: 'Tanzaku', url: 'https://github.com/KuroTsubasa1/Tanzaku', description: 'Wish / task tracker' },
+  { name: 'Photobooth', url: 'https://github.com/KuroTsubasa1/photobooth', description: 'Photo booth app' },
+  { name: '3DPS Budget Tracker', url: 'https://github.com/KuroTsubasa1/3dps-budget-tracker', description: 'Budget tracker for 3D printing' },
+  { name: 'LinkHub', url: 'https://github.com/KuroTsubasa1/linkhub', description: 'Link aggregator' },
 ]);
 
-const stats = ref([
-  { number: '50+', text: 'Completed Projects' },
-  { number: '25+', text: 'Happy Clients' },
-  { number: '5+', text: 'Years Experience' },
-  { number: '99%', text: 'Client Satisfaction' },
-]);
 </script>
 
 <template>
   <navigation></navigation>
 
-  <!-- Hero Section with Animated Background -->
+  <!-- Hero -->
   <section class="hero relative min-h-screen flex items-center justify-center overflow-hidden">
     <div class="hero-background absolute inset-0 z-0"></div>
     <div class="code-animation absolute inset-0 z-0 opacity-20"></div>
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] z-0"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] z-0"></div>
     <div class="container mx-auto px-6 py-16 z-10 text-center">
       <h1 class="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 hero-title">
         <span class="text-white block">Web</span>
-        <span class="text-primary block mt-2">Development</span>
+        <span class="gradient-text block mt-2">Development</span>
       </h1>
-      <p class="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto mb-12">
-        Creating innovative digital experiences with modern technologies and user-centered design.
+      <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12">
+        I build things for the web. Clean code, great UX, modern stack.
       </p>
       <div class="flex flex-wrap justify-center gap-4">
-        <a href="#projects" class="btn-primary">View Projects</a>
-        <a href="/contact" class="btn-secondary">Get in Touch</a>
-      </div>
-    </div>
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-      <a href="#skills" class="text-white opacity-70 hover:opacity-100 transition-opacity">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </a>
-    </div>
-  </section>
-
-  <!-- Skills Section -->
-  <section id="skills" class="py-20 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-primary mb-2">Technical Skills</h2>
-        <div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Leveraging modern technologies to build robust, scalable, and user-friendly web solutions.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div v-for="skill in skills" :key="skill.name" class="skill-card bg-gray-50 rounded-lg p-6 shadow-md transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-full flex items-center justify-center mr-4" :style="{ backgroundColor: skill.color + '20', color: skill.color }">
-              <font-awesome-icon :icon="skill.icon" class="text-2xl" />
-            </div>
-            <h3 class="text-xl font-semibold">{{ skill.name }}</h3>
-          </div>
-          <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-            <div class="h-2.5 rounded-full" :style="{ width: skill.percentage + '%', backgroundColor: skill.color }"></div>
-          </div>
-          <div class="text-right text-sm text-gray-500">{{ skill.percentage }}%</div>
-        </div>
+        <a href="#career" class="btn-neon">My Career</a>
+        <a href="#projects" class="btn-neon-outline">Side Projects</a>
       </div>
     </div>
   </section>
 
-  <!-- Services Section -->
-  <section class="py-20 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-primary mb-2">Web Development Services</h2>
-        <div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Professional web development services tailored to your specific needs and business goals.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div v-for="service in services" :key="service.title" class="service-card bg-white rounded-lg p-8 shadow-lg border-t-4 border-primary transition-all duration-300 hover:shadow-2xl">
-          <div class="flex items-center mb-6">
-            <div class="w-14 h-14 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mr-4">
-              <font-awesome-icon :icon="service.icon" class="text-3xl text-primary" />
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800">{{ service.title }}</h3>
-          </div>
-          <p class="text-gray-600 leading-relaxed">{{ service.description }}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats Section -->
-  <section class="py-16 bg-gradient-to-r from-primary to-secondary text-white">
-    <div class="container mx-auto px-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        <div v-for="stat in stats" :key="stat.text" class="stat-item">
-          <h3 class="text-4xl md:text-5xl font-bold mb-2">{{ stat.number }}</h3>
-          <p class="text-lg opacity-80">{{ stat.text }}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects Section with Filter -->
-  <section id="projects" class="py-20 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-primary mb-2">Featured Projects</h2>
-        <div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Explore my latest web development projects showcasing creativity, functionality, and attention to detail.
-        </p>
-      </div>
-
-      <!-- Filter Buttons -->
-      <div class="flex flex-wrap justify-center mb-12 gap-4">
-        <button 
-          v-for="filter in filters" 
-          :key="filter.value"
-          @click="setFilter(filter.value)" 
-          class="px-6 py-2 rounded-full transition-colors duration-300"
-          :class="activeFilter === filter.value ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-        >
-          {{ filter.label }}
-        </button>
-      </div>
-
-      <!-- Project Grid -->
-      <project-grid category="web"></project-grid>
-    </div>
-  </section>
-
-  <!-- Workflow Section -->
-  <section class="py-20 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-primary mb-2">My Development Process</h2>
-        <div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          A structured and collaborative approach ensures efficient delivery of high-quality web solutions.
-        </p>
-      </div>
-
-      <div class="workflow-timeline relative max-w-4xl mx-auto">
-        <!-- Vertical Line -->
-        <div class="workflow-line absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-primary bg-opacity-20 z-0"></div>
-        
-        <!-- Steps -->
-        <div class="workflow-steps relative z-10">
-          <!-- Step 1 -->
-          <div class="workflow-step grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-            <div class="workflow-step-content md:text-right md:pr-10">
-              <h3 class="text-2xl font-bold text-primary mb-4">1. Discovery & Planning</h3>
-              <p class="text-gray-600">Understanding your goals, target audience, and requirements to create a detailed project roadmap.</p>
-            </div>
-            <div class="workflow-step-icon relative md:pl-10">
-              <div class="workflow-step-circle absolute left-0 md:left-1/2 top-0 md:top-1/2 transform md:-translate-y-1/2 md:-translate-x-1/2 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">1</div>
-              <div class="workflow-step-media bg-white p-4 rounded-lg shadow-lg ml-16 md:ml-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-primary mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="workflow-step grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-            <div class="workflow-step-icon relative md:pr-10 order-2 md:order-1">
-              <div class="workflow-step-circle absolute right-0 md:left-1/2 top-0 md:top-1/2 transform md:-translate-y-1/2 md:-translate-x-1/2 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">2</div>
-              <div class="workflow-step-media bg-white p-4 rounded-lg shadow-lg mr-16 md:mr-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-primary mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                </svg>
-              </div>
-            </div>
-            <div class="workflow-step-content md:pl-10 order-1 md:order-2">
-              <h3 class="text-2xl font-bold text-primary mb-4">2. Design & Prototyping</h3>
-              <p class="text-gray-600">Creating wireframes and interactive prototypes to visualize the user experience before development begins.</p>
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="workflow-step grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-            <div class="workflow-step-content md:text-right md:pr-10">
-              <h3 class="text-2xl font-bold text-primary mb-4">3. Development</h3>
-              <p class="text-gray-600">Building the website or application with clean, efficient code following modern development practices.</p>
-            </div>
-            <div class="workflow-step-icon relative md:pl-10">
-              <div class="workflow-step-circle absolute left-0 md:left-1/2 top-0 md:top-1/2 transform md:-translate-y-1/2 md:-translate-x-1/2 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">3</div>
-              <div class="workflow-step-media bg-white p-4 rounded-lg shadow-lg ml-16 md:ml-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-primary mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="workflow-step grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="workflow-step-icon relative md:pr-10 order-2 md:order-1">
-              <div class="workflow-step-circle absolute right-0 md:left-1/2 top-0 md:top-1/2 transform md:-translate-y-1/2 md:-translate-x-1/2 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">4</div>
-              <div class="workflow-step-media bg-white p-4 rounded-lg shadow-lg mr-16 md:mr-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-primary mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-            </div>
-            <div class="workflow-step-content md:pl-10 order-1 md:order-2">
-              <h3 class="text-2xl font-bold text-primary mb-4">4. Testing & Launch</h3>
-              <p class="text-gray-600">Thorough testing across devices and browsers, followed by deployment and post-launch support.</p>
-            </div>
+  <!-- Skills -->
+  <section class="py-20 bg-dark relative overflow-hidden">
+    <div class="bg-grid absolute inset-0 opacity-10"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <h2 class="section-heading">Tech Stack</h2>
+      <div class="section-divider"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div v-for="skill in skills" :key="skill.name" class="glass-card rounded-2xl p-5">
+          <h3 class="text-sm font-semibold text-white mb-3">{{ skill.name }}</h3>
+          <div class="w-full bg-dark-300 rounded-full h-2">
+            <div class="h-2 rounded-full transition-all duration-1000" :style="{ width: skill.percentage + '%', backgroundColor: skill.color }"></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="py-20 bg-gradient-to-r from-primary to-secondary text-white text-center">
-    <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-6">Ready to Start Your Web Project?</h2>
-      <p class="text-xl mb-10 max-w-3xl mx-auto">
-        Let's collaborate to create a customized web solution that helps you achieve your business goals.
+  <!-- Career Timeline -->
+  <section id="career" class="py-24 bg-dark-100 relative overflow-hidden">
+    <div class="bg-grid absolute inset-0 opacity-10"></div>
+    <div class="absolute top-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px]"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <h2 class="section-heading">My Journey</h2>
+      <div class="section-divider"></div>
+
+      <div class="max-w-4xl mx-auto space-y-6">
+        <div v-for="(job, index) in career" :key="index" class="glass-card p-6 md:p-8 relative overflow-hidden group" :class="job.current ? 'neon-border' : ''">
+          <!-- Current badge -->
+          <span v-if="job.current" class="absolute top-4 right-4 text-xs px-2.5 py-1 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/30 animate-pulse">Current</span>
+
+          <div class="flex flex-col md:flex-row md:items-start gap-4 mb-5">
+            <div class="md:w-48 flex-shrink-0">
+              <p class="text-neon-green font-mono text-sm">{{ job.period }}</p>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">{{ job.company }}</h3>
+              <p class="text-gray-400 text-sm">{{ job.role }}</p>
+            </div>
+          </div>
+
+          <div class="space-y-4 md:ml-52">
+            <NuxtLink v-for="project in job.projects" :key="project.id" :to="`/reel-web-projects/${project.id}`" class="border-l-2 border-neon-green/20 pl-4 block group hover:border-neon-green/50 transition-colors">
+              <h4 class="font-semibold text-white text-sm group-hover:text-neon-green transition-colors">{{ project.name }} <span class="text-neon-green/0 group-hover:text-neon-green/60 text-xs transition-colors">→</span></h4>
+              <p class="text-gray-400 text-sm mt-1">{{ project.desc }}</p>
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                <span v-for="tag in project.tags" :key="tag" class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500 border border-white/5">{{ tag }}</span>
+              </div>
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open Source / Side Projects -->
+  <section id="projects" class="py-24 bg-dark relative overflow-hidden">
+    <div class="bg-grid absolute inset-0 opacity-10"></div>
+    <div class="absolute top-0 right-0 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px]"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <h2 class="section-heading">Things I've Built</h2>
+      <div class="section-divider"></div>
+
+      <!-- Employment projects -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mx-4 md:mx-10 mb-8">
+        <template v-for="job in career" :key="job.company">
+          <NuxtLink v-for="project in job.projects" :key="project.id" :to="`/reel-web-projects/${project.id}`" class="project-card glass-card neon-border overflow-hidden group block">
+            <div class="h-2 w-full" :class="job.current ? 'bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple' : 'bg-dark-300'"></div>
+            <div class="p-6">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="text-xl font-bold text-white group-hover:text-neon-green transition-colors">{{ project.name }}</h3>
+                <span v-if="job.current" class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 flex-shrink-0 mt-1">Current</span>
+              </div>
+              <p class="text-neon-green/60 text-xs mb-3">{{ job.company }} · {{ job.period }}</p>
+              <p class="text-gray-400 text-sm mb-4">{{ project.desc }}</p>
+              <div class="flex items-center justify-between">
+                <div class="flex flex-wrap gap-1.5">
+                  <span v-for="tag in project.tags" :key="tag" class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500 border border-white/5">{{ tag }}</span>
+                </div>
+                <span class="text-neon-green text-sm opacity-0 group-hover:opacity-100 transition-all duration-300">Details →</span>
+              </div>
+            </div>
+          </NuxtLink>
+        </template>
+      </div>
+
+      <!-- Open source -->
+      <div class="mt-16 text-center">
+        <h3 class="text-xl font-bold text-white mb-2">Open Source</h3>
+        <p class="text-gray-500 text-sm mb-8">
+          Side projects on
+          <a href="https://github.com/KuroTsubasa1" target="_blank" rel="noopener noreferrer" class="text-neon-green hover:underline">GitHub</a>
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-4xl mx-auto">
+          <a v-for="project in personalProjects" :key="project.name" :href="project.url" target="_blank" rel="noopener noreferrer"
+            class="glass-card px-4 py-3 group hover:border-neon-purple/40 transition-all duration-300 hover:-translate-y-1 block text-center">
+            <h4 class="font-bold text-white text-sm group-hover:text-neon-purple transition-colors">{{ project.name }}</h4>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10 relative overflow-hidden">
+    <div class="bg-grid absolute inset-0 opacity-10"></div>
+    <div class="container mx-auto px-6 text-center relative z-10">
+      <h2 class="text-4xl font-bold mb-6"><span class="gradient-text">Interested in working together?</span></h2>
+      <p class="text-xl mb-10 max-w-2xl mx-auto text-gray-300">
+        I'm open to new opportunities and interesting projects. Let's talk.
       </p>
-      <a href="/contact" class="btn-white">Get in Touch</a>
+      <a href="/contact" class="btn-neon">Get in Touch</a>
     </div>
   </section>
 
@@ -290,28 +239,22 @@ const stats = ref([
 </template>
 
 <style scoped>
-/* Hero Section */
 .hero {
-  background: linear-gradient(to bottom right, #121212, #2c3e50);
-  color: #fff;
+  background: linear-gradient(to bottom right, #0a0a0f, #16161f);
 }
 
 .hero-background {
-  background: radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.1) 0%, rgba(0, 0, 0, 0) 50%);
+  background: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.08) 0%, rgba(0, 0, 0, 0) 50%);
 }
 
 .code-animation {
-  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='code' patternUnits='userSpaceOnUse' width='100' height='100' patternTransform='scale(0.75) rotate(0)'%3E%3Ctext x='0' y='30' font-family='monospace' font-size='20' fill='%234CAF50'%3E%26lt;/%3E%3Ctext%3E%3Ctext x='50' y='60' font-family='monospace' font-size='20' fill='%234CAF50'%3E%7B%7D%3C/text%3E%3Ctext x='25' y='90' font-family='monospace' font-size='20' fill='%234CAF50'%3E();%3C/text%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23code)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='code' patternUnits='userSpaceOnUse' width='100' height='100' patternTransform='scale(0.75) rotate(0)'%3E%3Ctext x='0' y='30' font-family='monospace' font-size='20' fill='%2300ff88'%3E%26lt;/%3E%3Ctext%3E%3Ctext x='50' y='60' font-family='monospace' font-size='20' fill='%2300ff88'%3E%7B%7D%3C/text%3E%3Ctext x='25' y='90' font-family='monospace' font-size='20' fill='%2300ff88'%3E();%3C/text%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23code)'/%3E%3C/svg%3E");
   animation: slide 20s linear infinite;
 }
 
 @keyframes slide {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 500px 500px;
-  }
+  0% { background-position: 0 0; }
+  100% { background-position: 500px 500px; }
 }
 
 .hero-title {
@@ -320,141 +263,15 @@ const stats = ref([
 }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Buttons */
-.btn-primary {
-  background-color: var(--primary-color);
-  color: white;
-  font-weight: bold;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  transition: all 0.3s ease;
-  display: inline-block;
+.project-card {
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
-
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
-}
-
-.btn-secondary {
-  background-color: transparent;
-  color: white;
-  font-weight: bold;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  border: 2px solid white;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.btn-secondary:hover {
-  background-color: white;
-  color: var(--primary-color);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
-}
-
-.btn-white {
-  background-color: white;
-  color: var(--primary-color);
-  font-weight: bold;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.btn-white:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
-}
-
-/* Workflow Timeline */
-.workflow-timeline {
-  padding: 2rem 0;
-}
-
-.workflow-line {
-  top: 0;
-  bottom: 0;
-}
-
-.workflow-step-circle {
-  box-shadow: 0 0 0 5px white, 0 0 0 6px var(--primary-color);
-  z-index: 10;
-}
-
-.workflow-step-media {
-  transition: transform 0.3s ease;
-}
-
-.workflow-step:hover .workflow-step-media {
+.project-card:hover {
   transform: translateY(-5px);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .workflow-line {
-    left: 6px;
-    transform: none;
-  }
-  
-  .workflow-step-circle {
-    left: 0;
-    transform: none;
-  }
-}
-
-/* Skill Cards Animation */
-.skill-card {
-  overflow: hidden;
-  position: relative;
-}
-
-.skill-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.skill-card:hover::before {
-  transform: translateX(100%);
-}
-
-/* Stats Animation */
-.stat-item {
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-item h3 {
-  animation: countUp 3s ease-out forwards;
-}
-
-@keyframes countUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  border-color: rgba(0, 255, 136, 0.4);
 }
 </style>

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 
-// Define the prop
 const props = defineProps({
   category: String,
   useDetailPages: {
@@ -15,11 +14,9 @@ const images = ref([]);
 const loading = ref(true);
 
 onMounted(async () => {
-  // Use the category prop as a query parameter
   const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_images/records?filter=(category='${props.category}')&perPage=1000`);
   const data = await response.json();
 
-  // Map the data to the images array
   images.value = data.items.map(item => ({
     id: item.id,
     thumbnail: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}?thumb=300x0`,
@@ -37,40 +34,23 @@ const handleImageLoad = (image) => {
 
 const handleImageClick = (image, index) => {
   if (props.useDetailPages) {
-    // Map category to the correct URL path
     let basePath = '';
     switch (props.category) {
-      case 'wildlife':
-        basePath = '/photography/wildlife/';
-        break;
-      case 'nature':
-        basePath = '/photography/landscape-nature/';
-        break;
-      case 'people':
-        basePath = '/photography/portraits-people/';
-        break;
-      case 'abstract':
-        basePath = '/photography/abstract-art/';
-        break;
-      case 'weddings':
-        basePath = '/photography/weddings/';
-        break;
-      default:
-        basePath = '/photography/';
+      case 'wildlife': basePath = '/photography/wildlife/'; break;
+      case 'nature': basePath = '/photography/landscape-nature/'; break;
+      case 'people': basePath = '/photography/portraits-people/'; break;
+      case 'abstract': basePath = '/photography/abstract-art/'; break;
+      case 'weddings': basePath = '/photography/weddings/'; break;
+      default: basePath = '/photography/';
     }
-    
-    // Navigate to detail page - log for debugging
-    console.log(`Navigating to: ${basePath}${image.id}`);
     router.push(`${basePath}${image.id}`);
   } else {
-    // Fall back to lightbox if detail pages are disabled
     openLightbox(image, index);
   }
 };
 
 const selectedImage = ref(null);
 const selectedIndex = ref(0);
-
 const masonryClass = ref("masonry-sm");
 
 const updateMasonryClass = () => {
@@ -85,31 +65,26 @@ const navigate = (direction) => {
 };
 
 const handleKeyup = (event) => {
-  if (event.key === 'ArrowRight') {
-    navigate(1);
-  } else if (event.key === 'ArrowLeft') {
-    navigate(-1);
-  }
+  if (event.key === 'ArrowRight') navigate(1);
+  else if (event.key === 'ArrowLeft') navigate(-1);
 };
 
 const openLightbox = (image, index) => {
   selectedImage.value = image;
   selectedIndex.value = index;
-  document.body.classList.add('no-scroll'); // Add class to disable scrolling
+  document.body.classList.add('no-scroll');
 };
 
 const closeLightbox = () => {
   selectedImage.value = null;
-  document.body.classList.remove('no-scroll'); // Remove class to re-enable scrolling
+  document.body.classList.remove('no-scroll');
 };
-
 
 onMounted(() => {
   if (process.client) {
-
     window.addEventListener('resize', updateMasonryClass);
     window.addEventListener('keyup', handleKeyup);
-    updateMasonryClass(); // Initial update on client mount
+    updateMasonryClass();
   }
 });
 
@@ -119,54 +94,50 @@ onBeforeUnmount(() => {
     window.removeEventListener('keyup', handleKeyup);
   }
 });
-
 </script>
 
 <template>
   <div class="flex justify-center">
-    <div class="w-3/4 ">
+    <div class="w-3/4">
       <div :class="masonryClass">
-        <!-- Image grid -->
         <div
-            v-for="(image, index) in images"
-            :key="image.id"
-            class="break-inside cursor-pointer mb-5 flex justify-center"
-            @click="handleImageClick(image, index)"
+          v-for="(image, index) in images"
+          :key="image.id"
+          class="break-inside cursor-pointer mb-5 flex justify-center group"
+          @click="handleImageClick(image, index)"
         >
-          <div v-if="image.loading" class="loading-container">
+          <div class="relative overflow-hidden rounded-xl border border-white/10 transition-all duration-300 group-hover:border-neon-cyan/30 group-hover:shadow-[0_0_20px_rgba(0,240,255,0.1)]">
+            <div v-if="image.loading" class="loading-container">
+              <img v-lazy="image.thumbnail" :alt="image.alt" class="loading-image" @load="handleImageLoad(image)">
+            </div>
             <img
-                v-lazy="image.thumbnail"
-                :alt="image.alt"
-                class="loading-image"
-                @load="handleImageLoad(image)"
-            >
-          </div>
-          <img
               v-else
               v-lazy="image.thumbnail"
               :alt="image.alt"
+              class="transition-transform duration-500 group-hover:scale-105"
               @load="handleImageLoad(image)"
-          >
+            >
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Use teleport to render the lightbox at the root of the document -->
   <teleport to="body">
-    <div v-if="selectedImage" class="lightbox">
-      <!-- Close Button -->
-      <button class="close-button" @click="closeLightbox">✖</button>
-      <!-- Left arrow -->
-      <button class="arrow left-arrow" @click="navigate(-1)">←</button>
-      <!-- Image display -->
-      <img v-lazy="selectedImage.src" :alt="selectedImage.alt" class="max-w-full max-h-full object-contain">
-      <!-- Right arrow -->
-      <button class="arrow right-arrow" @click="navigate(1)">→</button>
+    <div v-if="selectedImage" class="lightbox" @click.self="closeLightbox">
+      <button class="close-button" @click="closeLightbox">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+      </button>
+      <button class="arrow left-arrow" @click="navigate(-1)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      </button>
+      <img v-lazy="selectedImage.src" :alt="selectedImage.alt" class="max-w-full max-h-full object-contain rounded-lg">
+      <button class="arrow right-arrow" @click="navigate(1)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+      </button>
     </div>
   </teleport>
 </template>
-
 
 <style scoped>
 .break-inside {
@@ -176,12 +147,13 @@ onBeforeUnmount(() => {
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  z-index: 999; /* Set z-index to 999 */
+  z-index: 999;
 }
 
 .close-button {
@@ -190,17 +162,23 @@ onBeforeUnmount(() => {
   right: 20px;
   background: none;
   border: none;
-  color: white;
-  font-size: 24px;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
+  transition: color 0.3s;
+}
+.close-button:hover {
+  color: #00f0ff;
 }
 
 .arrow {
   background: none;
   border: none;
-  color: white;
-  font-size: 24px;
+  color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
+  transition: color 0.3s;
+}
+.arrow:hover {
+  color: #00f0ff;
 }
 
 .left-arrow {

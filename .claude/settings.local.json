@@ -12,8 +12,20 @@
       "Bash(rm:*)",
       "Bash(for i in {1..6})",
       "Bash(do cp /Users/lasseharm/PhpstormProjects/homepage/public/images/testimonials/default-avatar.svg /Users/lasseharm/PhpstormProjects/homepage/public/images/testimonials/avatar$i.jpg)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(npx nuxi:*)",
+      "Bash(brew install:*)",
+      "Bash(pdftoppm -v)",
+      "Bash(pdftotext:*)",
+      "Bash(pdftoppm -png -r 200 /Users/lasseharm/PhpstormProjects/homepage/cv.pdf /tmp/cv_page)",
+      "Read(//private/tmp/**)",
+      "Bash(pdfinfo /Users/lasseharm/PhpstormProjects/homepage/cv.pdf)",
+      "Bash(npm ls:*)",
+      "Bash(npm run:*)",
+      "Bash(pdftoppm -png -r 150 /Users/lasseharm/PhpstormProjects/homepage/cv.pdf /tmp/cv_new)",
+      "Bash(pdftoppm -png -r 150 /Users/lasseharm/PhpstormProjects/homepage/cv.pdf /tmp/cv_final)"
     ],
     "deny": []
-  }
+  },
+  "enableAllProjectMcpServers": false
 }

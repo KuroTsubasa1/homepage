@@ -1,48 +1,21 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-// get current year
-const currentYear = ref(new Date().getFullYear())
-
+const currentYear = ref(new Date().getFullYear());
+const { t } = useI18n();
 </script>
 
 <template>
-  <footer class="flex flex-col text-center justify-center items-center border-t-2 pb-5 fade-in">
-    <div class="my-5">
-      <p>
-        © {{ currentYear }} | Lasse Harm.
-      </p>
-      <p>
-        All Rights Reserved.
-      </p>
+  <footer class="bg-dark-100 border-t border-white/5 py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col items-center gap-5">
+        <social-row />
+        <div class="w-16 h-px bg-gradient-to-r from-transparent via-neon-green/30 to-transparent"></div>
+        <p class="text-sm text-gray-500">
+          {{ t('footer.copyright', { year: currentYear }) }}
+        </p>
+      </div>
     </div>
-    <social-row>
-      <template #default="{ icons }">
-        <div v-for="icon in icons" :key="icon.name" class="social-icon">
-          <img :src="icon.src" :alt="icon.name" />
-        </div>
-      </template>
-    </social-row>
   </footer>
 </template>
-
-<style scoped>
-.fade-in {
-  opacity: 0;
-  animation: fadeIn 2s forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-.social-icon {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.social-icon:hover {
-  transform: scale(1.1);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-</style>

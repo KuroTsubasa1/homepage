@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lasse Harm — CV</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green: #4CAF50;
+      --green-dark: #388E3C;
+      --green-light: #E8F5E9;
+      --text: #333;
+      --text-light: #666;
+      --text-muted: #888;
+      --border: #e0e0e0;
+    }
+
+    html {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      color: var(--text);
+      background: #fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      width: 720px;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    @media print {
+      html, body { width: 720px; margin: 0 auto; padding: 0; }
+      @page { size: 720px 2018px; margin: 0; }
+      .print-controls { display: none !important; }
+    }
+
+    .print-controls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+    .print-btn {
+      background: var(--green);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .print-btn:hover { background: var(--green-dark); }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: var(--green);
+      padding: 28px 40px 20px;
+      text-align: center;
+      color: #fff;
+    }
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .header .subtitle {
+      font-size: 12px;
+      font-weight: 400;
+      margin-top: 4px;
+      opacity: 0.9;
+    }
+
+    /* ===== BODY ===== */
+    .body-content {
+      padding: 0 40px 30px;
+    }
+
+    /* ===== PERSONAL INFO ===== */
+    .personal-info {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .personal-info p {
+      font-size: 11px;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+    .personal-info a {
+      color: var(--green-dark);
+      text-decoration: none;
+    }
+
+    /* ===== PROFILE SUMMARY ===== */
+    .profile-summary {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+    }
+    .profile-summary p {
+      font-size: 11px;
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .core-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 8px;
+    }
+    .core-tech span {
+      display: inline-block;
+      background: var(--green);
+      color: #fff;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 3px;
+    }
+
+    /* ===== SECTION HEADERS ===== */
+    .section-header {
+      background: var(--green);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 12px;
+      margin: 18px -40px 14px;
+      width: calc(100% + 80px);
+    }
+
+    /* ===== JOB ENTRIES ===== */
+    .job {
+      margin-bottom: 14px;
+    }
+    .job-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .job-company {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .job-period {
+      font-size: 10px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .job-role {
+      font-size: 10px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+    }
+
+    .project {
+      margin: 6px 0 8px 0;
+    }
+    .project-name {
+      display: inline-block;
+      background: var(--green);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 3px;
+      margin-bottom: 3px;
+    }
+    .project-desc {
+      font-size: 10.5px;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin: 3px 0;
+    }
+    .project-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 3px;
+    }
+    .project-tech-list {
+      font-size: 10px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ===== EDUCATION ===== */
+    .edu {
+      margin-bottom: 8px;
+    }
+    .edu-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .edu-school {
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .edu-period {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+    .edu-degree {
+      font-size: 10px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* ===== SKILLS ===== */
+    .skills-block {
+      margin-bottom: 10px;
+    }
+    .skills-block h3 {
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .skills-block p {
+      font-size: 10.5px;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    /* ===== HOBBIES ===== */
+    .hobbies {
+      font-size: 10.5px;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+    .hobbies li {
+      list-style: none;
+      padding-left: 12px;
+      position: relative;
+    }
+    .hobbies li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="print-controls">
+  <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Lasse Harm</h1>
+  <div class="subtitle">Full-Stack Web Developer</div>
+</div>
+
+<div class="body-content">
+
+  <!-- PERSONAL INFO — two columns -->
+  <div class="personal-info">
+    <p>
+      Krete 8, 23701 Eutin<br>
+      Telefon: (+49) 176-55025151<br>
+      E-Mail: <a href="mailto:lasseharm@web.de">lasseharm@web.de</a>
+    </p>
+    <p style="text-align: right;">
+      <a href="https://lasseharm.space">lasseharm.space</a><br>
+      <a href="https://github.com/KuroTsubasa1">github.com/KuroTsubasa1</a>
+    </p>
+  </div>
+
+  <!-- PROFILE SUMMARY -->
+  <div class="profile-summary">
+    <p>
+      Full-Stack Web Developer mit 10+ Jahren Erfahrung in PHP, JavaScript/TypeScript und Vue.js.
+      Spezialisiert auf Enterprise-Webanwendungen — von Legacy-Migrationen und Portierungen bis hin zu kompletten Rewrites moderner Plattformen.
+      Erfahren im gesamten Stack: Frontend-Architektur (Vue 2/3, Nuxt, React), Backend (Symfony, Laravel), Datenbanken (MySQL, MariaDB, PostgreSQL) und DevOps (Docker, Git).
+    </p>
+    <div class="core-tech">
+      <span>Vue.js / Nuxt</span>
+      <span>TypeScript</span>
+      <span>PHP / Symfony</span>
+      <span>Laravel</span>
+      <span>MySQL</span>
+      <span>Docker</span>
+    </div>
+  </div>
+
+  <!-- BERUFSERFAHRUNG -->
+  <div class="section-header">Berufserfahrung</div>
+
+  <div class="job">
+    <div class="job-line">
+      <span class="job-company">DIU MarTech Solutions GmbH</span>
+      <span class="job-period">Februar 2025 — Gegenwart</span>
+    </div>
+    <div class="job-role">Web Developer</div>
+    <div class="project">
+      <div class="project-name">Suzuki HIT (Händler Informations Tool)</div>
+      <div class="project-desc">Enterprise-Plattform für Händlerinformationen der Suzuki Deutschland. Wartung und Weiterentwicklung komplexer Datenflüsse, Händlerverwaltung und interner Tooling-Systeme.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">Vue.js · TypeScript · REST API</div>
+    </div>
+    <div class="project">
+      <div class="project-name">Suzuki SSBP-Nxt (Antrags Plattform)</div>
+      <div class="project-desc">Kompletter Rewrite der Suzuki Antragsplattform. Frontend-Architektur, modernisierter Tech-Stack, verbesserte UX für Händler und interne Nutzer.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">Vue.js · TypeScript · Component Architecture</div>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="job-line">
+      <span class="job-company">Groenewold - IT Solutions</span>
+      <span class="job-period">Juni 2024 — Januar 2025</span>
+    </div>
+    <div class="job-role">Web Developer</div>
+    <div class="project">
+      <div class="project-name">LOTTO Thüringen</div>
+      <div class="project-desc">Portierung von 3 internen Systemen für die LOTTO Thüringen GmbH auf einen modernen Stack: Gewinnausschüttung, Verwaltung und Schulung. Migration in 7 Monaten abgeschlossen.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">PHP 8 · Laravel 11 · jQuery · Bootstrap 5</div>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="job-line">
+      <span class="job-company">Tritum GmbH</span>
+      <span class="job-period">Dezember 2023 — Mai 2024</span>
+    </div>
+    <div class="job-role">Web Developer</div>
+    <div class="project">
+      <div class="project-name">Redesign AOK Familiencoach Pflege</div>
+      <div class="project-desc">Online-Selbsthilfe-Programm für pflegende Angehörige mit interaktiven Übungen, Video-/Audioinhalten und barrierefreiem Design.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">PHP · TYPO3 v11.05</div>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="job-line">
+      <span class="job-company">EOS Uptrade GmbH</span>
+      <span class="job-period">Mai 2023 — Oktober 2023</span>
+    </div>
+    <div class="job-role">Web Developer</div>
+    <div class="project">
+      <div class="project-name">eos.ticketingsuite</div>
+      <div class="project-desc">Modulare Plattform für Mobilitäts-Ticketing und Vertrieb — ÖPNV und moderne Mobilitätsdienste, skalierbar für B2C- und B2B-Anforderungen.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">PHP · Symfony 1 · Symfony 5 · MySQL</div>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="job-line">
+      <span class="job-company">TimberTec GmbH</span>
+      <span class="job-period">Januar 2023 — April 2023</span>
+    </div>
+    <div class="job-role">Web Developer</div>
+    <div class="project">
+      <div class="project-name">TimberTec Anlagensteuerung (TIAS)</div>
+      <div class="project-desc">Lokale Benutzeroberfläche für industrielle Anlagensteuerung mit Echtzeit-Datenvisualisierung für Produktionsunternehmen.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">TypeScript · Vue 3 · Quasar</div>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="job-line">
+      <span class="job-company">LYNET GmbH</span>
+      <span class="job-period">August 2018 — Dezember 2022</span>
+    </div>
+    <div class="job-role">Web Developer</div>
+    <div class="project">
+      <div class="project-name">Exxonmobil Digitales Ökosystem (EMDES)</div>
+      <div class="project-desc">Buchungsportal für Ölwechsel und Werkstattdienstleistungen mit Anbindung an 500+ Partnerwerkstätten.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">PHP 7/8 · Symfony 4 · MariaDB · Bootstrap 5 · Vue 2 · Yandex API</div>
+    </div>
+    <div class="project">
+      <div class="project-name">Exxonmobil Intranet</div>
+      <div class="project-desc">Lern- und Informationsplattform für das Partnerwerkstatt-Netzwerk mit CMS-basierter Inhaltsverwaltung.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">PHP 8 · Symfony 5 · MariaDB · React · Webpack · SULU.io CMS</div>
+    </div>
+    <div class="project">
+      <div class="project-name">LYNET Cookie-Banner</div>
+      <div class="project-desc">Leichtgewichtige, framework-unabhängige DSGVO-konforme Cookie-Consent-Lösung.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">JavaScript · HTML · CSS</div>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="job-line">
+      <span class="job-company">Gutzmann GmbH, Lübeck</span>
+      <span class="job-period">August 2015 — August 2018</span>
+    </div>
+    <div class="job-role">Auszubildender zum IT-Fachmann für Anwendungsentwicklung</div>
+    <div class="project">
+      <div class="project-name">Mars PetProfi Digitales Ökosystem</div>
+      <div class="project-desc">Wissens- und Verkaufsportal für verschiedene Zielgruppen der Mars Germany GmbH.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">PHP 5.6 · MySQL · PerfAct Framework V1 (Inhouse)</div>
+    </div>
+    <div class="project">
+      <div class="project-name">DRK-Server</div>
+      <div class="project-desc">Ressourcenmanagementsystem für das Deutsche Rote Kreuz e.V.</div>
+      <div class="project-label">Verwendete Technologien:</div>
+      <div class="project-tech-list">Java SE 8 · Spring Boot · Java Lombok · PerfAct Framework V2 (Inhouse)</div>
+    </div>
+  </div>
+
+  <!-- BILDUNG — most recent first, no Grundschule -->
+  <div class="section-header">Bildung</div>
+
+  <div class="edu">
+    <div class="edu-line">
+      <span class="edu-school">EPS-HL, Lübeck</span>
+      <span class="edu-period">August 2015 — August 2018</span>
+    </div>
+    <div class="edu-degree">Ausbildung zum IT-Fachmann für Anwendungsentwicklung</div>
+  </div>
+  <div class="edu">
+    <div class="edu-line">
+      <span class="edu-school">Berufliche Schule des Kreises Ostholstein, Eutin</span>
+      <span class="edu-period">August 2013 — August 2015</span>
+    </div>
+    <div class="edu-degree">Abitur, Ausbildung zum Technischen Assistenten</div>
+  </div>
+  <div class="edu">
+    <div class="edu-line">
+      <span class="edu-school">Wilhelm Wisser Schule, Eutin</span>
+      <span class="edu-period">August 2007 — August 2013</span>
+    </div>
+    <div class="edu-degree">Realschulabschluss</div>
+  </div>
+
+  <!-- TECHNISCHE FÄHIGKEITEN -->
+  <div class="section-header">Technische Fähigkeiten</div>
+
+  <div class="skills-block">
+    <h3>Sprachen</h3>
+    <p>Deutsch: Muttersprache<br>Englisch: Fließend (Fachkenntnisse in Informatik/Elektronik)</p>
+  </div>
+
+  <div class="skills-block">
+    <h3>Programmiersprachen & Frameworks</h3>
+    <p>
+      PHP (Symfony, Laravel, FuelPHP) · JavaScript / TypeScript (Vue.js 2/3, Nuxt.js, React, ES6, jQuery)<br>
+      HTML5 · CSS3 (Tailwind, Bootstrap 5, LESS/SASS) · C# (Unity, .NET Core) · Node.js (Express, Socket.io) · Python (Flask, QT5, Pandas)
+    </p>
+  </div>
+
+  <div class="skills-block">
+    <h3>Datenbanken</h3>
+    <p>MySQL · MariaDB · PostgreSQL</p>
+  </div>
+
+  <div class="skills-block">
+    <h3>Tools & Workflow</h3>
+    <p>
+      Git (GitHub, GitLab, SVN) · Docker · Jetbrains IDEs · VS Code · npm / Composer / Pip · Webpack<br>
+      phpMyAdmin · Adminer · Datagrip · Windows / macOS / Linux · ChatGPT · GitHub Copilot · Claude
+    </p>
+  </div>
+
+  <div class="skills-block">
+    <h3>Kreativ-Tools</h3>
+    <p>Blender · Plasticity · Autodesk Fusion360 · ZBrush · Adobe CC · Unity · Stable Diffusion</p>
+  </div>
+
+  <!-- HOBBYS — trimmed -->
+  <div class="section-header">Hobbys</div>
+
+  <ul class="hobbies">
+    <li>FPV-Drohnenpilot (zertifiziert) — Freestyle, Cinematic, Racing, Custom Builds</li>
+    <li>3D-Druck & CAD-Modellierung (Blender, Plasticity, Fusion360)</li>
+    <li>Fotografie (Wildlife, Landschaft, Hochzeiten)</li>
+    <li>Freediving (Apnoetauchen) · Surfen · Mountainbike (XC, Enduro)</li>
+    <li>DLRG-Rettungsschwimmer</li>
+  </ul>
+
+</div>
+
+</body>
+</html>

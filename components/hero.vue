@@ -9,49 +9,47 @@ const props = defineProps<{
 </script>
 
 <template>
+  <div class="hero min-h-[70vh] relative overflow-hidden" v-bind:style='{ backgroundImage: `url("${props.image}")` }'>
+    <!-- Dark gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/40 to-dark z-10"></div>
 
-  <div class="hero min-h-screen" v-bind:style='{ backgroundImage: `url("${props.image}")` }'>
-    <div class="hero-overlay bg-opacity-60"></div>
-    <div class="hero-content text-center text-neutral-content">
-      <div class="max-w-md">
-        <h1 class="mb-5 text-5xl font-bold uppercase">{{props.title}}</h1>
-        <p class="mb-5">{{props.description}}</p>
+    <!-- Grid pattern -->
+    <div class="absolute inset-0 bg-grid opacity-20 z-10"></div>
+
+    <!-- Ambient glow -->
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-40 bg-neon-green/10 rounded-full blur-[80px] z-10"></div>
+
+    <!-- Content -->
+    <div class="relative z-20 flex items-center justify-center min-h-[70vh]">
+      <div class="text-center max-w-2xl px-4">
+        <h1 class="text-4xl md:text-6xl font-black mb-5 uppercase">
+          <span class="gradient-text">{{ props.title }}</span>
+        </h1>
+        <p class="text-lg text-gray-300 leading-relaxed">{{ props.description }}</p>
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>
 .hero {
-  position: relative;
-  overflow: hidden;
+  background-size: cover;
+  background-position: center;
 }
 
 .hero::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-image: inherit;
   background-size: cover;
   background-position: center;
   transform: scale(1);
-  transition: transform 5s ease;
-  z-index: -1;
+  transition: transform 8s ease;
+  z-index: 0;
 }
 
 .hero:hover::before {
-  transform: scale(1.1);
-}
-
-.hero-content h1, .hero-content p {
-  transition: text-shadow 0.3s ease;
-}
-
-.hero-content h1:hover, .hero-content p:hover {
-  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.7);
+  transform: scale(1.05);
 }
 </style>

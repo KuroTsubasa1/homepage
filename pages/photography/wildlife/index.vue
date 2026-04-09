@@ -4,19 +4,19 @@
   <hero 
     :title="$t('photoCategories.wildlife') + ' ' + $t('nav.photography')" 
     description="CAPTURING THE BEAUTY OF ANIMALS IN THEIR NATURAL HABITATS" 
-    image="https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=960x0" 
+    :image="heroImage"
     class="fade-in"
   ></hero>
 
   <div class="container mx-auto py-16 fade-in">
     <div class="max-w-3xl mx-auto px-4 mb-16">
-      <h2 class="text-3xl font-semibold text-primary mb-6">{{ $t('photography.aboutPhotography') }}</h2>
-      <p class="text-lg mb-4">
+      <h2 class="text-3xl font-semibold text-neon-cyan mb-6">{{ $t('photography.aboutPhotography') }}</h2>
+      <p class="text-lg text-gray-300 mb-4">
         Wildlife photography requires patience, technical skill, and a deep appreciation for nature. 
         Each image represents hours of waiting for the perfect moment, understanding animal behavior, 
         and respecting their natural environment.
       </p>
-      <p class="text-lg">
+      <p class="text-lg text-gray-300">
         My wildlife photography aims to showcase the beauty, behaviors, and habitats of animals 
         while raising awareness about conservation efforts and the importance of protecting these incredible creatures.
       </p>
@@ -25,13 +25,13 @@
 
   <!-- Gallery Grid -->
   <div class="container mx-auto px-4 mb-16 fade-in">
-    <h2 class="text-3xl font-semibold text-primary mb-8 text-center">{{ $t('photoCategories.wildlife') }} {{ $t('photography.gallery') }}</h2>
+    <h2 class="text-3xl font-semibold text-white mb-8 text-center">{{ $t('photoCategories.wildlife') }} {{ $t('photography.gallery') }}</h2>
     
     <div class="masonry-gallery">
       <div 
         v-for="image in images" 
         :key="image.id" 
-        class="masonry-item cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+        class="masonry-item cursor-pointer overflow-hidden rounded-xl border border-white/10 hover:border-neon-cyan/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.1)]"
         @click="openDetail(image.id)"
       >
         <div class="relative">
@@ -50,7 +50,7 @@
 
   <div class="container mx-auto pb-16 fade-in">
     <div class="flex justify-center mb-8">
-      <NuxtLink to="/photography" class="btn btn-primary">
+      <NuxtLink to="/photography" class="btn-neon-outline inline-block">
         {{ $t('photography.backToCollections') }}
       </NuxtLink>
     </div>
@@ -65,6 +65,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const images = ref([]);
+const heroImage = ref('');
 
 onMounted(async () => {
   const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_images/records?filter=(category='wildlife')&perPage=1000`);
@@ -76,6 +77,7 @@ onMounted(async () => {
     src: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}`,
     alt: item.alt || 'Wildlife Photography',
   }));
+  if (images.value.length > 0) heroImage.value = images.value[0].src;
 });
 
 const openDetail = (id) => {

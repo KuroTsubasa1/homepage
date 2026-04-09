@@ -2,164 +2,90 @@
   <navigation></navigation>
 
   <!-- Hero Section -->
-  <section class="hero">
-    <div class="container mx-auto px-6">
-      <h1 class="text-6xl font-bold mb-4 hero-content">Lasse Harm</h1>
-      <h2 class="text-2xl font-semibold">
-        Web Developer | Photographer | Certified FPV Drone Pilot
+  <section class="hero-about relative overflow-hidden">
+    <div class="absolute inset-0 bg-grid opacity-20"></div>
+    <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-neon-green/10 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-1/3 right-1/4 w-96 h-96 bg-neon-magenta/10 rounded-full blur-[120px]"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+      <h1 class="text-5xl md:text-7xl font-black mb-4">
+        <span class="gradient-text">{{ t('about.title') }}</span>
+      </h1>
+      <h2 class="text-xl md:text-2xl font-semibold text-gray-300">
+        {{ t('about.subtitle') }}
       </h2>
-      <p class="text-lg mt-4 mx-auto max-w-2xl">
-        Combining creativity and technology to build stunning web experiences and capture life’s extraordinary moments.
+      <p class="text-lg mt-4 mx-auto max-w-2xl text-gray-400">
+        {{ t('about.tagline') }}
       </p>
     </div>
   </section>
 
   <!-- About Me Section -->
-  <section class="about-me bg-gray-50 py-16">
-    <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center text-primary mb-10">About Me</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-        <div class="text-center md:text-left">
-          <p class="text-lg text-gray-700 leading-relaxed">
-            Hi, I’m Lasse Harm, a passionate web developer with a knack for problem-solving and creating intuitive web applications. My journey began in 2013, and since then, I have been dedicated to mastering the art of crafting seamless user experiences.
-          </p>
-          <p class="text-lg text-gray-700 leading-relaxed mt-4">
-            Photography has always been close to my heart. I specialize in wildlife and macro photography, capturing the beauty of nature in intricate detail. As a certified FPV drone pilot, I love exploring the skies to capture unique aerial perspectives that tell captivating stories.
-          </p>
-          <p class="text-lg text-gray-700 leading-relaxed mt-4">
-            My goal is to merge creativity with technology, whether it's through designing cutting-edge websites, snapping breathtaking photos, or flying drones to unlock new possibilities. Let's push the boundaries together!
-          </p>
-          <p class="text-lg text-gray-700 leading-relaxed mt-4">
-            In my free time, I enjoy freediving in the Baltic Sea, exploring the underwater world and its hidden treasures. Surfing in the North Sea is another passion of mine, where I find thrill and excitement riding the waves.
-          </p>
-          <p class="text-lg text-gray-700 leading-relaxed mt-4">
-            Mountain biking through the woodlands is a great way for me to stay active and connect with nature. The adrenaline rush and the scenic trails make it an exhilarating experience.
-          </p>
+  <section class="py-24 bg-dark relative overflow-hidden">
+    <div class="absolute inset-0 bg-grid opacity-10"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <h2 class="section-heading">{{ t('about.aboutMeTitle') }}</h2>
+      <div class="section-divider"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-4">
+          <p class="text-gray-300 leading-relaxed">{{ t('about.bio.part1') }}</p>
+          <p class="text-gray-300 leading-relaxed">{{ t('about.bio.part2') }}</p>
+          <p class="text-gray-300 leading-relaxed">{{ t('about.bio.part3') }}</p>
+          <p class="text-gray-300 leading-relaxed">{{ t('about.bio.part4') }}</p>
+          <p class="text-gray-300 leading-relaxed">{{ t('about.bio.part5') }}</p>
         </div>
         <div class="flex justify-center">
-          <img
-              class="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-neon-green via-neon-purple to-neon-magenta rounded-2xl blur-sm opacity-40 group-hover:opacity-70 transition-opacity duration-500"></div>
+            <img
+              class="relative rounded-2xl shadow-2xl hover:scale-[1.02] transition-transform duration-500"
               src="https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/q8dewf7gwhbqpk2/20240319_182201_N85s671DEL.jpg"
               alt="About Me Image"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Journey Section -->
-  <section class="journey py-20 bg-gradient-to-r from-gray-100 to-gray-200">
-    <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center text-primary mb-10">My Journey</h2>
-      <div class="timeline flex flex-col gap-10">
-        <div
-            class="timeline-item relative flex items-center gap-4 w-full md:w-1/2 mx-auto"
-            v-for="(step, index) in journeyData"
-            :key="index"
-        >
-          <div class="timeline-marker w-6 h-6 bg-primary rounded-full"></div>
-          <div>
-            <h3 class="font-bold text-xl text-primary">{{ step.date }}</h3>
-            <p class="text-gray-700">{{ step.description }}</p>
+            />
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- CTA to Web Projects -->
+  <section class="py-16 bg-dark-100 relative overflow-hidden">
+    <div class="absolute inset-0 bg-grid opacity-10"></div>
+    <div class="container mx-auto px-6 text-center relative z-10">
+      <p class="text-gray-400 mb-6">Want to see my career timeline and professional projects?</p>
+      <NuxtLink to="/reel-web-projects#career" class="btn-neon-outline inline-block">View My Journey</NuxtLink>
+    </div>
+  </section>
+
   <footer-component></footer-component>
 </template>
 
 <script lang="ts" setup>
 import FooterComponent from "~/components/footerComponent.vue";
+import { useI18n } from 'vue-i18n';
+
+const { t, locale } = useI18n();
 
 useSeoMeta({
-  title: 'About Lasse Harm | Web Developer & Drone Photographer',
-  ogTitle: 'About Lasse Harm | Web Developer & Drone Photographer',
-  description: 'Learn about Lasse Harm, a passionate web developer, professional photographer, and certified FPV drone pilot based in Copenhagen, Denmark.',
-  ogDescription: 'Learn about Lasse Harm, a passionate web developer, professional photographer, and certified FPV drone pilot based in Copenhagen, Denmark.',
+  title: `${t('about.title')} | ${t('about.subtitle')}`,
+  ogTitle: `${t('about.title')} | ${t('about.subtitle')}`,
+  description: t('about.tagline'),
+  ogDescription: t('about.tagline'),
   ogImage: 'https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/q8dewf7gwhbqpk2/20240319_182201_N85s671DEL.jpg?thumb=960x0',
   twitterCard: 'summary_large_image',
-  keywords: 'Lasse Harm, web developer, drone photographer, FPV pilot, Copenhagen, professional photographer, web development, 3D printing',
+  keywords: 'Lasse Harm, web developer, FPV pilot, photographer, Germany, 3D printing',
 });
-
-const journeyData = [
-  { date: "2015", description: "Started my journey into web development." },
-  { date: "2018", description: "Discovered my passion for photography and began exploring wildlife and macro shots." },
-  { date: "2020", description: "Became a certified FPV drone pilot and started combining aerial shots with creative storytelling." },
-  { date: "2023", description: "Joined exciting projects pushing the boundaries of web design and drone photography." },
-];
 </script>
 
 <style scoped>
-/* General Styles */
-.container {
-  max-width: 1200px;
-}
-
-/* Hero Section */
-.hero {
-  height: 100vh;
-  background: linear-gradient(to bottom right, #1c1c2d, #2c3e50);
-  color: #fff;
+.hero-about {
+  min-height: 60vh;
+  background: linear-gradient(135deg, #0a0a0f 0%, #16161f 50%, #0a0a0f 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-content {
-  background: linear-gradient(90deg, #52C67A, #0D6E4F);
-  -webkit-background-clip: text;
-  color: transparent;
-  animation: textReveal 2s ease forwards;
-}
-
-/* Timeline */
-.timeline {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.timeline-item {
-  display: flex;
-  align-items: center;
-}
-
-.timeline-marker {
-  flex-shrink: 0;
-}
-
-.timeline h3 {
-  margin: 0;
-}
-
-.timeline p {
-  margin: 0;
-}
-
-@keyframes textReveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (min-width: 768px) {
-  .timeline {
-    align-items: center;
-  }
-
-  .timeline-item {
-    justify-content: flex-start;
-  }
+  padding-top: 80px;
 }
 </style>

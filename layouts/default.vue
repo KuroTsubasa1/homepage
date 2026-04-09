@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 
-// Add structured data for SEO
 const personSchema = ref(null);
 const businessSchema = ref(null);
 
 onMounted(async () => {
   try {
-    // Load schema files
     const personResp = await fetch('/schemas/person.json');
     const businessResp = await fetch('/schemas/business.json');
-    
+
     if (personResp.ok && businessResp.ok) {
       personSchema.value = await personResp.json();
       businessSchema.value = await businessResp.json();
@@ -20,7 +18,6 @@ onMounted(async () => {
   }
 });
 
-// Add schema to head
 useHead({
   htmlAttrs: [{ 'data-theme': 'mytheme' }],
   script: [
@@ -37,11 +34,7 @@ useHead({
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen bg-dark text-gray-200">
     <slot />
   </div>
 </template>
-
-<style scoped>
-
-</style>
