@@ -1,19 +1,16 @@
 <template>
   <navigation></navigation>
 
-  <!-- Header -->
-  <header class="fixed top-0 left-0 right-0 bg-dark/80 backdrop-blur-xl border-b border-white/10 z-30 shadow-lg shadow-neon-green/5">
-    <div class="container mx-auto flex justify-between items-center px-4 py-3">
-      <h1 class="text-xl font-bold text-white truncate">{{ projectData.title }}</h1>
-      <NuxtLink to="/reel-web-projects" class="btn-neon-outline text-sm !py-2 !px-4">Back</NuxtLink>
-    </div>
-  </header>
-
   <!-- Hero -->
-  <section class="pt-24 py-16 bg-dark-100 relative overflow-hidden">
+  <section class="pt-28 py-16 bg-dark-100 relative overflow-hidden">
     <div class="absolute inset-0 bg-grid opacity-10"></div>
     <div class="absolute top-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px]"></div>
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-4 relative z-10">
+    <div class="container mx-auto px-4 relative z-10">
+      <NuxtLink to="/reel-web-projects" class="btn-neon-outline text-sm !py-2 !px-4 inline-flex items-center gap-2 mb-8">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        Back
+      </NuxtLink>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div class="flex flex-col justify-center">
         <div class="flex items-center gap-3 mb-4">
           <h2 class="text-3xl md:text-4xl font-bold text-white">{{ projectData.title }}</h2>
@@ -34,6 +31,7 @@
         <div v-else class="rounded-2xl border border-white/10 w-full h-64 bg-gradient-to-br from-dark-200 to-dark-400 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-dark-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
         </div>
+      </div>
       </div>
     </div>
   </section>
