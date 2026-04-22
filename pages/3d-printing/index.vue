@@ -2,6 +2,9 @@
 import Navigation from "~/components/navigation.vue";
 import FooterComponent from "~/components/footerComponent.vue";
 import ProjectGrid from "~/components/projectGrid.vue";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 useSeoMeta({
   title: '3D Printing & Making - Lasse Harm',
@@ -23,12 +26,12 @@ useSeoMeta({
     <div class="relative z-20 container mx-auto px-6 py-20">
       <div class="max-w-2xl">
         <h1 class="text-5xl md:text-7xl font-black mb-4">
-          <span class="text-white">3D Printing</span><br>
-          <span class="gradient-text">& Making</span>
+          <span class="text-white">{{ t('printing.hero.title1') }}</span><br>
+          <span class="gradient-text">{{ t('printing.hero.title2') }}</span>
         </h1>
-        <p class="text-lg text-gray-300 mb-8">Turning ideas into real, tangible things. One layer at a time.</p>
+        <p class="text-lg text-gray-300 mb-8">{{ t('printing.hero.subtitle') }}</p>
         <div class="flex flex-wrap gap-4">
-          <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon inline-block">Visit 3dps.space</a>
+          <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon inline-block">{{ t('printing.hero.visit') }}</a>
         </div>
       </div>
     </div>
@@ -44,42 +47,42 @@ useSeoMeta({
 
         <!-- The joy -->
         <div>
-          <h2 class="text-2xl font-bold text-white mb-6">Why I print</h2>
+          <h2 class="text-2xl font-bold text-white mb-6">{{ t('printing.why.title') }}</h2>
           <div class="text-gray-300 leading-relaxed space-y-4">
-            <p>3D printing combines everything I love: problem-solving, design, technology, and the satisfaction of building something real. The whole journey from a rough idea to a finished print is endlessly rewarding — sketching a concept, modeling it in CAD, dialing in the slicer settings, and watching layer after layer come to life.</p>
-            <p>What started as curiosity quickly turned into a full-blown workshop. Whether it's functional parts for around the house, custom enclosures for electronics projects, or purely creative prints just because they look cool — there's always something on the build plate.</p>
-            <p>I also run <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="text-neon-green hover:underline font-medium">3dps.space</a> as a side project where I share more about printing and the maker community.</p>
+            <p>{{ t('printing.why.p1') }}</p>
+            <p>{{ t('printing.why.p2') }}</p>
+            <p v-html="t('printing.why.p3')"></p>
           </div>
         </div>
 
         <!-- CAD & Modeling -->
         <div>
-          <h2 class="text-2xl font-bold text-white mb-6">Designing in 3D</h2>
+          <h2 class="text-2xl font-bold text-white mb-6">{{ t('printing.cad.title') }}</h2>
           <div class="text-gray-300 leading-relaxed space-y-4">
-            <p>Every great print starts with a great model. I use <span class="text-neon-purple font-medium">Blender</span> for anything organic, sculptural, or artistically driven — sculpting, subdivision modeling, and quick concept work. When a shape needs to feel alive rather than measured, Blender is where it happens.</p>
-            <p>For anything mechanical or dimensionally precise, I reach for <span class="text-neon-cyan font-medium">Plasticity</span>. It's a modern CAD tool that's fast and intuitive while delivering the exact, watertight geometry that 3D printing demands. Enclosures, brackets, mounts — anything that needs to fit just right.</p>
-            <p>The two complement each other perfectly. Sometimes a project starts in Plasticity for the precise shell and moves to Blender for decorative details. Other times it's pure Blender from start to finish.</p>
+            <p v-html="t('printing.cad.p1')"></p>
+            <p v-html="t('printing.cad.p2')"></p>
+            <p>{{ t('printing.cad.p3') }}</p>
           </div>
         </div>
 
         <!-- My machines -->
         <div>
-          <h2 class="text-2xl font-bold text-white mb-6">The workshop</h2>
+          <h2 class="text-2xl font-bold text-white mb-6">{{ t('printing.workshop.title') }}</h2>
           <div class="text-gray-300 leading-relaxed space-y-4">
-            <p>My main workhorse is the <span class="text-neon-green font-medium">Bambulab X1C</span> — a CoreXY speed machine with multi-material capabilities through the AMS system. It's fast, precise, and handles everything from PLA to ABS without breaking a sweat. The built-in lidar and camera monitoring mean I can start a print and walk away knowing it'll be fine.</p>
-            <p>Next to it sits the <span class="text-neon-green font-medium">Bambulab P1S</span>, the enclosed everyday printer. Reliable, quiet, and perfect for materials that need a stable temperature. Between the two Bambulab machines, most of my printing happens here.</p>
-            <p>The <span class="text-neon-cyan font-medium">Snapmaker U1</span> is the Swiss Army knife — swappable tool heads let it 3D print, laser engrave, and CNC mill. One machine, endless possibilities. It's great for projects that mix disciplines.</p>
-            <p>And when the build plate needs to be big, the <span class="text-neon-purple font-medium">Anycubic Kobra Max 3</span> steps in. Large format printing for oversized projects and pieces that just won't fit anywhere else.</p>
+            <p v-html="t('printing.workshop.p1')"></p>
+            <p v-html="t('printing.workshop.p2')"></p>
+            <p v-html="t('printing.workshop.p3')"></p>
+            <p v-html="t('printing.workshop.p4')"></p>
           </div>
         </div>
 
         <!-- Multi-color -->
         <div>
-          <h2 class="text-2xl font-bold text-white mb-6">Multi-color printing</h2>
+          <h2 class="text-2xl font-bold text-white mb-6">{{ t('printing.multicolor.title') }}</h2>
           <div class="text-gray-300 leading-relaxed space-y-4">
-            <p>One of the most exciting parts of my setup is the Bambulab AMS (Automatic Material System). It switches between up to four filament spools during a single print — full multi-color without manual filament swaps.</p>
-            <p>This opens up a whole new dimension: color-accurate logos, prints with contrasting accents, models with built-in text, or functional parts that combine different materials — like a rigid body with a flexible TPU grip. Chain multiple AMS units together and even 8- or 16-color prints become possible.</p>
-            <p>It's the kind of capability that used to require industrial machines, now sitting on a desk in my office.</p>
+            <p>{{ t('printing.multicolor.p1') }}</p>
+            <p>{{ t('printing.multicolor.p2') }}</p>
+            <p>{{ t('printing.multicolor.p3') }}</p>
           </div>
         </div>
 
@@ -91,7 +94,7 @@ useSeoMeta({
   <section class="py-20 bg-dark-100 relative overflow-hidden">
     <div class="absolute inset-0 bg-grid opacity-10"></div>
     <div class="container mx-auto px-6 relative z-10">
-      <h2 class="section-heading">Some prints</h2>
+      <h2 class="section-heading">{{ t('printing.prints.title') }}</h2>
       <div class="section-divider"></div>
       <project-grid category="3d"></project-grid>
     </div>
@@ -102,9 +105,9 @@ useSeoMeta({
     <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-cyan/10"></div>
     <div class="absolute inset-0 bg-grid opacity-10"></div>
     <div class="container mx-auto px-6 text-center relative z-10">
-      <h2 class="text-3xl md:text-4xl font-black mb-6"><span class="gradient-text">Curious about 3D printing?</span></h2>
-      <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">Check out my side project for more builds, guides, and maker content.</p>
-      <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon inline-block">Visit 3dps.space</a>
+      <h2 class="text-3xl md:text-4xl font-black mb-6"><span class="gradient-text">{{ t('printing.ctaBlock.title') }}</span></h2>
+      <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">{{ t('printing.ctaBlock.subtitle') }}</p>
+      <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon inline-block">{{ t('printing.hero.visit') }}</a>
     </div>
   </section>
 

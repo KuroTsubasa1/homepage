@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import FooterComponent from "~/components/footerComponent.vue";
 import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 useSeoMeta({
   title: 'Photography Portfolio | Lasse Harm | Professional Photographer',
@@ -14,8 +17,7 @@ useSeoMeta({
 
 const photographyCategories = ref([
   {
-    title: 'Wildlife',
-    description: 'Capturing the beauty and behavior of animals in their natural habitats.',
+    i18nKey: 'wildlife',
     path: '/photography/wildlife',
     apiCategory: 'wildlife',
     image: '',
@@ -23,8 +25,7 @@ const photographyCategories = ref([
     featured: true
   },
   {
-    title: 'Landscape & Nature',
-    description: 'Breathtaking views of natural landscapes and close-ups of nature\'s wonders.',
+    i18nKey: 'landscape',
     path: '/photography/landscape-nature',
     apiCategory: 'nature',
     image: '',
@@ -32,8 +33,7 @@ const photographyCategories = ref([
     featured: true
   },
   {
-    title: 'Portraits & People',
-    description: 'Authentic portraits and candid moments capturing human emotions and stories.',
+    i18nKey: 'portraits',
     path: '/photography/portraits-people',
     apiCategory: 'people',
     image: '',
@@ -41,8 +41,7 @@ const photographyCategories = ref([
     featured: false
   },
   {
-    title: 'Abstract & Art',
-    description: 'Creative interpretations and artistic compositions that challenge perception.',
+    i18nKey: 'abstract',
     path: '/photography/abstract-art',
     apiCategory: 'abstract',
     image: '',
@@ -50,8 +49,7 @@ const photographyCategories = ref([
     featured: false
   },
   {
-    title: 'Weddings',
-    description: 'Capturing the magic, emotions, and precious moments of wedding celebrations.',
+    i18nKey: 'weddings',
     path: '/photography/weddings',
     apiCategory: 'weddings',
     image: '',
@@ -72,7 +70,7 @@ onMounted(async () => {
       if (data.items && data.items.length > 0) {
         const item = data.items[0];
         cat.image = `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}?thumb=960x0`;
-        allFetched.push({ src: cat.image, alt: cat.title });
+        allFetched.push({ src: cat.image, alt: t(`photography.categories.${cat.i18nKey}.title`) });
       }
     } catch (e) {
       // fallback stays empty, will show gradient
@@ -101,11 +99,11 @@ onMounted(async () => {
     <div class="container mx-auto px-4 h-full flex items-center relative z-10">
       <div class="text-center mx-auto max-w-3xl">
         <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 hero-title">
-          Capturing <span class="gradient-text">Moments</span>
+          {{ t('photography.hero.titlePrefix') }} <span class="gradient-text">{{ t('photography.hero.titleHighlight') }}</span>
         </h1>
-        <p class="text-xl text-gray-300 mb-8">Wildlife, landscapes, portraits, and the occasional wedding</p>
+        <p class="text-xl text-gray-300 mb-8">{{ t('photography.hero.subtitle') }}</p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="#categories" class="btn-neon">Browse Collections</a>
+          <a href="#categories" class="btn-neon">{{ t('photography.hero.browse') }}</a>
         </div>
       </div>
     </div>
@@ -132,18 +130,12 @@ onMounted(async () => {
     <div class="container mx-auto px-4 relative z-10">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div>
-          <h2 class="text-3xl font-bold text-white mb-6">About My Photography</h2>
-          <p class="text-lg text-gray-300 mb-4">
-            With a passion for capturing the beauty in both natural landscapes and human emotions,
-            I strive to create images that tell stories and evoke feelings.
-          </p>
-          <p class="text-lg text-gray-300 mb-6">
-            Whether I'm photographing wildlife in their natural habitat, documenting the joy of a wedding day,
-            or creating captivating landscapes, my goal is to produce images that stand the test of time.
-          </p>
+          <h2 class="text-3xl font-bold text-white mb-6">{{ t('photography.about.title') }}</h2>
+          <p class="text-lg text-gray-300 mb-4">{{ t('photography.about.p1') }}</p>
+          <p class="text-lg text-gray-300 mb-6">{{ t('photography.about.p2') }}</p>
           <div class="flex flex-wrap gap-4">
             <a href="/about" class="inline-flex items-center text-neon-cyan font-semibold hover:drop-shadow-[0_0_8px_rgba(0,240,255,0.5)] transition-all">
-              <span>Learn more about me</span>
+              <span>{{ t('photography.about.learnMore') }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
@@ -189,25 +181,25 @@ onMounted(async () => {
     <div class="absolute bottom-20 right-20 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="container mx-auto px-4 relative z-10">
       <div class="text-center mb-12">
-        <h2 class="section-heading text-4xl font-bold text-white mb-4">Photography Collections</h2>
+        <h2 class="section-heading text-4xl font-bold text-white mb-4">{{ t('photography.collections.title') }}</h2>
         <div class="section-divider mx-auto mb-6"></div>
         <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-          Explore my diverse photography portfolio spanning from wildlife to weddings
+          {{ t('photography.collections.subtitle') }}
         </p>
       </div>
 
       <!-- Categories Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <a v-for="category in photographyCategories"
-             :key="category.title"
+             :key="category.i18nKey"
              :href="category.path"
              class="category-card relative overflow-hidden rounded-2xl border border-white/10 h-64 group transition-all duration-300 block hover:border-neon-green/30">
-          <img v-if="category.image" :src="category.image" :alt="category.title" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          <img v-if="category.image" :src="category.image" :alt="t(`photography.categories.${category.i18nKey}.title`)" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
           <div v-else class="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-400"></div>
           <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent"></div>
           <div class="absolute bottom-0 left-0 right-0 p-5">
-            <h3 class="text-xl font-bold text-white mb-1">{{ category.title }}</h3>
-            <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">{{ category.description }}</p>
+            <h3 class="text-xl font-bold text-white mb-1">{{ t(`photography.categories.${category.i18nKey}.title`) }}</h3>
+            <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">{{ t(`photography.categories.${category.i18nKey}.description`) }}</p>
           </div>
         </a>
       </div>
@@ -224,10 +216,10 @@ onMounted(async () => {
     <div class="absolute bottom-10 left-20 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="container mx-auto px-4 relative z-10">
       <div class="text-center mb-10">
-        <h2 class="section-heading text-4xl font-bold text-white mb-4">Wedding Photography</h2>
+        <h2 class="section-heading text-4xl font-bold text-white mb-4">{{ t('photography.weddingSection.title') }}</h2>
         <div class="section-divider mx-auto mb-6"></div>
         <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-10">
-          The one area where I do take bookings — because weddings deserve someone who genuinely cares about the story.
+          {{ t('photography.weddingSection.subtitle') }}
         </p>
       </div>
 
@@ -238,8 +230,8 @@ onMounted(async () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-white mb-3">Engagement Sessions</h3>
-          <p class="text-gray-400">Pre-wedding photoshoots to capture your love story and create beautiful save-the-date announcements.</p>
+          <h3 class="text-xl font-bold text-white mb-3">{{ t('photography.weddingSection.features.engagement.title') }}</h3>
+          <p class="text-gray-400">{{ t('photography.weddingSection.features.engagement.description') }}</p>
         </div>
 
         <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
@@ -249,8 +241,8 @@ onMounted(async () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-white mb-3">Full Day Coverage</h3>
-          <p class="text-gray-400">Comprehensive documentation from getting ready to the last dance, ensuring no precious moment is missed.</p>
+          <h3 class="text-xl font-bold text-white mb-3">{{ t('photography.weddingSection.features.fullDay.title') }}</h3>
+          <p class="text-gray-400">{{ t('photography.weddingSection.features.fullDay.description') }}</p>
         </div>
 
         <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
@@ -259,14 +251,14 @@ onMounted(async () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-white mb-3">Luxury Albums</h3>
-          <p class="text-gray-400">Handcrafted, high-quality wedding albums that tell the story of your day with elegance and style.</p>
+          <h3 class="text-xl font-bold text-white mb-3">{{ t('photography.weddingSection.features.albums.title') }}</h3>
+          <p class="text-gray-400">{{ t('photography.weddingSection.features.albums.description') }}</p>
         </div>
       </div>
 
       <div class="text-center">
         <a href="/photography/weddings" class="btn-neon">
-          See Wedding Gallery
+          {{ t('photography.weddingSection.seeGallery') }}
         </a>
       </div>
     </div>
@@ -280,12 +272,12 @@ onMounted(async () => {
     <div class="absolute top-10 left-1/4 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-bold mb-6 gradient-text">Like what you see?</h2>
+      <h2 class="text-4xl font-bold mb-6 gradient-text">{{ t('photography.ctaBlock.title') }}</h2>
       <p class="text-xl mb-10 max-w-3xl mx-auto text-gray-300">
-        If you're interested in wedding photography or just want to chat about cameras, feel free to reach out.
+        {{ t('photography.ctaBlock.subtitle') }}
       </p>
       <a href="/contact" class="btn-neon">
-        Say Hi
+        {{ t('photography.ctaBlock.button') }}
       </a>
     </div>
   </section>

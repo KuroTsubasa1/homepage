@@ -3,7 +3,7 @@
 
 <template>
   <div class="flex justify-center items-center gap-4">
-    <a href="mailto:lasseharm@web.de" class="social-link group" aria-label="Email">
+    <a href="mailto:lasse@lasseharm.space" class="social-link group" aria-label="Email">
       <Icon name="mdi:mail-outline" class="text-xl text-gray-400 group-hover:text-neon-green transition-colors duration-300" />
     </a>
     <a href="https://www.instagram.com/3d.print.shop.harm/" class="social-link group" aria-label="Instagram" target="_blank" rel="noopener noreferrer">

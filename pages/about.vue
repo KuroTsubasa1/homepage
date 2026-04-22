@@ -53,12 +53,12 @@
   <section class="py-16 bg-dark-100 relative overflow-hidden">
     <div class="absolute inset-0 bg-grid opacity-10"></div>
     <div class="container mx-auto px-6 text-center relative z-10">
-      <p class="text-gray-400 mb-6">Want to see my career timeline and professional projects?</p>
+      <p class="text-gray-400 mb-6">{{ t('about.cta.question') }}</p>
       <div class="flex flex-wrap justify-center gap-4">
-        <NuxtLink to="/reel-web-projects#career" class="btn-neon-outline inline-block">View My Journey</NuxtLink>
+        <NuxtLink to="/reel-web-projects#career" class="btn-neon-outline inline-block">{{ t('about.cta.viewJourney') }}</NuxtLink>
         <a href="/cv.pdf" target="_blank" rel="noopener" class="btn-neon inline-flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M4 6h16M4 6a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2" /></svg>
-          Download CV
+          {{ t('about.cta.downloadCv') }}
         </a>
       </div>
     </div>

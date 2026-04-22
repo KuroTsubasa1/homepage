@@ -142,7 +142,7 @@ const handleSubmit = async () => {
               </svg>
             </div>
             <h3 class="text-sm font-bold text-white mb-1">{{ t('contactSection.contactInfo.email.title') }}</h3>
-            <a href="mailto:hello@lasseharm.space" class="text-sm text-gray-400 hover:text-neon-green transition-colors">{{ t('contactSection.contactInfo.email.value') }}</a>
+            <a href="mailto:lasse@lasseharm.space" class="text-sm text-gray-400 hover:text-neon-green transition-colors">{{ t('contactSection.contactInfo.email.value') }}</a>
           </div>
 
           <div class="glass-card p-6 text-center group hover:border-neon-magenta/30 transition-all duration-300">

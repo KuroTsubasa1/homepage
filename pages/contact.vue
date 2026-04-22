@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import FooterComponent from "~/components/footerComponent.vue";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 useSeoMeta({
   title: 'Contact Lasse Harm | Get in Touch for Projects & Inquiries',
@@ -24,9 +27,9 @@ useSeoMeta({
 
     <div class="container mx-auto px-4 text-center relative z-10 pt-10">
       <h1 class="text-4xl md:text-6xl font-black mb-4">
-        <span class="gradient-text">Contact Me</span>
+        <span class="gradient-text">{{ t('contact.hero.title') }}</span>
       </h1>
-      <p class="text-lg text-gray-400 max-w-2xl mx-auto">Let's discuss how I can help bring your vision to life. Get in touch today.</p>
+      <p class="text-lg text-gray-400 max-w-2xl mx-auto">{{ t('contact.hero.subtitle') }}</p>
     </div>
   </section>
 

@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import {ref, onMounted} from 'vue';
 import {useRoute} from 'vue-router';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps({
   category: String,
@@ -42,7 +45,7 @@ onMounted(async () => {
         <p class="text-neon-cyan/70 text-sm mb-2">{{ project.role }}</p>
         <p class="text-gray-400 text-sm mb-4">{{ project.description }}</p>
         <span class="text-neon-cyan text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-          View Project
+          {{ t('common.viewProject') }}
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
         </span>
       </div>
