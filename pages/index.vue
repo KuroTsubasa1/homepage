@@ -208,7 +208,7 @@ const techStack = [
 }
 
 .service-card {
-  @apply relative glass-card p-6 overflow-hidden transition-all duration-500 cursor-pointer block;
+  @apply relative bg-dark-100/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 overflow-hidden transition-all duration-500 cursor-pointer block;
 }
 .service-card:hover {
   @apply border-white/20;
