@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import FooterComponent from "~/components/footerComponent.vue";
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
+const { listUrl, fileUrl } = usePocketbase();
 
 useSeoMeta({
   title: 'Photography Portfolio | Lasse Harm | Professional Photographer',
@@ -58,26 +59,41 @@ const photographyCategories = ref([
   },
 ]);
 
-const introImages = ref([]);
-
-// Fetch a cover image for each category from PocketBase
-onMounted(async () => {
-  const allFetched = [];
-  for (const cat of photographyCategories.value) {
-    try {
-      const res = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_images/records?filter=(category='${cat.apiCategory}')&perPage=1`);
-      const data = await res.json();
-      if (data.items && data.items.length > 0) {
-        const item = data.items[0];
-        cat.image = `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}?thumb=960x0`;
-        allFetched.push({ src: cat.image, alt: t(`photography.categories.${cat.i18nKey}.title`) });
+// Fetch a cover image for each category from PocketBase, server-side and in parallel.
+const { data: covers } = await useAsyncData('photography-covers', async () => {
+  const results = await Promise.all(
+    photographyCategories.value.map(async (cat) => {
+      try {
+        const data: any = await $fetch(listUrl('portfolio_images', {
+          filter: `(category='${cat.apiCategory}')`,
+          perPage: 1,
+        }));
+        const item = data.items?.[0];
+        return item
+          ? { key: cat.apiCategory, i18nKey: cat.i18nKey, src: fileUrl(item, item.image, 'thumb=960x0') }
+          : null;
+      } catch (e) {
+        return null;
       }
-    } catch (e) {
-      // fallback stays empty, will show gradient
-    }
+    }),
+  );
+  return results.filter(Boolean);
+}, { default: () => [] });
+
+// Apply the fetched cover to each category tile.
+watchEffect(() => {
+  for (const c of covers.value) {
+    const cat = photographyCategories.value.find(x => x.apiCategory === c.key);
+    if (cat) cat.image = c.src;
   }
-  introImages.value = allFetched.slice(0, 4);
 });
+
+const introImages = computed(() =>
+  covers.value.slice(0, 4).map(c => ({
+    src: c.src,
+    alt: t(`photography.categories.${c.i18nKey}.title`),
+  })),
+);
 
 
 </script>

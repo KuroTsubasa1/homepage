@@ -19,11 +19,9 @@
 
     <div class="w-1/2">
       <!-- Video Section -->
-      <div v-if="projectData.videos" class="video-container mb-4">
+      <div v-if="projectData.videos && projectData.videos.length" class="video-container mb-4">
         <video class="w-full h-auto rounded-2xl border border-white/10" controls>
-          <source
-              :src="`https://pocket.lasseharm.space/api/files/${projectData.collectionId}/${projectData.videos[0]}`"
-              type="video/mp4">
+          <source :src="projectData.videos[0]" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       </div>
@@ -31,7 +29,7 @@
       <!-- Images Section -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         <img v-for="(image, index) in projectData.images" :key="index" :alt="'Image ' + (index + 1)"
-             :src="`https://pocket.lasseharm.space/api/files/${projectData.collectionId}/${image}`" class="w-full h-auto rounded-2xl border border-white/10"
+             :src="image" class="w-full h-auto rounded-2xl border border-white/10"
              loading="lazy">
       </div>
 
@@ -84,31 +82,35 @@
 import Navigation from '~/components/navigation.vue';
 import FooterComponent from '~/components/footerComponent.vue';
 
-// data for the project
-const projectData = ref({});
-
 const route = useRoute();
+const { base, fileUrl } = usePocketbase();
 
-onMounted(async () => {
-  const id = route.params.project;
-  const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_projects/records/${id}`);
-  const data = await response.json();
+// Server-rendered single-record fetch (SEO + no flash).
+const { data: projectData } = await useAsyncData(
+  () => `drone-project-${route.params.project}`,
+  () => $fetch(`${base}/api/collections/portfolio_projects/records/${route.params.project}`),
+  {
+    default: () => ({}),
+    transform: (data) => ({
+      title: data.name,
+      role: data.role,
+      shortDescription: data.short_desc,
+      longDescription: data.long_desc,
+      logo: data.logo ? fileUrl(data, data.logo) : '',
+      images: (data.images || []).map(image => fileUrl(data, image)),
+      videos: (data.videos || []).map(video => fileUrl(data, video)),
+      fromDate: data.from_date,
+      toDate: data.to_date,
+      category: data.category,
+      link: data.link,
+    }),
+  },
+);
 
-  projectData.value = {
-    title: data.name,
-    role: data.role,
-    shortDescription: data.short_desc,
-    longDescription: data.long_desc,
-    logo: `https://pocket.lasseharm.space/api/files/${data.collectionId}/${data.logo}`,
-    images: data.images.map(image => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${image}`),
-    videos: data.videos.map(video => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${video}`),
-    fromDate: data.from_date,
-    toDate: data.to_date,
-    category: data.category,
-    link: data.link
-  };
-
-
+useSeoMeta({
+  title: () => `${projectData.value.title || 'Drone Project'} — Lasse Harm`,
+  description: () => projectData.value.longDescription || 'FPV drone project by Lasse Harm.',
+  ogImage: () => projectData.value.images?.[0] || projectData.value.logo,
 });
 </script>
 

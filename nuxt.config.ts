@@ -37,6 +37,13 @@ export default defineNuxtConfig({
 
   ssr: true, // Changed to true for better SEO
 
+  runtimeConfig: {
+    public: {
+      // PocketBase backend base URL. Override at runtime with NUXT_PUBLIC_API_BASE.
+      apiBase: 'https://pocket.lasseharm.space',
+    },
+  },
+
   server: {
     port: 3666, // Change this to your desired port
   },
@@ -63,6 +70,7 @@ export default defineNuxtConfig({
       // About and Contact
       '/about',
       '/contact',
+      '/cv',
       // Web Projects
       '/reel-web-projects'
     ]

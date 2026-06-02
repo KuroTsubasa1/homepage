@@ -62,31 +62,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+// SSR fetch (SEO + no content flash).
+const { images, heroImage } = useGalleryImages('people', 'Portrait Photography');
 
-const router = useRouter();
-const images = ref([]);
-const heroImage = ref('');
-
-onMounted(async () => {
-  const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_images/records?filter=(category='people')&perPage=1000`);
-  const data = await response.json();
-
-  images.value = data.items.map(item => ({
-    id: item.id,
-    thumbnail: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}?thumb=300x0`,
-    src: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}`,
-    alt: item.alt || 'Portrait Photography',
-  }));
-  if (images.value.length > 0) heroImage.value = images.value[0].src;
-});
-
-const openDetail = (id) => {
-  console.log('Opening portraits detail page for:', id);
-  // Try direct navigation instead of router.push
-  window.location.href = `/photography/portraits-people/${id}`;
-};
+const openDetail = (id) => navigateTo(`/photography/portraits-people/${id}`);
 
 useSeoMeta({
   title: 'Portraits & People Photography - Lasse Harm',

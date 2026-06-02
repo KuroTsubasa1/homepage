@@ -29,22 +29,22 @@
       </div>
 
       <div class="flex justify-between">
-        <a
+        <NuxtLink
           v-if="prevImage"
-          :href="`/photography/weddings/${prevImage.id}`"
+          :to="`/photography/weddings/${prevImage.id}`"
           class="btn-neon-outline inline-block text-sm"
         >
           ← Previous Image
-        </a>
+        </NuxtLink>
         <div v-else></div>
 
-        <a
+        <NuxtLink
           v-if="nextImage"
-          :href="`/photography/weddings/${nextImage.id}`"
+          :to="`/photography/weddings/${nextImage.id}`"
           class="btn-neon-outline inline-block text-sm"
         >
           Next Image →
-        </a>
+        </NuxtLink>
         <div v-else></div>
       </div>
     </div>
@@ -56,55 +56,7 @@
 <script setup>
 import Navigation from '~/components/navigation.vue';
 import FooterComponent from '~/components/footerComponent.vue';
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 
-const imageData = ref({});
-const allImages = ref([]);
-const prevImage = ref(null);
-const nextImage = ref(null);
-
-const route = useRoute();
-
-onMounted(async () => {
-  console.log('Wedding detail page mounted, All route params:', route.params);
-  const id = route.params.id || '';
-  console.log('Wedding detail - Using ID:', id);
-
-  try {
-    // Fetch all wedding images to build navigation
-    const allImagesResponse = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_images/records?filter=(category='weddings')&perPage=1000`);
-    const allImagesData = await allImagesResponse.json();
-
-    allImages.value = allImagesData.items.map(item => ({
-      id: item.id,
-      thumbnail: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}?thumb=300x0`,
-      src: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}`,
-      alt: item.alt || 'Wedding Photography',
-      description: item.description || '',
-      location: item.location || '',
-      date: item.date || '',
-    }));
-
-    // Find current image
-    const currentIndex = allImages.value.findIndex(img => img.id === id);
-    console.log('Current index:', currentIndex);
-
-    if (currentIndex > -1) {
-      imageData.value = allImages.value[currentIndex];
-
-      // Set previous image
-      if (currentIndex > 0) {
-        prevImage.value = allImages.value[currentIndex - 1];
-      }
-
-      // Set next image
-      if (currentIndex < allImages.value.length - 1) {
-        nextImage.value = allImages.value[currentIndex + 1];
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching image data:', error);
-  }
-});
+// SSR fetch + SEO meta + prev/next handled by the shared composable.
+const { imageData, prevImage, nextImage } = useGalleryDetail('weddings', 'Wedding Photography');
 </script>

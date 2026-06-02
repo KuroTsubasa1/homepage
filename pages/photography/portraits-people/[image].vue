@@ -90,68 +90,13 @@
 <script setup>
 import Navigation from '~/components/navigation.vue';
 import FooterComponent from '~/components/footerComponent.vue';
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
-const imageData = ref({});
-const allImages = ref([]);
-const prevImage = ref(null);
-const nextImage = ref(null);
-
-const route = useRoute();
 const router = useRouter();
+const navigateToImage = (id) => router.push(`/photography/portraits-people/${id}`);
 
-const navigateToImage = (id) => {
-  router.push(`/photography/portraits-people/${id}`);
-};
-
-onMounted(async () => {
-  const id = route.params.image;
-
-  // Fetch all portrait images to build navigation
-  const allImagesResponse = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_images/records?filter=(category='people')&perPage=1000`);
-  const allImagesData = await allImagesResponse.json();
-
-  allImages.value = allImagesData.items.map(item => ({
-    id: item.id,
-    thumbnail: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}?thumb=300x0`,
-    src: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}`,
-    alt: item.alt,
-    description: item.description || '',
-    location: item.location || '',
-    date: item.date || '',
-    camera: item.camera || '',
-    lens: item.lens || '',
-    settings: item.settings || '',
-  }));
-
-  // Find current image
-  const currentIndex = allImages.value.findIndex(img => img.id === id);
-
-  if (currentIndex > -1) {
-    imageData.value = allImages.value[currentIndex];
-
-    // Set previous image
-    if (currentIndex > 0) {
-      prevImage.value = allImages.value[currentIndex - 1];
-    }
-
-    // Set next image
-    if (currentIndex < allImages.value.length - 1) {
-      nextImage.value = allImages.value[currentIndex + 1];
-    }
-  } else {
-    // Image not found, redirect to gallery
-    router.push('/photography/portraits-people');
-  }
-
-  // Set SEO metadata
-  useSeoMeta({
-    title: `${imageData.value.alt || 'Portrait Photography'} - Lasse Harm`,
-    description: imageData.value.description || 'Detailed view of portrait and people photography by Lasse Harm.',
-    ogImage: imageData.value.src,
-  });
-});
+// SSR fetch + SEO meta + prev/next handled by the shared composable.
+const { imageData, prevImage, nextImage } = useGalleryDetail('people', 'Portrait Photography');
 </script>
 
 <style scoped>

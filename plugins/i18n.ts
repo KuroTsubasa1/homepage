@@ -67,7 +67,8 @@ export default defineNuxtPlugin(({ vueApp }) => {
           cta: {
             question: 'Want to see my career timeline and professional projects?',
             viewJourney: 'View My Journey',
-            downloadCv: 'Download CV'
+            downloadCv: 'Download CV',
+            viewCv: 'View CV'
           }
         },
 
@@ -203,7 +204,15 @@ export default defineNuxtPlugin(({ vueApp }) => {
           explorePortfolio: 'Browse photos',
           bookSession: 'Book a Session',
           viewPackages: 'View Packages',
-          exploreServices: 'Visit 3DPS'
+          exploreServices: 'Visit 3DPS',
+          currentlyAt: 'Currently at',
+          workingOnTitle: "What I'm working on right now",
+          current: 'Current',
+          mainFocus: 'Main focus',
+          hobbies: 'Hobbies & Side Projects',
+          seeAllProjects: 'See all projects & career timeline',
+          featuredHitDesc: 'Enterprise dealer information platform — complex data flows, real-time management.',
+          featuredSsbpDesc: 'Complete rewrite of the application platform — front-end architecture, modernized stack.'
         },
         
         // Photography pages
@@ -453,7 +462,8 @@ export default defineNuxtPlugin(({ vueApp }) => {
           cta: {
             question: 'Möchten Sie meinen beruflichen Werdegang und meine Projekte sehen?',
             viewJourney: 'Meinen Werdegang ansehen',
-            downloadCv: 'Lebenslauf herunterladen'
+            downloadCv: 'Lebenslauf herunterladen',
+            viewCv: 'Lebenslauf ansehen'
           }
         },
 
@@ -589,7 +599,15 @@ export default defineNuxtPlugin(({ vueApp }) => {
           explorePortfolio: 'Portfolio erkunden',
           bookSession: 'Termin buchen',
           viewPackages: 'Pakete anzeigen',
-          exploreServices: 'Dienstleistungen erkunden'
+          exploreServices: 'Dienstleistungen erkunden',
+          currentlyAt: 'Aktuell bei',
+          workingOnTitle: 'Woran ich gerade arbeite',
+          current: 'Aktuell',
+          mainFocus: 'Hauptfokus',
+          hobbies: 'Hobbys & Nebenprojekte',
+          seeAllProjects: 'Alle Projekte & Karriere-Verlauf ansehen',
+          featuredHitDesc: 'Enterprise-Plattform für Händlerinformationen — komplexe Datenflüsse, Echtzeit-Verwaltung.',
+          featuredSsbpDesc: 'Komplette Neuentwicklung der Anwendungsplattform — Frontend-Architektur, modernisierter Stack.'
         },
         
         // Photography pages

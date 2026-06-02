@@ -26,14 +26,14 @@
       </div>
 
       <div class="flex justify-between items-center">
-        <a v-if="prevImage" :href="`/photography/wildlife/${prevImage.id}`" class="btn-neon-outline inline-block text-sm">
+        <NuxtLink v-if="prevImage" :to="`/photography/wildlife/${prevImage.id}`" class="btn-neon-outline inline-block text-sm">
           ← Previous
-        </a>
+        </NuxtLink>
         <div v-else></div>
         <NuxtLink to="/photography/wildlife" class="btn-neon inline-block text-sm">Back to Gallery</NuxtLink>
-        <a v-if="nextImage" :href="`/photography/wildlife/${nextImage.id}`" class="btn-neon-outline inline-block text-sm">
+        <NuxtLink v-if="nextImage" :to="`/photography/wildlife/${nextImage.id}`" class="btn-neon-outline inline-block text-sm">
           Next →
-        </a>
+        </NuxtLink>
         <div v-else></div>
       </div>
     </div>
@@ -45,42 +45,7 @@
 <script setup>
 import Navigation from '~/components/navigation.vue';
 import FooterComponent from '~/components/footerComponent.vue';
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 
-const imageData = ref({});
-const allImages = ref([]);
-const prevImage = ref(null);
-const nextImage = ref(null);
-
-const route = useRoute();
-
-onMounted(async () => {
-  const id = route.params.id || '';
-
-  try {
-    const allImagesResponse = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_images/records?filter=(category='wildlife')&perPage=1000`);
-    const allImagesData = await allImagesResponse.json();
-
-    allImages.value = allImagesData.items.map(item => ({
-      id: item.id,
-      thumbnail: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}?thumb=300x0`,
-      src: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}`,
-      alt: item.alt || 'Wildlife Photography',
-      description: item.description || '',
-      location: item.location || '',
-      date: item.date || '',
-    }));
-
-    const currentIndex = allImages.value.findIndex(img => img.id === id);
-
-    if (currentIndex > -1) {
-      imageData.value = allImages.value[currentIndex];
-      if (currentIndex > 0) prevImage.value = allImages.value[currentIndex - 1];
-      if (currentIndex < allImages.value.length - 1) nextImage.value = allImages.value[currentIndex + 1];
-    }
-  } catch (error) {
-    console.error('Error fetching image data:', error);
-  }
-});
+// SSR fetch + SEO meta + prev/next handled by the shared composable.
+const { imageData, prevImage, nextImage } = useGalleryDetail('wildlife', 'Wildlife Photography');
 </script>

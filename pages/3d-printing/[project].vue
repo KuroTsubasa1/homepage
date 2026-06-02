@@ -59,31 +59,35 @@
 import Navigation from '~/components/navigation.vue';
 import FooterComponent from '~/components/footerComponent.vue';
 
-// data for the project
-const projectData = ref({});
-
 const route = useRoute();
+const { base, fileUrl } = usePocketbase();
 
-onMounted(async () => {
-  const id = route.params.project;
-  const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_projects/records/${id}`);
-  const data = await response.json();
+// Server-rendered single-record fetch (SEO + no flash).
+const { data: projectData } = await useAsyncData(
+  () => `printing-project-${route.params.project}`,
+  () => $fetch(`${base}/api/collections/portfolio_projects/records/${route.params.project}`),
+  {
+    default: () => ({}),
+    transform: (data) => ({
+      title: data.name,
+      role: data.role,
+      shortDescription: data.short_desc,
+      longDescription: data.long_desc,
+      logo: data.logo ? fileUrl(data, data.logo) : '',
+      images: (data.images || []).map(image => fileUrl(data, image)),
+      videos: (data.videos || []).map(video => fileUrl(data, video)),
+      fromDate: data.from_date,
+      toDate: data.to_date,
+      category: data.category,
+      link: data.link,
+    }),
+  },
+);
 
-  projectData.value = {
-    title: data.name,
-    role: data.role,
-    shortDescription: data.short_desc,
-    longDescription: data.long_desc,
-    logo: `https://pocket.lasseharm.space/api/files/${data.collectionId}/${data.logo}`,
-    images: data.images.map(image => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${data.id}/${image}`),
-    videos: data.videos.map(video => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${data.id}/${video}`),
-    fromDate: data.from_date,
-    toDate: data.to_date,
-    category: data.category,
-    link: data.link
-  };
-
-
+useSeoMeta({
+  title: () => `${projectData.value.title || '3D Printing Project'} — Lasse Harm`,
+  description: () => projectData.value.longDescription || '3D printing project by Lasse Harm.',
+  ogImage: () => projectData.value.images?.[0] || projectData.value.logo,
 });
 </script>
 

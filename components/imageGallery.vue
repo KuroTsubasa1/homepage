@@ -10,23 +10,62 @@ const props = defineProps({
 });
 
 const router = useRouter();
+const { listUrl, fileUrl } = usePocketbase();
+
+const PER_PAGE = 60;
 const images = ref([]);
-const loading = ref(true);
+const page = ref(1);
+const totalPages = ref(1);
+const loadingMore = ref(false);
+const loadError = ref(false);
 
-onMounted(async () => {
-  const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_images/records?filter=(category='${props.category}')&perPage=1000`);
-  const data = await response.json();
+const mapItems = (items) => items.map(item => ({
+  id: item.id,
+  thumbnail: fileUrl(item, item.image, 'thumb=300x0'),
+  src: fileUrl(item, item.image),
+  alt: item.alt,
+  loading: true,
+}));
 
-  images.value = data.items.map(item => ({
-    id: item.id,
-    thumbnail: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}?thumb=300x0`,
-    src: `https://pocket.lasseharm.space/api/files/${item.collectionId}/${item.id}/${item.image}`,
-    alt: item.alt,
-    loading: true,
-  }));
+const fetchPage = (p) => $fetch(listUrl('portfolio_images', {
+  filter: `(category='${props.category}')`,
+  page: p,
+  perPage: PER_PAGE,
+}));
 
-  loading.value = false;
-});
+// Server-rendered first page (good for SEO + no content flash).
+const { data, error } = await useAsyncData(
+  () => `gallery-${props.category}`,
+  () => fetchPage(1),
+  { watch: [() => props.category] },
+);
+
+const syncFromData = () => {
+  images.value = data.value ? mapItems(data.value.items) : [];
+  totalPages.value = data.value?.totalPages ?? 1;
+  page.value = 1;
+};
+syncFromData();
+watch(data, syncFromData);
+
+const hasError = computed(() => !!error.value || loadError.value);
+const canLoadMore = computed(() => page.value < totalPages.value);
+
+const loadMore = async () => {
+  if (loadingMore.value || !canLoadMore.value) return;
+  loadingMore.value = true;
+  loadError.value = false;
+  try {
+    const res = await fetchPage(page.value + 1);
+    images.value.push(...mapItems(res.items));
+    totalPages.value = res.totalPages;
+    page.value += 1;
+  } catch (e) {
+    loadError.value = true;
+  } finally {
+    loadingMore.value = false;
+  }
+};
 
 const handleImageLoad = (image) => {
   image.loading = false;
@@ -119,6 +158,20 @@ onBeforeUnmount(() => {
             >
           </div>
         </div>
+      </div>
+
+      <p v-if="hasError && !images.length" class="text-center text-gray-400 py-12">
+        Couldn't load images right now. Please try again later.
+      </p>
+
+      <div v-if="canLoadMore || (hasError && images.length)" class="flex justify-center mt-8">
+        <button
+          class="btn-neon-outline text-sm"
+          :disabled="loadingMore"
+          @click="loadMore"
+        >
+          {{ loadingMore ? 'Loading…' : (hasError ? 'Retry' : 'Load more') }}
+        </button>
       </div>
     </div>
   </div>

@@ -92,13 +92,7 @@
 <script setup>
 import Navigation from '~/components/navigation.vue';
 import FooterComponent from '~/components/footerComponent.vue';
-import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-
-const projectData = ref({});
-const timelineData = ref([]);
-const technologies = ref([]);
-const challenges = ref([]);
 
 // Static employment project data — used when PocketBase doesn't have the project
 const staticProjects = {
@@ -226,52 +220,61 @@ const staticProjects = {
 };
 
 const route = useRoute();
+const { base, fileUrl } = usePocketbase();
 
-onMounted(async () => {
-  const id = route.params.project || '';
-
-  // Try PocketBase first
-  try {
-    const response = await fetch(`https://pocket.lasseharm.space/api/collections/portfolio_projects/records/${id}`);
-    if (response.ok) {
-      const data = await response.json();
-      projectData.value = {
-        title: data.name,
-        role: data.role,
-        longDescription: data.long_desc,
-        category: data.category,
-        fromDate: data.from_date,
-        toDate: data.to_date,
-        images: data.images?.map(image => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${image}`) || [],
-        videos: data.videos?.map(video => `https://pocket.lasseharm.space/api/files/${data.collectionId}/${video}`) || [],
-        link: data.link
-      };
-      timelineData.value = data.timeline || [];
-      technologies.value = data.technologies || [];
-      challenges.value = data.challenges || [];
-      return;
+// Server-rendered: try PocketBase, fall back to the static employment data.
+const { data: pb } = await useAsyncData(
+  () => `web-project-${route.params.project}`,
+  async () => {
+    try {
+      return await $fetch(`${base}/api/collections/portfolio_projects/records/${route.params.project}`);
+    } catch (e) {
+      return null;
     }
-  } catch (e) {
-    // PocketBase failed, try static
-  }
+  },
+);
 
-  // Fallback to static data
-  const staticProject = staticProjects[id];
-  if (staticProject) {
-    projectData.value = {
-      title: staticProject.title,
-      company: staticProject.company,
-      role: staticProject.role,
-      longDescription: staticProject.longDescription,
-      category: staticProject.category,
-      fromDate: staticProject.fromDate,
-      toDate: staticProject.toDate,
+const staticProject = computed(() => staticProjects[route.params.project]);
+
+const projectData = computed(() => {
+  const d = pb.value;
+  if (d) {
+    return {
+      title: d.name,
+      role: d.role,
+      longDescription: d.long_desc,
+      category: d.category,
+      fromDate: d.from_date,
+      toDate: d.to_date,
+      images: (d.images || []).map(image => fileUrl(d, image)),
+      videos: (d.videos || []).map(video => fileUrl(d, video)),
+      link: d.link,
+    };
+  }
+  const sp = staticProject.value;
+  if (sp) {
+    return {
+      title: sp.title,
+      company: sp.company,
+      role: sp.role,
+      longDescription: sp.longDescription,
+      category: sp.category,
+      fromDate: sp.fromDate,
+      toDate: sp.toDate,
       images: [],
       videos: [],
-      link: null
+      link: null,
     };
-    technologies.value = staticProject.technologies || [];
-    challenges.value = staticProject.challenges || [];
   }
+  return {};
+});
+
+const technologies = computed(() => pb.value?.technologies || staticProject.value?.technologies || []);
+const challenges = computed(() => pb.value?.challenges || staticProject.value?.challenges || []);
+
+useSeoMeta({
+  title: () => `${projectData.value.title || 'Project'} — Lasse Harm`,
+  description: () => projectData.value.longDescription || 'Web development project by Lasse Harm.',
+  ogImage: () => projectData.value.images?.[0],
 });
 </script>
