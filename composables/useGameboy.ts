@@ -36,6 +36,7 @@ export const GB_ROUTES = [
 // ---- Shared singleton state ----
 const palette = ref<GbPalette>('night')
 const muted = ref(false)        // master sound switch (audio still gated by browser gesture)
+const volume = ref(0.6)         // master volume 0..1 (the DMG volume wheel)
 const musicOn = ref(true)       // background chiptune on/off
 const deckOpen = ref(true)      // bottom control deck expanded/collapsed
 const secretUnlocked = ref(false) // Konami code found -> secret palettes available
@@ -57,10 +58,10 @@ function ensureCtx(): AudioContext | null {
     if (!AC) return null
     audioCtx = new AC()
     masterGain = audioCtx.createGain()
-    masterGain.gain.value = 0.5
+    masterGain.gain.value = volume.value
     masterGain.connect(audioCtx.destination)
     musicGain = audioCtx.createGain()
-    musicGain.gain.value = 0.5
+    musicGain.gain.value = volume.value * 0.9
     musicGain.connect(audioCtx.destination)
   }
   if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {})
@@ -287,6 +288,9 @@ function bindPersistence() {
   watch(secretUnlocked, (s) => {
     try { localStorage.setItem('gb-secret', s ? '1' : '0') } catch {}
   })
+  watch(volume, (v) => {
+    try { localStorage.setItem('gb-vol', v.toFixed(3)) } catch {}
+  })
 }
 
 /** Read persisted prefs + reflect palette onto <html>. Call once on mount. */
@@ -302,6 +306,8 @@ function hydrate() {
     if (mu !== null) musicOn.value = mu === '1'
     const dk = localStorage.getItem('gb-deck')
     if (dk !== null) deckOpen.value = dk === '1'
+    const vol = localStorage.getItem('gb-vol')
+    if (vol !== null) { const n = parseFloat(vol); if (!isNaN(n)) volume.value = Math.min(1, Math.max(0, n)) }
   } catch {}
   applyPaletteToDom()
   bindPersistence()
@@ -311,6 +317,16 @@ function hydrate() {
 export function useGameboy() {
   const setPalette = (p: GbPalette) => { palette.value = p; applyPaletteToDom() }
   const unlockSecret = () => { secretUnlocked.value = true }
+  // DMG volume wheel — sets master + music gain (0..1).
+  const setVolume = (v: number) => {
+    volume.value = Math.min(1, Math.max(0, v))
+    if (masterGain) masterGain.gain.value = volume.value
+    if (musicGain) musicGain.gain.value = volume.value * 0.9
+    if (volume.value > 0 && muted.value) {     // turning it up un-mutes
+      muted.value = false
+      if (musicOn.value) startMusic()
+    }
+  }
   // Konami payoff: unlock secrets, jump to the rainbow palette and (re)start the
   // upbeat 8-voice party track from the top.
   const cheatParty = () => {
@@ -364,6 +380,7 @@ export function useGameboy() {
     // state
     palette,
     muted,
+    volume,
     musicOn,
     deckOpen,
     menuOpen,
@@ -379,6 +396,7 @@ export function useGameboy() {
     // actions
     hydrate,
     setPalette,
+    setVolume,
     cyclePalette,
     unlockSecret,
     cheatParty,

@@ -71,7 +71,7 @@ const navTo = (path: string) => { gb.sfx.select(); photoOpen.value = false; rout
    Unified menu (START button + mobile hamburger + D-pad)
    A flat list of actionable items so the D-pad can drive everything.
    ---------------------------------------------------------------------- */
-type MenuItem = { label: string; kind: 'route' | 'lang' | 'palette' | 'sound' | 'music'; path?: string; indent?: boolean }
+type MenuItem = { label: string; kind: 'route' | 'lang' | 'palette' | 'sound' | 'music' | 'game'; path?: string; indent?: boolean }
 const menuItems = computed<MenuItem[]>(() => [
   ...gb.routes.map(r => ({ label: r.label, kind: 'route' as const, path: r.path })),
   { label: t('photoCategories.wildlife'), kind: 'route', path: '/photography/wildlife', indent: true },
@@ -80,6 +80,7 @@ const menuItems = computed<MenuItem[]>(() => [
   { label: `PALETTE: ${gb.palette.value.toUpperCase()}`, kind: 'palette' },
   { label: `SOUND: ${gb.muted.value ? 'OFF' : 'ON'}`, kind: 'sound' },
   { label: `MUSIC: ${gb.musicOn.value ? 'ON' : 'OFF'}`, kind: 'music' },
+  ...(gb.secretUnlocked.value ? [{ label: '★ SNAKE', kind: 'game' as const }] : []),
 ])
 const menuIndex = ref(0)
 
@@ -95,6 +96,7 @@ const runMenuItem = (item: MenuItem) => {
     case 'palette': gb.cyclePalette(); break
     case 'sound': gb.toggleMute(); break
     case 'music': gb.toggleMusic(); break
+    case 'game': gb.closeMenu(); openGame(); break
   }
 }
 
@@ -122,6 +124,7 @@ const goRelative = (delta: number) => {
 
 const onDir = (dir: 'up' | 'down' | 'left' | 'right') => {
   flash(dir)
+  if (gameOpen.value) { snakeRef.value?.input(dir); return }
   if (feedKonami(dir)) return
   if (gb.menuOpen.value) {
     const len = menuItems.value.length
@@ -136,19 +139,21 @@ const onDir = (dir: 'up' | 'down' | 'left' | 'right') => {
 }
 const onA = () => {
   flash('a')
+  if (gameOpen.value) { snakeRef.value?.action(); return }
   if (feedKonami('a')) return
   if (gb.menuOpen.value) { runMenuItem(menuItems.value[menuIndex.value]); return }
   gb.sfx.select(); scrollTop()
 }
 const onB = () => {
   flash('b')
+  if (gameOpen.value) { closeGame(); return }
   if (feedKonami('b')) return
   if (gb.menuOpen.value) { gb.closeMenu(); return }
   gb.sfx.back()
   if (window.history.length > 1) router.back()
   else router.push('/')
 }
-const onStart = () => { flash('start'); gb.unlockAudio(); gb.toggleMenu() }
+const onStart = () => { flash('start'); if (gameOpen.value) { closeGame(); return } gb.unlockAudio(); gb.toggleMenu() }
 const onSelect = () => { flash('select'); gb.cyclePalette() }
 
 /* ----------------------------------------------------------------------
@@ -250,12 +255,40 @@ const resetIdle = () => {
   idleTimer = setTimeout(() => { idle.value = true }, 45000)
 }
 
+// Secret SNAKE minigame
+const gameOpen = ref(false)
+const snakeRef = ref<any>(null)
+const openGame = () => { gb.unlockAudio(); gb.sfx.select(); idle.value = false; gameOpen.value = true }
+const closeGame = () => { gb.sfx.back(); gameOpen.value = false }
+watch(gameOpen, (v) => lockScroll(v))
+// hidden trigger: triple-click the "DOT MATRIX WITH STEREO SOUND" label
+let labelClicks = 0
+let labelTimer: any = null
+const onLabelClick = () => {
+  labelClicks += 1
+  clearTimeout(labelTimer)
+  labelTimer = setTimeout(() => { labelClicks = 0 }, 700)
+  if (labelClicks >= 3) { labelClicks = 0; openGame() }
+}
+
 const onKey = (e: KeyboardEvent) => {
   const el = e.target as HTMLElement | null
   const tag = (el?.tagName || '').toLowerCase()
   if (['input', 'textarea', 'select'].includes(tag) || el?.isContentEditable) return
   resetIdle()
   if (showBoot.value) { proceedFromBoot(); return }
+  // minigame captures input
+  if (gameOpen.value) {
+    switch (e.key) {
+      case 'ArrowUp': e.preventDefault(); snakeRef.value?.input('up'); break
+      case 'ArrowDown': e.preventDefault(); snakeRef.value?.input('down'); break
+      case 'ArrowLeft': e.preventDefault(); snakeRef.value?.input('left'); break
+      case 'ArrowRight': e.preventDefault(); snakeRef.value?.input('right'); break
+      case 'Enter': snakeRef.value?.action(); break
+      case 'Escape': case 'Backspace': e.preventDefault(); closeGame(); break
+    }
+    return
+  }
   startSession()
   switch (e.key) {
     // Arrows + Enter/Backspace feed the Konami detector via onDir/onA/onB.
@@ -387,6 +420,8 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
           <button class="gb-icon-btn" @click="gb.toggleMute()" :aria-label="gb.muted.value ? 'Unmute' : 'Mute'" :title="gb.muted.value ? 'Sound off' : 'Sound on'">
             <Icon :name="gb.muted.value ? 'mdi:volume-off' : 'mdi:volume-high'" />
           </button>
+          <!-- DMG volume wheel (drag / scroll) — desktop & tablet -->
+          <div class="hidden sm:block"><GbVolumeKnob /></div>
           <button class="gb-icon-btn" @click="gb.toggleMusic()" :aria-label="gb.musicOn.value ? 'Turn music off' : 'Turn music on'" :title="gb.musicOn.value ? 'Music on' : 'Music off'">
             <Icon :name="gb.musicOn.value ? 'mdi:music' : 'mdi:music-off'" />
           </button>
@@ -459,7 +494,7 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
       </button>
 
       <div class="gb-deck-collapsible">
-        <div class="gb-deck-label">
+        <div class="gb-deck-label" @click="onLabelClick" title="">
           <span class="gb-dot"></span>
           <span class="font-pixel">DOT MATRIX WITH STEREO SOUND</span>
           <span class="gb-stripe"></span>
@@ -535,6 +570,16 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
 
     <!-- Power-LED CRT power-cycle blink -->
     <div v-if="powerBlink" class="gb-powerfx" aria-hidden="true"></div>
+
+    <!-- Secret SNAKE minigame -->
+    <transition name="menu-fade">
+      <div v-if="gameOpen" class="gb-game-overlay" @click.self="closeGame">
+        <div class="gb-game shell-surface">
+          <GbSnake ref="snakeRef" />
+          <button class="gb-game-close font-pixel" @click="closeGame">✕ EXIT (B)</button>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -1043,6 +1088,30 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
   90%  { opacity: 1;   transform: translateY(-50%) scale(1, 0.04); }
   100% { opacity: 0;   transform: translateY(-50%) scale(1, 1); }
 }
+
+/* Secret SNAKE minigame overlay */
+.gb-game-overlay {
+  position: fixed; inset: 0; z-index: 62;
+  display: grid; place-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  padding: 1rem;
+}
+.gb-game {
+  padding: 14px;
+  border-radius: 10px;
+  border: 3px solid #8e8b7a;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+.gb-game > .gb-snake { position: relative; z-index: 2; }
+.gb-game-close {
+  position: relative; z-index: 2;
+  display: block; margin: 12px auto 2px;
+  font-size: 0.5rem; color: #45433a;
+  border: 2px solid #8e8b7a; border-radius: 4px;
+  padding: 6px 10px; background: rgba(255, 255, 255, 0.25);
+}
+.gb-game-close:hover { color: #5b3490; border-color: #5b3490; }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-boot-drop, .animate-blink, .animate-power-pulse, .animate-scanline, .animate-flicker { animation: none !important; }
