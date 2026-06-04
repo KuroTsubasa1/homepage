@@ -340,7 +340,7 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
             <span class="font-pixel gb-boot-brand">LASSE HARM</span>
             <span class="font-pixel gb-boot-tm">™</span>
           </div>
-          <p class="font-pixel gb-boot-hint animate-blink">▶ PRESS START</p>
+          <p class="font-pixel gb-boot-hint animate-blink">LOADING…</p>
         </div>
       </div>
     </transition>
