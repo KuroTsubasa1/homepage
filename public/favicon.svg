@@ -1,21 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1e1e2a"/>
-      <stop offset="1" stop-color="#0a0a0f"/>
-    </linearGradient>
-    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#00ff88"/>
-      <stop offset="1" stop-color="#00f0ff"/>
-    </linearGradient>
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="1.8" result="b"/>
-      <feMerge>
-        <feMergeNode in="b"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
-  <rect x="1.5" y="1.5" width="61" height="61" rx="14" fill="url(#bg)" stroke="#00ff88" stroke-opacity="0.4" stroke-width="2"/>
-  <path d="M23 15 H34 V37 H48 V49 H23 Z" fill="url(#ink)" filter="url(#glow)"/>
+  <!-- console body -->
+  <rect x="6" y="3" width="52" height="58" rx="9" fill="#c7c4b2" stroke="#5e5b4e" stroke-width="2"/>
+  <!-- top highlight -->
+  <rect x="10" y="6" width="44" height="5" rx="2.5" fill="#dcdacb" opacity="0.6"/>
+  <!-- screen bezel -->
+  <rect x="13" y="10" width="38" height="28" rx="3" fill="#3a3a37"/>
+  <!-- velvet accent stripe -->
+  <rect x="13" y="38" width="38" height="2.4" fill="#7c4dc4"/>
+  <!-- green LCD -->
+  <rect x="17" y="14" width="30" height="20" fill="#9bbc0f"/>
+  <!-- faint scanlines -->
+  <g fill="#0f380f" opacity="0.16">
+    <rect x="17" y="17" width="30" height="1.2"/>
+    <rect x="17" y="22" width="30" height="1.2"/>
+    <rect x="17" y="27" width="30" height="1.2"/>
+  </g>
+  <!-- play triangle (PRESS START) -->
+  <path d="M28 18.5 L28 29.5 L38 24 Z" fill="#0f380f"/>
+  <!-- d-pad -->
+  <g fill="#2b2b26">
+    <rect x="20" y="45" width="4.4" height="12" rx="1"/>
+    <rect x="16" y="48.8" width="12" height="4.4" rx="1"/>
+  </g>
+  <!-- A / B buttons -->
+  <circle cx="44" cy="54" r="3.5" fill="#c0395f"/>
+  <circle cx="50.5" cy="48.5" r="3.5" fill="#7c4dc4"/>
 </svg>

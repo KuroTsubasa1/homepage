@@ -9,7 +9,14 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const svg = readFileSync(join(root, 'public/favicon.svg'), 'utf8');
 const sizes = [16, 32, 48, 64, 180];
 
-const browser = await puppeteer.launch();
+// Prefer Puppeteer's bundled Chromium; fall back to a system Chrome install
+// (the bundled download is sometimes incomplete).
+let browser;
+try {
+  browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+} catch {
+  browser = await puppeteer.launch({ channel: 'chrome', args: ['--no-sandbox'] });
+}
 const page = await browser.newPage();
 await page.setContent(
   `<style>*{margin:0;padding:0}</style>${svg}`,
