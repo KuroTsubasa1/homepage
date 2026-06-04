@@ -110,6 +110,38 @@
     --dot-color: rgba(95, 210, 255, 0.05);
 }
 
+/* RGB RAINBOW — accents cycle through the hue wheel (Konami reward) */
+[data-palette="rainbow"] {
+    --c-bg: 14 14 22;
+    --c-bg-100: 22 22 34;
+    --c-bg-200: 32 32 48;
+    --c-bg-300: 44 44 64;
+    --c-bg-400: 60 60 86;
+    --c-green: 255 70 70;
+    --c-green-2: 255 150 80;
+    --c-crimson: 255 90 150;
+    --c-velvet: 120 140 255;
+    --c-ink: 240 240 250;
+    --c-ink-2: 200 200 220;
+    --c-ink-3: 150 150 175;
+    --c-ink-4: 110 110 135;
+    --lcd-tint: rgba(255, 255, 255, 0.04);
+    --scan-color: rgba(0, 0, 0, 0.35);
+    --dot-color: rgba(255, 255, 255, 0.06);
+}
+html[data-palette="rainbow"] { animation: gb-rainbow 6s steps(1, end) infinite; }
+@keyframes gb-rainbow {
+    0%    { --c-green: 255 70 70;  --c-green-2: 255 150 80;  --c-velvet: 120 140 255; }
+    12.5% { --c-green: 255 150 50; --c-green-2: 255 205 95;  --c-velvet: 255 90 160; }
+    25%   { --c-green: 240 225 70; --c-green-2: 250 240 130; --c-velvet: 110 200 255; }
+    37.5% { --c-green: 110 220 90; --c-green-2: 170 240 130; --c-velvet: 255 120 90; }
+    50%   { --c-green: 70 220 200; --c-green-2: 140 240 230; --c-velvet: 200 120 255; }
+    62.5% { --c-green: 80 160 255; --c-green-2: 150 200 255; --c-velvet: 255 205 95; }
+    75%   { --c-green: 160 110 255;--c-green-2: 200 160 255; --c-velvet: 110 230 150; }
+    87.5% { --c-green: 255 90 200; --c-green-2: 255 150 220; --c-velvet: 120 200 255; }
+    100%  { --c-green: 255 70 70;  --c-green-2: 255 150 80;  --c-velvet: 120 140 255; }
+}
+
 @layer base {
     html {
         scroll-behavior: smooth;
@@ -429,6 +461,7 @@
     .screen-scanlines::after {
         animation: none !important;
     }
+    html[data-palette="rainbow"] { animation: none !important; }
 }
 
 /* =====================================================================

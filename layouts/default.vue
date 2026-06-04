@@ -14,7 +14,7 @@ const personSchema = ref<any>(null)
 const businessSchema = ref<any>(null)
 
 useHead({
-  htmlAttrs: { 'data-theme': 'mytheme', 'data-palette': gb.palette.value },
+  htmlAttrs: { 'data-theme': 'mytheme', 'data-palette': computed(() => gb.palette.value) },
   bodyAttrs: { class: 'gb-body' },
   script: [
     { type: 'application/ld+json', children: computed(() => personSchema.value ? JSON.stringify(personSchema.value) : '{}') },
@@ -216,8 +216,8 @@ const spawnCoins = () => {
   setTimeout(() => { coins.value = [] }, 3600)
 }
 const triggerCheat = () => {
-  gb.unlockSecret()
-  gb.unlockAudio(); gb.sfx.cheat()
+  gb.cheatParty()       // unlock secrets + rainbow palette + party track
+  gb.sfx.cheat()
   cheatToast.value = true
   spawnCoins()
   setTimeout(() => { cheatToast.value = false }, 2800)
@@ -515,8 +515,8 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
     <transition name="menu-fade">
       <div v-if="cheatToast" class="gb-cheat-toast">
         <div class="gb-cheat-box shell-surface">
-          <p class="font-pixel gb-cheat-line">★ CHEAT UNLOCKED ★</p>
-          <p class="font-pixel gb-cheat-sub">SECRET PALETTES — PRESS SELECT</p>
+          <p class="font-pixel gb-cheat-line">★ RAINBOW MODE ★</p>
+          <p class="font-pixel gb-cheat-sub">PARTY TRACK ON · SELECT CYCLES PALETTES</p>
         </div>
       </div>
     </transition>

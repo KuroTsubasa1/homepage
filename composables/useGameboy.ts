@@ -16,11 +16,11 @@
  */
 import { ref, watch } from 'vue'
 
-export type GbPalette = 'night' | 'classic' | 'grape' | 'berry' | 'ocean'
+export type GbPalette = 'night' | 'classic' | 'grape' | 'berry' | 'ocean' | 'rainbow'
 
 /** Always-available palettes vs. the secret ones unlocked by the Konami code. */
 export const BASE_PALETTES: GbPalette[] = ['night', 'classic']
-export const SECRET_PALETTES: GbPalette[] = ['grape', 'berry', 'ocean']
+export const SECRET_PALETTES: GbPalette[] = ['grape', 'berry', 'ocean', 'rainbow']
 
 /** Primary routes the D-pad left/right cycles through. */
 export const GB_ROUTES = [
@@ -125,6 +125,7 @@ const NT = {
   F2: 87.31, G2: 98.0, A2: 110.0, C3: 130.81, D3: 146.83, E3: 164.81, G3: 196.0,
   G4: 392.0, A4: 440.0, B4: 493.88,
   C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.0, B5: 987.77,
+  C6: 1046.5, D6: 1174.66,
 }
 // Lead melody — 8 bars × 8 eighth-notes (0 = rest), built from chord tones.
 const LEAD = [
@@ -147,6 +148,20 @@ const FIFTHS = [NT.E3, NT.C3, NT.G3, NT.D3, NT.E3, NT.C3, NT.D3, NT.D3]
 const STEP_DUR = 0.15        // seconds per eighth note (~200 BPM-ish groove)
 const LOOKAHEAD = 0.12       // schedule this far ahead (s)
 const TICK = 25              // scheduler poll (ms)
+
+/* ---- Konami "PARTY" track: fast + upbeat, 8 voices over C · G · Am · F.
+   Plays whenever the active palette is 'rainbow'. ---- */
+const CHEAT_STEP = 0.105
+const C_LEAD = [
+  NT.C5, NT.E5, NT.G5, NT.C6, NT.G5, NT.E5, NT.G5, NT.E5,   // C
+  NT.D5, NT.G5, NT.B5, NT.D6, NT.B5, NT.G5, NT.B5, NT.G5,   // G
+  NT.A4, NT.C5, NT.E5, NT.A5, NT.E5, NT.C5, NT.E5, NT.C5,   // Am
+  NT.A4, NT.C5, NT.F5, NT.A5, NT.F5, NT.C5, NT.F5, NT.A4,   // F
+]
+const C_CHORDS = [
+  [NT.C5, NT.E5, NT.G5], [NT.D5, NT.G5, NT.B5], [NT.A4, NT.C5, NT.E5], [NT.A4, NT.C5, NT.F5],
+]
+const C_ROOTS = [NT.C3, NT.G2, NT.A2, NT.F2]
 
 let musicTimer: any = null
 let nextNoteTime = 0
@@ -191,25 +206,45 @@ function noiseHit(t0: number, dur: number, vol: number) {
   src.stop(t0 + dur + 0.02)
 }
 
+// Mellow 4-voice default track.
+function scheduleNormalStep(idx: number, t: number) {
+  const s = idx % LEAD.length
+  const bar = (s / 8) | 0
+  const beat = s % 8
+  const lead = LEAD[s]
+  if (lead) musicNote(lead, STEP_DUR * 0.9, 'square', 0.05, t)
+  const chord = CHORDS[bar]
+  musicNote(chord[s % chord.length], STEP_DUR * 0.55, 'square', 0.02, t)
+  if (beat % 2 === 0) musicNote(beat === 6 ? FIFTHS[bar] : ROOTS[bar], STEP_DUR * 1.7, 'triangle', 0.06, t)
+  if (beat % 2 === 1) noiseHit(t, 0.03, 0.018)
+}
+
+// Fast 8-voice party track (lead, harmony, arp, bass, octave-bass, counter,
+// hats, kick) — unlocked by the Konami code (palette === 'rainbow').
+function scheduleCheatStep(idx: number, t: number) {
+  const s = idx % C_LEAD.length
+  const bar = (s / 8) | 0
+  const beat = s % 8
+  const chord = C_CHORDS[bar]
+  const root = C_ROOTS[bar]
+  const lead = C_LEAD[s]
+  if (lead) musicNote(lead, CHEAT_STEP * 0.9, 'square', 0.05, t)                 // 1 lead
+  if (beat % 4 === 0) musicNote(chord[2], CHEAT_STEP * 1.5, 'square', 0.03, t)   // 2 harmony
+  musicNote(chord[s % chord.length], CHEAT_STEP * 0.5, 'square', 0.02, t)        // 3 arp
+  if (beat % 2 === 0) musicNote(root, CHEAT_STEP * 1.1, 'triangle', 0.06, t)     // 4 bass
+  if (beat % 2 === 1) musicNote(root * 2, CHEAT_STEP * 0.8, 'triangle', 0.04, t) // 5 octave-bass
+  if (beat % 2 === 1) musicNote(chord[1] * 2, CHEAT_STEP * 0.45, 'square', 0.022, t) // 6 counter
+  noiseHit(t, 0.025, beat % 2 === 1 ? 0.02 : 0.01)                              // 7 hats
+  if (beat % 2 === 0) musicNote(70, 0.07, 'triangle', 0.07, t)                   // 8 kick
+}
+
 function musicLoop() {
   if (!audioCtx) return
   while (nextNoteTime < audioCtx.currentTime + LOOKAHEAD) {
-    const s = stepIndex % LEAD.length
-    const bar = (s / 8) | 0
-    const beat = s % 8
-    // lead (pulse 1)
-    const lead = LEAD[s]
-    if (lead) musicNote(lead, STEP_DUR * 0.9, 'square', 0.05, nextNoteTime)
-    // shimmering arpeggio (quiet pulse 2)
-    const chord = CHORDS[bar]
-    musicNote(chord[s % chord.length], STEP_DUR * 0.55, 'square', 0.02, nextNoteTime)
-    // driving triangle bass on the beats (fifth on beat 6)
-    if (beat % 2 === 0) {
-      musicNote(beat === 6 ? FIFTHS[bar] : ROOTS[bar], STEP_DUR * 1.7, 'triangle', 0.06, nextNoteTime)
-    }
-    // noise hi-hats on the off-beats
-    if (beat % 2 === 1) noiseHit(nextNoteTime, 0.03, 0.018)
-    nextNoteTime += STEP_DUR
+    const party = palette.value === 'rainbow'
+    if (party) scheduleCheatStep(stepIndex, nextNoteTime)
+    else scheduleNormalStep(stepIndex, nextNoteTime)
+    nextNoteTime += party ? CHEAT_STEP : STEP_DUR
     stepIndex += 1
   }
 }
@@ -276,6 +311,19 @@ function hydrate() {
 export function useGameboy() {
   const setPalette = (p: GbPalette) => { palette.value = p; applyPaletteToDom() }
   const unlockSecret = () => { secretUnlocked.value = true }
+  // Konami payoff: unlock secrets, jump to the rainbow palette and (re)start the
+  // upbeat 8-voice party track from the top.
+  const cheatParty = () => {
+    secretUnlocked.value = true
+    palette.value = 'rainbow'
+    applyPaletteToDom()
+    ensureCtx()
+    if (!muted.value) {
+      musicOn.value = true
+      stopMusic()
+      startMusic()
+    }
+  }
   const cyclePalette = () => {
     const list = secretUnlocked.value ? [...BASE_PALETTES, ...SECRET_PALETTES] : BASE_PALETTES
     const i = list.indexOf(palette.value)
@@ -333,6 +381,7 @@ export function useGameboy() {
     setPalette,
     cyclePalette,
     unlockSecret,
+    cheatParty,
     toggleMute,
     toggleMusic,
     toggleDeck,
