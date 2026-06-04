@@ -1,20 +1,18 @@
 <template>
-  <navigation></navigation>
-
   <!-- Hero -->
   <section class="pt-28 py-16 bg-dark-100 relative overflow-hidden">
     <div class="absolute inset-0 bg-grid opacity-10"></div>
     <div class="absolute top-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px]"></div>
     <div class="container mx-auto px-4 relative z-10">
-      <NuxtLink to="/reel-web-projects" class="btn-neon-outline text-sm !py-2 !px-4 inline-flex items-center gap-2 mb-8">
+      <NuxtLink to="/reel-web-projects" class="btn-neon-outline font-pixel text-sm !py-2 !px-4 inline-flex items-center gap-2 mb-8">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
         {{ $t('common.back') }}
       </NuxtLink>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-slide-up">
       <div class="flex flex-col justify-center">
-        <div class="flex items-center gap-3 mb-4">
+        <div class="flex items-center gap-3 mb-4 flex-wrap">
           <h2 class="text-3xl md:text-4xl font-bold text-white">{{ projectData.title }}</h2>
-          <span v-if="projectData.company" class="text-xs px-2.5 py-1 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20">{{ projectData.company }}</span>
+          <span v-if="projectData.company" class="gb-chip font-pixel text-xs">{{ projectData.company }}</span>
         </div>
         <p class="text-gray-300 leading-relaxed mb-6">{{ projectData.longDescription }}</p>
         <ul class="space-y-2 text-gray-300">
@@ -24,11 +22,11 @@
         </ul>
       </div>
       <div>
-        <video v-if="projectData.videos && projectData.videos.length > 0" class="rounded-2xl border border-white/10 w-full" controls>
+        <video v-if="projectData.videos && projectData.videos.length > 0" class="cartridge w-full" controls>
           <source :src="projectData.videos[0]" type="video/mp4">
         </video>
-        <img v-else-if="projectData.images && projectData.images.length > 0" :src="projectData.images[0]" class="rounded-2xl border border-white/10 w-full" :alt="projectData.title" />
-        <div v-else class="rounded-2xl border border-white/10 w-full h-64 bg-gradient-to-br from-dark-200 to-dark-400 flex items-center justify-center">
+        <img v-else-if="projectData.images && projectData.images.length > 0" :src="projectData.images[0]" class="cartridge w-full" :alt="projectData.title" />
+        <div v-else class="cartridge w-full h-64 bg-gradient-to-br from-dark-200 to-dark-400 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-dark-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
         </div>
       </div>
@@ -42,7 +40,7 @@
       <h2 class="section-heading">Technologies</h2>
       <div class="section-divider"></div>
       <div class="flex flex-wrap justify-center gap-3">
-        <span v-for="(tech, index) in technologies" :key="index" class="glass-card neon-border px-5 py-2.5 text-gray-300 font-medium text-sm">
+        <span v-for="(tech, index) in technologies" :key="index" class="gb-chip font-pixel text-xs">
           {{ typeof tech === 'string' ? tech : tech.name }}
         </span>
       </div>
@@ -55,7 +53,7 @@
       <h2 class="section-heading">Gallery</h2>
       <div class="section-divider"></div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="(image, index) in projectData.images.slice(1)" :key="index" class="rounded-2xl overflow-hidden border border-white/10 hover:border-neon-green/30 transition-all duration-300">
+        <div v-for="(image, index) in projectData.images.slice(1)" :key="index" class="cartridge overflow-hidden transition-all duration-300">
           <img :src="image" :alt="'Gallery Image ' + (index + 1)" class="w-full transition-transform hover:scale-105 duration-500" loading="lazy" />
         </div>
       </div>
@@ -82,16 +80,12 @@
     <div class="absolute inset-0 bg-grid opacity-10"></div>
     <div class="container mx-auto px-4 text-center relative z-10">
       <h2 class="text-3xl font-bold mb-6"><span class="gradient-text">Want to explore this project?</span></h2>
-      <a :href="projectData.link" target="_blank" class="btn-neon inline-block">Visit Project</a>
+      <a :href="projectData.link" target="_blank" class="btn-neon font-pixel text-sm inline-block animate-glow-pulse">Visit Project</a>
     </div>
   </section>
-
-  <footer-component></footer-component>
 </template>
 
 <script setup>
-import Navigation from '~/components/navigation.vue';
-import FooterComponent from '~/components/footerComponent.vue';
 import { useRoute } from 'vue-router';
 
 // Static employment project data — used when PocketBase doesn't have the project

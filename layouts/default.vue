@@ -59,7 +59,7 @@ const navTo = (path: string) => { gb.sfx.select(); photoOpen.value = false; rout
    Unified menu (START button + mobile hamburger + D-pad)
    A flat list of actionable items so the D-pad can drive everything.
    ---------------------------------------------------------------------- */
-type MenuItem = { label: string; kind: 'route' | 'lang' | 'palette' | 'sound'; path?: string; indent?: boolean }
+type MenuItem = { label: string; kind: 'route' | 'lang' | 'palette' | 'sound' | 'music'; path?: string; indent?: boolean }
 const menuItems = computed<MenuItem[]>(() => [
   ...gb.routes.map(r => ({ label: r.label, kind: 'route' as const, path: r.path })),
   { label: t('photoCategories.wildlife'), kind: 'route', path: '/photography/wildlife', indent: true },
@@ -67,6 +67,7 @@ const menuItems = computed<MenuItem[]>(() => [
   { label: `LANG: ${locale.value.toUpperCase()}`, kind: 'lang' },
   { label: `PALETTE: ${gb.palette.value === 'night' ? 'NIGHT' : 'CLASSIC'}`, kind: 'palette' },
   { label: `SOUND: ${gb.muted.value ? 'OFF' : 'ON'}`, kind: 'sound' },
+  { label: `MUSIC: ${gb.musicOn.value ? 'ON' : 'OFF'}`, kind: 'music' },
 ])
 const menuIndex = ref(0)
 
@@ -81,6 +82,7 @@ const runMenuItem = (item: MenuItem) => {
     case 'lang': locale.value = locale.value === 'en' ? 'de' : 'en'; gb.sfx.toggle(); break
     case 'palette': gb.cyclePalette(); break
     case 'sound': gb.toggleMute(); break
+    case 'music': gb.toggleMusic(); break
   }
 }
 
@@ -154,6 +156,27 @@ const endBoot = () => {
   try { sessionStorage.setItem('gb-booted', '1') } catch {}
 }
 
+// First user gesture unlocks audio (browser policy), fires the power-on ping
+// while the boot screen is up, and kicks off the background chiptune.
+let sessionStarted = false
+const startSession = () => {
+  if (sessionStarted) return
+  sessionStarted = true
+  gb.unlockAudio()
+  if (!gb.muted.value && showBoot.value) gb.sfx.boot()
+  gb.startMusic()
+  window.removeEventListener('pointerdown', startSession)
+  window.removeEventListener('touchstart', startSession)
+}
+
+// Pressing START / clicking the boot screen: ping, then clear it shortly after
+// so the chime rings against the LCD before the content appears.
+const proceedFromBoot = () => {
+  startSession()
+  clearTimeout(bootTimer)
+  bootTimer = setTimeout(endBoot, 650)
+}
+
 /* ----------------------------------------------------------------------
    Keyboard control
    ---------------------------------------------------------------------- */
@@ -161,7 +184,8 @@ const onKey = (e: KeyboardEvent) => {
   const el = e.target as HTMLElement | null
   const tag = (el?.tagName || '').toLowerCase()
   if (['input', 'textarea', 'select'].includes(tag) || el?.isContentEditable) return
-  if (showBoot.value) { endBoot(); return }
+  if (showBoot.value) { proceedFromBoot(); return }
+  startSession()
   switch (e.key) {
     case 'ArrowUp': e.preventDefault(); onDir('up'); break
     case 'ArrowDown': e.preventDefault(); onDir('down'); break
@@ -186,10 +210,11 @@ onMounted(async () => {
     gb.finishBoot()
   } else {
     lockScroll(true)
-    gb.sfx.boot()
     bootTimer = setTimeout(endBoot, 2700)
   }
   window.addEventListener('keydown', onKey)
+  window.addEventListener('pointerdown', startSession)
+  window.addEventListener('touchstart', startSession)
 
   // schema (preserved)
   try {
@@ -200,6 +225,9 @@ onMounted(async () => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKey)
+  window.removeEventListener('pointerdown', startSession)
+  window.removeEventListener('touchstart', startSession)
+  gb.stopMusic()
   clearTimeout(bootTimer)
   clearTimeout(pressTimer)
   lockScroll(false)
@@ -214,7 +242,7 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
 
     <!-- ================= BOOT SEQUENCE ================= -->
     <transition name="boot-fade">
-      <div v-if="showBoot" class="gb-boot" @click="endBoot">
+      <div v-if="showBoot" class="gb-boot" @click="proceedFromBoot">
         <div class="gb-boot-inner screen-scanlines screen-dots">
           <div class="gb-boot-logo animate-boot-drop">
             <span class="font-pixel gb-boot-brand">LASSE HARM</span>
@@ -266,6 +294,9 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
           </button>
           <button class="gb-icon-btn" @click="gb.toggleMute()" :aria-label="gb.muted.value ? 'Unmute' : 'Mute'" :title="gb.muted.value ? 'Sound off' : 'Sound on'">
             <Icon :name="gb.muted.value ? 'mdi:volume-off' : 'mdi:volume-high'" />
+          </button>
+          <button class="gb-icon-btn" @click="gb.toggleMusic()" :aria-label="gb.musicOn.value ? 'Turn music off' : 'Turn music on'" :title="gb.musicOn.value ? 'Music on' : 'Music off'">
+            <Icon :name="gb.musicOn.value ? 'mdi:music' : 'mdi:music-off'" />
           </button>
           <button class="gb-icon-btn" @click="gb.cyclePalette()" aria-label="Toggle screen palette" title="Swap LCD palette">
             <Icon :name="gb.palette.value === 'night' ? 'mdi:weather-night' : 'mdi:white-balance-sunny'" />
