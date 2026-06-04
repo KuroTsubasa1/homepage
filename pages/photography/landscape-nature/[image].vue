@@ -1,12 +1,10 @@
 <template>
-  <navigation></navigation>
-
   <!-- Sticky Header -->
-  <header class="sticky top-0 bg-dark/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-neon-cyan/5 z-10">
+  <header class="sticky top-0 bg-dark/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-neon-green/5 z-10">
     <div class="container mx-auto flex justify-between items-center px-4 py-3">
       <h1 class="text-2xl font-bold text-white">{{ imageData.alt || 'Landscape & Nature Photography' }}</h1>
       <button
-          class="btn-neon-outline text-sm"
+          class="btn-neon-outline text-sm font-pixel"
           @click="$router.push('/photography/landscape-nature')"
       >
         Back to Landscape Gallery
@@ -17,16 +15,17 @@
   <!-- Main Image Section -->
   <section class="image-section py-16">
     <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <img
-          v-if="imageData.src"
-          :src="imageData.src"
-          :alt="imageData.alt"
-          class="w-full rounded-2xl border border-white/10 mb-8"
-        />
+      <div class="max-w-4xl mx-auto animate-slide-up">
+        <div v-if="imageData.src" class="cartridge mb-8">
+          <img
+            :src="imageData.src"
+            :alt="imageData.alt"
+            class="w-full"
+          />
+        </div>
 
         <div class="glass-card neon-border p-6">
-          <h2 class="text-2xl font-semibold text-neon-cyan mb-4">Image Details</h2>
+          <h2 class="text-2xl font-semibold text-neon-green mb-4">Image Details</h2>
           <div class="space-y-3 text-gray-300">
             <p v-if="imageData.alt"><strong class="text-white">Title:</strong> {{ imageData.alt }}</p>
             <p v-if="imageData.description"><strong class="text-white">Description:</strong> {{ imageData.description }}</p>
@@ -59,7 +58,7 @@
         <button
           v-if="prevImage"
           @click="navigateToImage(prevImage.id)"
-          class="btn-neon-outline text-sm"
+          class="btn-neon-outline text-sm font-pixel"
         >
           ← Previous Image
         </button>
@@ -67,7 +66,7 @@
 
         <button
           @click="$router.push('/photography/landscape-nature')"
-          class="btn-neon text-sm"
+          class="btn-neon text-sm font-pixel"
         >
           Back to Gallery
         </button>
@@ -75,7 +74,7 @@
         <button
           v-if="nextImage"
           @click="navigateToImage(nextImage.id)"
-          class="btn-neon-outline text-sm"
+          class="btn-neon-outline text-sm font-pixel"
         >
           Next Image →
         </button>
@@ -83,13 +82,9 @@
       </div>
     </div>
   </section>
-
-  <footer-component></footer-component>
 </template>
 
 <script setup>
-import Navigation from '~/components/navigation.vue';
-import FooterComponent from '~/components/footerComponent.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

@@ -2,139 +2,375 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =====================================================================
+   GAME BOY THEME — palette variables
+   Two runtime palettes, swapped by setting data-palette on <html>.
+   Values are RGB channel triplets so Tailwind's rgb(var(--x)/<alpha>) works.
+   ===================================================================== */
+:root,
+[data-palette="night"] {
+    /* Dark phosphor LCD (default) — photo friendly */
+    --c-bg: 13 22 9;
+    --c-bg-100: 18 30 14;
+    --c-bg-200: 26 42 20;
+    --c-bg-300: 35 56 27;
+    --c-bg-400: 48 74 38;
+
+    --c-green: 155 188 15;     /* #9bbc0f classic DMG light */
+    --c-green-2: 198 222 139;  /* pale phosphor */
+    --c-crimson: 200 70 110;   /* A/B button glow */
+    --c-velvet: 162 130 224;   /* velvet accent */
+
+    --c-ink: 214 232 160;      /* lightest text */
+    --c-ink-2: 169 196 110;    /* dim text */
+    --c-ink-3: 126 154 78;     /* faint text */
+    --c-ink-4: 92 115 56;      /* placeholder */
+
+    --lcd-tint: rgba(155, 188, 15, 0.05);
+    --scan-color: rgba(0, 0, 0, 0.35);
+    --dot-color: rgba(155, 188, 15, 0.05);
+}
+
+[data-palette="classic"] {
+    /* Iconic pea-green DMG screen — dark ink on light green */
+    --c-bg: 155 188 15;
+    --c-bg-100: 139 172 15;
+    --c-bg-200: 148 180 26;
+    --c-bg-300: 126 156 16;
+    --c-bg-400: 107 138 12;
+
+    --c-green: 15 56 15;       /* dark green accent on light */
+    --c-green-2: 48 98 48;
+    --c-crimson: 142 37 71;
+    --c-velvet: 75 46 131;
+
+    --c-ink: 15 56 15;
+    --c-ink-2: 26 70 26;
+    --c-ink-3: 48 98 48;
+    --c-ink-4: 70 110 48;
+
+    --lcd-tint: rgba(15, 56, 15, 0.04);
+    --scan-color: rgba(15, 56, 15, 0.16);
+    --dot-color: rgba(15, 56, 15, 0.10);
+}
+
 @layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
-        @apply bg-dark text-gray-200 antialiased;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        @apply bg-dark text-gray-300 antialiased;
+        font-family: 'VT323', ui-monospace, SFMono-Regular, monospace;
+        font-size: 1.18rem;
+        line-height: 1.45;
+        letter-spacing: 0.01em;
+        text-rendering: optimizeLegibility;
+    }
+
+    /* VT323 renders small — nudge sizing globally for comfortable reading. */
+    p, li, label, input, textarea, select, button, a, span, td, th, blockquote {
+        letter-spacing: 0.012em;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        letter-spacing: 0.02em;
+        line-height: 1.05;
     }
 
     ::selection {
-        @apply bg-neon-green/30 text-white;
+        @apply bg-neon-green/40;
+        color: rgb(var(--c-bg));
     }
 
-    /* Custom scrollbar */
+    /* Chunky pixel scrollbar */
     ::-webkit-scrollbar {
-        width: 8px;
+        width: 12px;
+        height: 12px;
     }
     ::-webkit-scrollbar-track {
-        @apply bg-dark;
+        background: rgb(var(--c-bg-100));
     }
     ::-webkit-scrollbar-thumb {
-        @apply bg-dark-300 rounded-full;
+        background: rgb(var(--c-green) / 0.5);
+        border: 3px solid rgb(var(--c-bg-100));
+        border-radius: 0;
     }
     ::-webkit-scrollbar-thumb:hover {
-        @apply bg-neon-green/50;
+        background: rgb(var(--c-green) / 0.85);
+    }
+    * {
+        scrollbar-color: rgb(var(--c-green) / 0.5) rgb(var(--c-bg-100));
     }
 }
 
 @layer components {
-    /* Glassmorphism card */
+    /* ---- Pixel / display typography helpers ---- */
+    .font-pixel { font-family: 'Press Start 2P', monospace; }
+    .pixel-heading {
+        @apply font-pixel uppercase;
+        font-size: clamp(0.8rem, 2.4vw, 1.35rem);
+        line-height: 1.5;
+        letter-spacing: 0.04em;
+        text-shadow: 0 0 12px rgb(var(--c-green) / 0.35);
+    }
+    .pixel-label {
+        @apply font-pixel uppercase;
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+    }
+
+    /* ---- LCD panel (was .glass-card) ---- */
     .glass-card {
-        @apply bg-dark-100/60 backdrop-blur-xl border border-white/10 rounded-2xl;
+        background: rgb(var(--c-bg-100) / 0.82);
+        border: 2px solid rgb(var(--c-green) / 0.18);
+        border-radius: 0.35rem;
+        box-shadow: inset 0 0 24px rgb(0 0 0 / 0.35);
+        backdrop-filter: blur(2px);
+        position: relative;
     }
 
-    /* Neon border glow - now green */
+    /* ---- Phosphor border (was .neon-border) ---- */
     .neon-border {
-        @apply border border-neon-green/30;
-        box-shadow: 0 0 15px rgba(0, 255, 136, 0.08), inset 0 0 15px rgba(0, 255, 136, 0.03);
+        border: 2px solid rgb(var(--c-green) / 0.35);
+        box-shadow: 0 0 14px rgb(var(--c-green) / 0.12), inset 0 0 14px rgb(var(--c-green) / 0.06);
+        transition: border-color 0.2s steps(2), box-shadow 0.2s steps(2);
     }
-
     .neon-border:hover {
-        @apply border-neon-green/60;
-        box-shadow: 0 0 25px rgba(0, 255, 136, 0.15), inset 0 0 25px rgba(0, 255, 136, 0.05);
+        border-color: rgb(var(--c-green) / 0.7);
+        box-shadow: 0 0 26px rgb(var(--c-green) / 0.28), inset 0 0 20px rgb(var(--c-green) / 0.1);
     }
 
-    /* Gradient text - green to cyan to purple */
+    /* ---- Phosphor gradient text ---- */
     .gradient-text {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple;
+        @apply bg-clip-text text-transparent;
+        background-image: linear-gradient(95deg, rgb(var(--c-green)), rgb(var(--c-green-2)), rgb(var(--c-velvet)));
         background-size: 200% auto;
+        text-shadow: 0 0 26px rgb(var(--c-green) / 0.25);
     }
 
-    /* Neon glow button - green */
+    /* ---- Chunky Game Boy buttons (was .btn-neon / outline) ---- */
     .btn-neon {
-        @apply relative px-8 py-3 font-bold text-dark bg-neon-green rounded-xl transition-all duration-300 overflow-hidden;
-        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        @apply font-pixel uppercase inline-flex items-center justify-center gap-2;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        color: rgb(var(--c-bg));
+        background: rgb(var(--c-green));
+        padding: 0.85rem 1.4rem;
+        border: 2px solid rgb(var(--c-bg));
+        border-radius: 0.3rem;
+        box-shadow: 0 4px 0 rgb(var(--c-green) / 0.4), 0 6px 12px rgb(0 0 0 / 0.4);
+        transition: transform 0.08s steps(2), box-shadow 0.08s steps(2), background 0.15s;
+        cursor: pointer;
     }
     .btn-neon:hover {
-        box-shadow: 0 0 40px rgba(0, 255, 136, 0.5), 0 0 80px rgba(0, 255, 136, 0.2);
+        background: rgb(var(--c-green-2));
+        box-shadow: 0 6px 0 rgb(var(--c-green) / 0.4), 0 10px 18px rgb(0 0 0 / 0.45);
         transform: translateY(-2px);
     }
+    .btn-neon:active {
+        transform: translateY(3px);
+        box-shadow: 0 1px 0 rgb(var(--c-green) / 0.4), 0 2px 6px rgb(0 0 0 / 0.4);
+    }
+    .btn-neon:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-    /* Neon outline button - green */
     .btn-neon-outline {
-        @apply relative px-8 py-3 font-bold text-neon-green border-2 border-neon-green/60 rounded-xl transition-all duration-300;
-        box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+        @apply font-pixel uppercase inline-flex items-center justify-center gap-2;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        color: rgb(var(--c-green));
+        background: transparent;
+        padding: 0.85rem 1.4rem;
+        border: 2px solid rgb(var(--c-green) / 0.7);
+        border-radius: 0.3rem;
+        box-shadow: 0 4px 0 rgb(var(--c-green) / 0.25);
+        transition: transform 0.08s steps(2), box-shadow 0.08s steps(2), background 0.15s;
+        cursor: pointer;
     }
     .btn-neon-outline:hover {
-        @apply bg-neon-green/10;
-        box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        background: rgb(var(--c-green) / 0.12);
         transform: translateY(-2px);
+        box-shadow: 0 6px 0 rgb(var(--c-green) / 0.25);
+    }
+    .btn-neon-outline:active {
+        transform: translateY(3px);
+        box-shadow: 0 1px 0 rgb(var(--c-green) / 0.25);
     }
 
-    /* Section heading */
+    /* ---- Section heading / divider ---- */
     .section-heading {
-        @apply text-3xl md:text-4xl font-bold text-center mb-2 text-white;
+        @apply text-center font-bold;
+        color: rgb(var(--c-ink));
+        text-shadow: 0 0 18px rgb(var(--c-green) / 0.3);
+        margin-bottom: 0.5rem;
     }
-
     .section-divider {
-        @apply w-24 h-1 mx-auto mb-12 rounded-full;
-        background: linear-gradient(90deg, #00ff88, #00f0ff, #8b5cf6);
+        width: 9rem;
+        height: 6px;
+        margin: 0 auto 3rem;
+        background-image: repeating-linear-gradient(
+            90deg,
+            rgb(var(--c-green)) 0 10px,
+            transparent 10px 18px
+        );
+        opacity: 0.8;
     }
 
-    /* Animated underline for links */
+    /* ---- Animated phosphor link ---- */
     .link-glow {
-        @apply relative text-gray-300 transition-colors duration-300;
+        @apply relative transition-colors duration-200;
+        color: rgb(var(--c-ink-2));
     }
     .link-glow:hover {
-        @apply text-neon-green;
-        text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        color: rgb(var(--c-green));
+        text-shadow: 0 0 10px rgb(var(--c-green) / 0.6);
     }
     .link-glow::after {
         content: '';
-        @apply absolute bottom-0 left-0 w-0 h-0.5 rounded-full transition-all duration-300;
-        background: linear-gradient(90deg, #00ff88, #00f0ff);
+        @apply absolute left-0 w-0 transition-all duration-200;
+        bottom: -2px;
+        height: 3px;
+        background: rgb(var(--c-green));
     }
-    .link-glow:hover::after {
+    .link-glow:hover::after { @apply w-full; }
+
+    /* ---- Generic LCD form input (components also define scoped variants) ---- */
+    .form-input {
         @apply w-full;
+        font-family: 'VT323', monospace;
+        font-size: 1.15rem;
+        padding: 0.7rem 0.9rem;
+        color: rgb(var(--c-ink));
+        background: rgb(var(--c-bg-200) / 0.8);
+        border: 2px solid rgb(var(--c-green) / 0.25);
+        border-radius: 0.25rem;
+        transition: border-color 0.15s steps(2), box-shadow 0.15s steps(2);
+    }
+    .form-input::placeholder { color: rgb(var(--c-ink-4)); }
+    .form-input:focus {
+        outline: none;
+        border-color: rgb(var(--c-green) / 0.7);
+        box-shadow: 0 0 16px rgb(var(--c-green) / 0.2);
+    }
+
+    /* ---- Cartridge frame for media (use around images) ---- */
+    .cartridge {
+        position: relative;
+        border: 3px solid rgb(var(--c-green) / 0.35);
+        border-radius: 0.35rem 0.35rem 0.6rem 0.6rem;
+        background: rgb(var(--c-bg-100));
+        box-shadow: inset 0 0 0 2px rgb(0 0 0 / 0.4), 0 6px 16px rgb(0 0 0 / 0.4);
+        overflow: hidden;
+    }
+
+    /* ---- Pixel pill / chip ---- */
+    .gb-chip {
+        @apply font-pixel uppercase inline-flex items-center;
+        font-size: 0.55rem;
+        letter-spacing: 0.06em;
+        padding: 0.35rem 0.6rem;
+        color: rgb(var(--c-ink-2));
+        border: 2px solid rgb(var(--c-green) / 0.25);
+        border-radius: 0.25rem;
+        background: rgb(var(--c-bg-200) / 0.6);
+        transition: color 0.15s, border-color 0.15s;
+    }
+    .gb-chip:hover {
+        color: rgb(var(--c-green));
+        border-color: rgb(var(--c-green) / 0.6);
     }
 }
 
 @layer utilities {
-    .masonry {
-        column-gap: 0.5em;
-        column-count: 2;
-    }
-    .masonry-sm {
-        column-gap: 0.5em;
-        column-count: 2;
-    }
-    .masonry-md {
-        column-gap: 0.5em;
-        column-count: 5;
-    }
-    .break-inside {
-        break-inside: avoid;
-    }
+    .masonry { column-gap: 0.5em; column-count: 2; }
+    .masonry-sm { column-gap: 0.5em; column-count: 2; }
+    .masonry-md { column-gap: 0.5em; column-count: 5; }
+    .break-inside { break-inside: avoid; }
 
-    /* Grid background pattern - green tinted */
+    /* Dot-matrix grid background (phosphor tinted) */
     .bg-grid {
         background-image:
-            linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
-        background-size: 50px 50px;
+            linear-gradient(var(--dot-color) 1px, transparent 1px),
+            linear-gradient(90deg, var(--dot-color) 1px, transparent 1px);
+        background-size: 22px 22px;
     }
 
-    /* Noise texture overlay */
-    .bg-noise {
+    /* LCD pixel-dot overlay (apply to .screen-dots element) */
+    .screen-dots::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(rgb(0 0 0 / 0.18) 1px, transparent 1.4px);
+        background-size: 3px 3px;
+        mix-blend-mode: multiply;
+        opacity: 0.5;
+        z-index: 2;
+    }
+
+    /* Horizontal scanlines */
+    .screen-scanlines::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+            to bottom,
+            transparent 0 2px,
+            var(--scan-color) 2px 3px
+        );
+        opacity: 0.6;
+        z-index: 3;
+    }
+
+    /* Soft screen vignette + green wash */
+    .screen-vignette {
         position: relative;
     }
+    .screen-vignette::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(120% 90% at 50% 0%, transparent 55%, rgb(0 0 0 / 0.35) 100%),
+            var(--lcd-tint);
+        z-index: 1;
+    }
+
+    .bg-noise { position: relative; }
     .bg-noise::before {
         content: '';
         position: absolute;
         inset: 0;
-        opacity: 0.03;
+        opacity: 0.04;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         pointer-events: none;
         z-index: 0;
+    }
+
+    .pixelated { image-rendering: pixelated; }
+    .no-scroll { overflow: hidden; }
+
+    /* Dotted phosphor focus ring for keyboard users */
+    .gb-focusable:focus-visible {
+        outline: 3px dashed rgb(var(--c-green) / 0.8);
+        outline-offset: 2px;
+    }
+}
+
+/* Respect reduced-motion: silence the heavy ambient animations. */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .animate-scanline,
+    .animate-flicker,
+    .animate-float,
+    .animate-power-pulse,
+    .animate-marquee,
+    .animate-bob,
+    .animate-crt-flicker,
+    .animate-glow-pulse,
+    .screen-scanlines::after {
+        animation: none !important;
     }
 }

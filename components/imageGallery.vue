@@ -145,7 +145,7 @@ onBeforeUnmount(() => {
           class="break-inside cursor-pointer mb-5 flex justify-center group"
           @click="handleImageClick(image, index)"
         >
-          <div class="relative overflow-hidden rounded-xl border border-white/10 transition-all duration-300 group-hover:border-neon-cyan/30 group-hover:shadow-[0_0_20px_rgba(0,240,255,0.1)]">
+          <div class="cartridge relative overflow-hidden rounded-xl border border-white/10 transition-all duration-300 group-hover:border-neon-green/40 group-hover:shadow-[0_0_20px_rgba(155,188,15,0.18)]">
             <div v-if="image.loading" class="loading-container">
               <img v-lazy="image.thumbnail" :alt="image.alt" class="loading-image" @load="handleImageLoad(image)">
             </div>
@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
   transition: color 0.3s;
 }
 .close-button:hover {
-  color: #00f0ff;
+  color: rgb(var(--c-green-2));
 }
 
 .arrow {
@@ -231,7 +231,7 @@ onBeforeUnmount(() => {
   transition: color 0.3s;
 }
 .arrow:hover {
-  color: #00f0ff;
+  color: rgb(var(--c-green-2));
 }
 
 .left-arrow {

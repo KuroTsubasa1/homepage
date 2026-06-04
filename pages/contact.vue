@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import FooterComponent from "~/components/footerComponent.vue";
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -16,16 +15,14 @@ useSeoMeta({
 </script>
 
 <template>
-  <navigation></navigation>
-
   <!-- Hero Section -->
   <section class="relative py-32 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 via-dark to-neon-magenta/10"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10"></div>
     <div class="absolute inset-0 bg-grid opacity-20"></div>
-    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-cyan/10 rounded-full blur-[100px]"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-neon-magenta/10 rounded-full blur-[100px]"></div>
+    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-green/10 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-neon-purple/10 rounded-full blur-[100px]"></div>
 
-    <div class="container mx-auto px-4 text-center relative z-10 pt-10">
+    <div class="container mx-auto px-4 text-center relative z-10 pt-10 animate-slide-up">
       <h1 class="text-4xl md:text-6xl font-black mb-4">
         <span class="gradient-text">{{ t('contact.hero.title') }}</span>
       </h1>
@@ -35,7 +32,5 @@ useSeoMeta({
 
   <!-- Contact Form Section -->
   <contact-section></contact-section>
-
-  <footer-component></footer-component>
 </template>
 

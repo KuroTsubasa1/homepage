@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative min-h-screen w-full overflow-hidden">
+  <div class="relative min-h-[calc(100vh-13rem)] w-full overflow-hidden">
     <!-- Background slides -->
     <div
       v-for="(image, index) in images"
@@ -37,13 +37,13 @@ onMounted(() => {
 
     <!-- Ambient glow effects -->
     <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-green/10 rounded-full blur-[120px] z-10"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-magenta/10 rounded-full blur-[120px] z-10"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full blur-[120px] z-10"></div>
 
     <!-- Content -->
-    <div class="relative z-20 flex flex-col items-center justify-center min-h-screen px-4">
+    <div class="relative z-20 flex flex-col items-center justify-center min-h-[calc(100vh-13rem)] px-4">
       <!-- Avatar -->
       <div class="mb-8 animate-float">
-        <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-neon-green/50 shadow-[0_0_30px_rgba(0,240,255,0.3)]">
+        <div class="cartridge w-32 h-32 rounded-full overflow-hidden border-2 border-neon-green/50 shadow-[0_0_30px_rgba(155,188,15,0.3)]">
           <img
             alt="Lasse Harm"
             class="w-full h-full object-cover"
@@ -63,10 +63,10 @@ onMounted(() => {
         </p>
 
         <div class="flex flex-wrap justify-center gap-4 animate-slide-up" style="animation-delay: 0.3s;">
-          <NuxtLink to="/reel-web-projects" class="btn-neon">
+          <NuxtLink to="/reel-web-projects" class="btn-neon font-pixel animate-glow-pulse">
             {{ $t('hero.watchWork') }}
           </NuxtLink>
-          <NuxtLink to="/contact" class="btn-neon-outline">
+          <NuxtLink to="/contact" class="btn-neon-outline font-pixel">
             {{ $t('nav.contact') }}
           </NuxtLink>
         </div>

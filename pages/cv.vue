@@ -1,6 +1,4 @@
 <template>
-  <navigation></navigation>
-
   <!-- Hero -->
   <section class="relative overflow-hidden pt-28 pb-16">
     <div class="absolute inset-0 bg-grid opacity-20"></div>
@@ -8,17 +6,17 @@
     <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full blur-[120px]"></div>
 
     <div class="container mx-auto px-6 relative z-10">
-      <h1 class="text-5xl md:text-7xl font-black mb-3">
+      <h1 class="text-5xl md:text-7xl font-black mb-3 animate-slide-up">
         <span class="gradient-text">{{ profile.name }}</span>
       </h1>
       <h2 class="text-xl md:text-2xl font-semibold text-gray-300 mb-8">{{ profile.title }}</h2>
 
       <div class="flex flex-wrap gap-4">
-        <a :href="pdfUrl" target="_blank" rel="noopener" class="btn-neon inline-flex items-center gap-2">
+        <a :href="pdfUrl" target="_blank" rel="noopener" class="btn-neon font-pixel inline-flex items-center gap-2 animate-glow-pulse">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M4 6h16M4 6a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2" /></svg>
           {{ t('about.cta.downloadCv') }}
         </a>
-        <NuxtLink to="/contact" class="btn-neon-outline inline-flex items-center gap-2">
+        <NuxtLink to="/contact" class="btn-neon-outline font-pixel inline-flex items-center gap-2">
           {{ t('nav.contact') }}
         </NuxtLink>
       </div>
@@ -34,7 +32,7 @@
         <div class="glass-card neon-border p-6 md:p-8">
           <p class="text-gray-300 leading-relaxed">{{ profile.summary }}</p>
           <div class="flex flex-wrap gap-2 mt-5">
-            <span v-for="tech in profile.coreTech" :key="tech" class="px-3 py-1 text-xs rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20">{{ tech }}</span>
+            <span v-for="tech in profile.coreTech" :key="tech" class="gb-chip">{{ tech }}</span>
           </div>
         </div>
 
@@ -48,7 +46,7 @@
               <!-- timeline dot -->
               <span
                 class="absolute -left-[39px] top-1.5 w-4 h-4 rounded-full border-2"
-                :class="job.current ? 'bg-neon-green border-neon-green shadow-[0_0_10px_rgba(0,255,136,0.6)] animate-pulse' : 'bg-dark border-neon-cyan/50'"
+                :class="job.current ? 'bg-neon-green border-neon-green shadow-[0_0_10px_rgba(155,188,15,0.6)] animate-pulse' : 'bg-dark border-neon-cyan/50'"
               ></span>
 
               <div class="flex flex-wrap items-baseline justify-between gap-x-3">
@@ -62,7 +60,7 @@
                   <h4 class="text-white font-semibold mb-1">{{ p.name }}</h4>
                   <p class="text-gray-400 text-sm mb-3">{{ p.desc }}</p>
                   <div class="flex flex-wrap gap-1.5">
-                    <span v-for="tech in p.tech" :key="tech" class="px-2 py-0.5 text-[11px] rounded-full bg-dark-300 text-gray-400 border border-white/5">{{ tech }}</span>
+                    <span v-for="tech in p.tech" :key="tech" class="gb-chip">{{ tech }}</span>
                   </div>
                 </div>
               </div>
@@ -91,7 +89,7 @@
       <aside class="space-y-8">
         <!-- Contact -->
         <div class="glass-card neon-border p-6">
-          <h3 class="text-sm uppercase tracking-widest text-gray-500 mb-4">Kontakt</h3>
+          <h3 class="font-pixel text-[10px] uppercase tracking-widest text-neon-green mb-4">Kontakt</h3>
           <ul class="space-y-2 text-sm text-gray-300">
             <li>{{ profile.contact.address }}</li>
             <li><a :href="`tel:${profile.contact.phone.replace(/[^+\d]/g, '')}`" class="hover:text-neon-green transition-colors">{{ profile.contact.phone }}</a></li>
@@ -104,7 +102,7 @@
 
         <!-- Skills -->
         <div class="glass-card neon-border p-6">
-          <h3 class="text-sm uppercase tracking-widest text-gray-500 mb-4">Technische Fähigkeiten</h3>
+          <h3 class="font-pixel text-[10px] uppercase tracking-widest text-neon-green mb-4">Technische Fähigkeiten</h3>
           <div class="space-y-4">
             <div v-for="(block, i) in skills" :key="i">
               <h4 class="text-neon-green text-sm font-semibold mb-1">{{ block.title }}</h4>
@@ -115,7 +113,7 @@
 
         <!-- Hobbies -->
         <div class="glass-card neon-border p-6">
-          <h3 class="text-sm uppercase tracking-widest text-gray-500 mb-4">Hobbys</h3>
+          <h3 class="font-pixel text-[10px] uppercase tracking-widest text-neon-green mb-4">Hobbys</h3>
           <ul class="space-y-2">
             <li v-for="(h, i) in hobbies" :key="i" class="text-gray-300 text-sm flex gap-2">
               <span class="text-neon-green">▹</span>
@@ -126,12 +124,9 @@
       </aside>
     </div>
   </div>
-
-  <footer-component></footer-component>
 </template>
 
 <script lang="ts" setup>
-import FooterComponent from "~/components/footerComponent.vue";
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();

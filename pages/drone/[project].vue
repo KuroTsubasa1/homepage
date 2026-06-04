@@ -1,17 +1,13 @@
 <template>
 
-  <navigation>
-
-  </navigation>
-
   <!-- Back Button -->
   <div class="w-1/2 flex justify-center mx-auto pt-20 my-10">
-    <button @click="$router.go(-1)" class="btn-neon-outline text-sm">
+    <button @click="$router.go(-1)" class="btn-neon-outline text-sm font-pixel">
       Go Back
     </button>
   </div>
 
-  <h2 class="font-semibold text-5xl my-10 text-center">
+  <h2 class="font-semibold text-5xl my-10 text-center animate-slide-up">
     <span class="gradient-text">{{ projectData.title }}</span>
   </h2>
 
@@ -20,17 +16,21 @@
     <div class="w-1/2">
       <!-- Video Section -->
       <div v-if="projectData.videos && projectData.videos.length" class="video-container mb-4">
-        <video class="w-full h-auto rounded-2xl border border-white/10" controls>
-          <source :src="projectData.videos[0]" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+        <div class="cartridge">
+          <video class="w-full h-auto" controls>
+            <source :src="projectData.videos[0]" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
 
       <!-- Images Section -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-        <img v-for="(image, index) in projectData.images" :key="index" :alt="'Image ' + (index + 1)"
-             :src="image" class="w-full h-auto rounded-2xl border border-white/10"
-             loading="lazy">
+        <div v-for="(image, index) in projectData.images" :key="index" class="cartridge">
+          <img :alt="'Image ' + (index + 1)"
+               :src="image" class="w-full h-auto"
+               loading="lazy">
+        </div>
       </div>
 
     </div>
@@ -38,7 +38,7 @@
     <div class="w-1/4  flex flex-wrap justify-end">
       <!-- Info Card Section -->
       <div class="glass-card neon-border p-4 w-3/4">
-        <h2 class="text-xl font-bold mb-2 text-neon-cyan">Project Information</h2>
+        <h2 class="text-xl font-bold mb-2 text-neon-cyan font-pixel">Project Information</h2>
         <ul class="text-gray-300">
           <li><strong class="text-white">Role:</strong> {{ projectData.role }}</li>
           <div class="divider divider-neutral"></div>
@@ -66,22 +66,14 @@
 
   <!-- Link Section -->
   <div class="w-1/2 flex justify-center mx-auto my-10">
-    <a :href="projectData.link" class="btn-neon text-sm">
+    <a :href="projectData.link" class="btn-neon text-sm font-pixel animate-glow-pulse">
       View Project
     </a>
   </div>
 
-
-  <footer-component>
-
-  </footer-component>
-
 </template>
 
 <script setup>
-import Navigation from '~/components/navigation.vue';
-import FooterComponent from '~/components/footerComponent.vue';
-
 const route = useRoute();
 const { base, fileUrl } = usePocketbase();
 

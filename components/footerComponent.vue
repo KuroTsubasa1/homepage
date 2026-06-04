@@ -12,7 +12,7 @@ const { t } = useI18n();
       <div class="flex flex-col items-center gap-5">
         <social-row />
         <div class="w-16 h-px bg-gradient-to-r from-transparent via-neon-green/30 to-transparent"></div>
-        <p class="text-sm text-gray-500">
+        <p class="font-pixel text-[0.6rem] leading-relaxed text-gray-500">
           {{ t('footer.copyright', { year: currentYear }) }}
         </p>
       </div>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Navigation from "~/components/navigation.vue";
-import FooterComponent from "~/components/footerComponent.vue";
 import ProjectGrid from "~/components/projectGrid.vue";
 import { useI18n } from 'vue-i18n';
 
@@ -17,16 +15,14 @@ useSeoMeta({
 </script>
 
 <template>
-  <navigation></navigation>
-
   <!-- Hero -->
-  <section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+  <section class="relative min-h-[calc(100vh-13rem)] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/40 to-dark z-10"></div>
     <div class="absolute inset-0 bg-grid opacity-20 z-10"></div>
     <div class="absolute inset-0 z-0">
       <img src="https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/a2y4hbqpuo6a40p/dji_0066_tAGACeMmVN.jpg" alt="FPV drone" class="w-full h-full object-cover">
     </div>
-    <div class="relative z-20 text-center px-4">
+    <div class="relative z-20 text-center px-4 animate-slide-up">
       <h1 class="text-5xl md:text-7xl font-black mb-4">
         <span class="gradient-text">FPV Drones</span>
       </h1>
@@ -37,7 +33,7 @@ useSeoMeta({
   <!-- Main Content - flowing, personal -->
   <section class="py-20 bg-dark relative overflow-hidden">
     <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-0 left-0 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px]"></div>
+    <div class="absolute top-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px]"></div>
 
     <div class="container mx-auto px-6 relative z-10">
       <div class="max-w-3xl mx-auto space-y-16">
@@ -104,6 +100,4 @@ useSeoMeta({
       <project-grid category="drone"></project-grid>
     </div>
   </section>
-
-  <footer-component></footer-component>
 </template>

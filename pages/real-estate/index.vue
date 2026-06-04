@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Navigation from "~/components/navigation.vue";
-import FooterComponent from "~/components/footerComponent.vue";
 import { ref } from 'vue';
 
 useSeoMeta({
@@ -127,23 +125,22 @@ const pricing = ref([
 </script>
 
 <template>
-  <navigation></navigation>
-
   <!-- Hero Section -->
-  <section class="relative bg-cover bg-center h-screen" style="background-image: url('https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=1920x1080')">
+  <section class="relative bg-cover bg-center min-h-[calc(100vh-13rem)]" style="background-image: url('https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=1920x1080')">
     <div class="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/60 to-dark"></div>
     <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan/10 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-magenta/8 rounded-full blur-[100px]"></div>
-    <div class="relative z-10 h-full flex items-center justify-center text-center px-4">
-      <div class="max-w-4xl">
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-green/10 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-purple/8 rounded-full blur-[100px]"></div>
+    <div class="relative z-10 min-h-[calc(100vh-13rem)] flex items-center justify-center text-center px-4">
+      <div class="max-w-4xl animate-slide-up">
+        <p class="font-pixel text-xs text-neon-green mb-4 tracking-widest">Real Estate</p>
         <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
           <span class="gradient-text">Professional Real Estate Photography</span>
         </h1>
         <p class="text-xl md:text-2xl mb-8 text-gray-300">Showcase properties at their absolute best with stunning photography that sells</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#services" class="btn-neon text-lg">View Services</a>
-          <a href="#pricing" class="btn-neon-outline text-lg">See Pricing</a>
+          <a href="#services" class="btn-neon font-pixel text-lg animate-glow-pulse">View Services</a>
+          <a href="#pricing" class="btn-neon-outline font-pixel text-lg">See Pricing</a>
         </div>
       </div>
     </div>
@@ -153,7 +150,7 @@ const pricing = ref([
   <section id="services" class="py-24 bg-dark relative overflow-hidden">
     <div class="absolute inset-0 bg-grid opacity-10"></div>
     <div class="absolute top-0 right-0 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px]"></div>
-    <div class="absolute bottom-0 left-0 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[120px]"></div>
     <div class="container mx-auto px-4 relative z-10">
       <h2 class="section-heading">Real Estate Photography Services</h2>
       <div class="section-divider"></div>
@@ -161,22 +158,22 @@ const pricing = ref([
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div v-for="(service, index) in services" :key="index" class="glass-card neon-border overflow-hidden transition-all duration-300 group">
-          <div class="relative overflow-hidden">
+          <div class="cartridge relative overflow-hidden">
             <img :src="service.image" :alt="service.title" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent"></div>
           </div>
           <div class="p-6">
-            <h3 class="text-2xl font-bold text-neon-cyan mb-3">{{ service.title }}</h3>
+            <h3 class="text-2xl font-bold text-neon-green mb-3">{{ service.title }}</h3>
             <p class="text-gray-400 mb-4">{{ service.description }}</p>
             <ul class="mb-6">
               <li v-for="(feature, fidx) in service.features" :key="fidx" class="flex items-center mb-2">
-                <svg class="h-5 w-5 text-neon-cyan mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="h-5 w-5 text-neon-green mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
                 <span class="text-gray-300">{{ feature }}</span>
               </li>
             </ul>
-            <a href="/contact" class="btn-neon inline-block">Get a Quote</a>
+            <a href="/contact" class="btn-neon font-pixel inline-block">Get a Quote</a>
           </div>
         </div>
       </div>
@@ -186,7 +183,7 @@ const pricing = ref([
   <!-- Portfolio Section -->
   <section class="py-24 bg-dark-100 relative overflow-hidden">
     <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-1/3 right-0 w-72 h-72 bg-neon-magenta/5 rounded-full blur-[100px]"></div>
+    <div class="absolute top-1/3 right-0 w-72 h-72 bg-neon-purple/5 rounded-full blur-[100px]"></div>
     <div class="container mx-auto px-4 relative z-10">
       <h2 class="section-heading">Portfolio</h2>
       <div class="section-divider"></div>
@@ -196,29 +193,29 @@ const pricing = ref([
       <div class="flex flex-wrap justify-center mb-10 gap-4">
         <button
           @click="setFilter('all')"
-          class="px-6 py-2 rounded-full transition-all duration-300 font-medium"
-          :class="activeFilter === 'all' ? 'bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
+          class="px-6 py-2 rounded-full transition-all duration-300 font-pixel text-xs"
+          :class="activeFilter === 'all' ? 'bg-neon-green/20 text-neon-green border border-neon-green/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
         >
           All Photos
         </button>
         <button
           @click="setFilter('interior')"
-          class="px-6 py-2 rounded-full transition-all duration-300 font-medium"
-          :class="activeFilter === 'interior' ? 'bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
+          class="px-6 py-2 rounded-full transition-all duration-300 font-pixel text-xs"
+          :class="activeFilter === 'interior' ? 'bg-neon-green/20 text-neon-green border border-neon-green/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
         >
           Interior
         </button>
         <button
           @click="setFilter('aerial')"
-          class="px-6 py-2 rounded-full transition-all duration-300 font-medium"
-          :class="activeFilter === 'aerial' ? 'bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
+          class="px-6 py-2 rounded-full transition-all duration-300 font-pixel text-xs"
+          :class="activeFilter === 'aerial' ? 'bg-neon-green/20 text-neon-green border border-neon-green/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
         >
           Aerial
         </button>
         <button
           @click="setFilter('twilight')"
-          class="px-6 py-2 rounded-full transition-all duration-300 font-medium"
-          :class="activeFilter === 'twilight' ? 'bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
+          class="px-6 py-2 rounded-full transition-all duration-300 font-pixel text-xs"
+          :class="activeFilter === 'twilight' ? 'bg-neon-green/20 text-neon-green border border-neon-green/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
         >
           Twilight
         </button>
@@ -226,7 +223,7 @@ const pricing = ref([
 
       <!-- Image Gallery -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="(image, index) in filteredImages" :key="index" class="glass-card neon-border overflow-hidden transition-all duration-300 group">
+        <div v-for="(image, index) in filteredImages" :key="index" class="cartridge glass-card neon-border overflow-hidden transition-all duration-300 group">
           <div class="relative">
             <img :src="image.src" :alt="image.alt" class="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
@@ -241,7 +238,7 @@ const pricing = ref([
   <!-- Pricing Section -->
   <section id="pricing" class="py-24 bg-dark relative overflow-hidden">
     <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-0 left-1/4 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[120px]"></div>
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-neon-green/5 rounded-full blur-[120px]"></div>
     <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px]"></div>
     <div class="container mx-auto px-4 relative z-10">
       <h2 class="section-heading">Transparent Pricing</h2>
@@ -251,23 +248,23 @@ const pricing = ref([
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div v-for="(plan, index) in pricing" :key="index"
           class="glass-card overflow-hidden transition-all duration-300 hover:-translate-y-2"
-          :class="plan.recommended ? 'neon-border border-neon-cyan/60' : 'neon-border'"
+          :class="plan.recommended ? 'neon-border border-neon-green/60' : 'neon-border'"
         >
-          <div v-if="plan.recommended" class="bg-neon-cyan text-dark text-center py-2">
-            <span class="font-bold">Most Popular</span>
+          <div v-if="plan.recommended" class="bg-neon-green text-dark text-center py-2">
+            <span class="font-pixel text-xs">Most Popular</span>
           </div>
           <div class="p-8">
-            <h3 class="text-2xl font-bold text-neon-cyan mb-2">{{ plan.name }}</h3>
+            <h3 class="text-2xl font-bold text-neon-green mb-2">{{ plan.name }}</h3>
             <div class="text-4xl font-bold text-white mb-6">{{ plan.price }}</div>
             <ul class="mb-8">
               <li v-for="(feature, fidx) in plan.features" :key="fidx" class="flex items-center mb-3">
-                <svg class="h-5 w-5 text-neon-cyan mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="h-5 w-5 text-neon-green mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
                 <span class="text-gray-300">{{ feature }}</span>
               </li>
             </ul>
-            <a href="/contact" class="block text-center font-semibold w-full"
+            <a href="/contact" class="block text-center font-pixel w-full"
               :class="plan.recommended ? 'btn-neon' : 'btn-neon-outline'">
               Choose Plan
             </a>
@@ -276,7 +273,7 @@ const pricing = ref([
       </div>
 
       <div class="text-center mt-10 text-gray-400">
-        <p>Not sure which package is right for you? <a href="/contact" class="text-neon-cyan font-medium link-glow">Contact us</a> for a custom quote.</p>
+        <p>Not sure which package is right for you? <a href="/contact" class="text-neon-green font-medium link-glow">Contact us</a> for a custom quote.</p>
       </div>
     </div>
   </section>
@@ -293,7 +290,7 @@ const pricing = ref([
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div v-for="(testimonial, index) in testimonials" :key="index" class="glass-card neon-border p-8">
           <div class="flex items-center mb-6">
-            <img :src="testimonial.image" :alt="testimonial.name" class="w-16 h-16 rounded-full mr-4 border-2 border-neon-cyan/40">
+            <img :src="testimonial.image" :alt="testimonial.name" class="w-16 h-16 rounded-full mr-4 border-2 border-neon-green/40">
             <div>
               <h3 class="font-bold text-lg text-white">{{ testimonial.name }}</h3>
               <p class="text-gray-400">{{ testimonial.company }}</p>
@@ -307,21 +304,19 @@ const pricing = ref([
 
   <!-- CTA Section -->
   <section class="py-20 bg-dark relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-neon-cyan/10 via-neon-purple/10 to-neon-magenta/10"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-neon-green/10 via-neon-purple/10 to-neon-cyan/10"></div>
     <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-cyan/5 rounded-full blur-[150px]"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-green/5 rounded-full blur-[150px]"></div>
     <div class="container mx-auto px-4 text-center relative z-10">
       <h2 class="text-3xl md:text-4xl font-black mb-6">
         <span class="gradient-text">Ready to showcase your properties at their best?</span>
       </h2>
       <p class="text-xl mb-8 max-w-3xl mx-auto text-gray-300">Contact me today to discuss your real estate photography needs</p>
-      <a href="/contact" class="btn-neon text-lg inline-block">
+      <a href="/contact" class="btn-neon font-pixel text-lg inline-block animate-glow-pulse">
         Get Started
       </a>
     </div>
   </section>
-
-  <footer-component></footer-component>
 </template>
 
 <style scoped>

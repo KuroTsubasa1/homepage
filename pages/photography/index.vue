@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import FooterComponent from "~/components/footerComponent.vue";
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -99,8 +98,6 @@ const introImages = computed(() =>
 </script>
 
 <template>
-  <navigation></navigation>
-
   <!-- Hero Section -->
   <section class="hero relative overflow-hidden">
     <div class="hero-slider absolute inset-0">
@@ -110,16 +107,16 @@ const introImages = computed(() =>
       </div>
     </div>
     <!-- Glow orbs in hero -->
-    <div class="absolute top-20 left-10 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-20 right-10 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute top-20 left-10 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="container mx-auto px-4 h-full flex items-center relative z-10">
-      <div class="text-center mx-auto max-w-3xl">
+      <div class="text-center mx-auto max-w-3xl animate-slide-up">
         <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 hero-title">
           {{ t('photography.hero.titlePrefix') }} <span class="gradient-text">{{ t('photography.hero.titleHighlight') }}</span>
         </h1>
         <p class="text-xl text-gray-300 mb-8">{{ t('photography.hero.subtitle') }}</p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="#categories" class="btn-neon">{{ t('photography.hero.browse') }}</a>
+          <a href="#categories" class="btn-neon font-pixel animate-glow-pulse">{{ t('photography.hero.browse') }}</a>
         </div>
       </div>
     </div>
@@ -142,7 +139,7 @@ const introImages = computed(() =>
     <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
     <!-- Glow orbs -->
     <div class="absolute top-0 right-0 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 w-80 h-80 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-80 h-80 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="container mx-auto px-4 relative z-10">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div>
@@ -150,7 +147,7 @@ const introImages = computed(() =>
           <p class="text-lg text-gray-300 mb-4">{{ t('photography.about.p1') }}</p>
           <p class="text-lg text-gray-300 mb-6">{{ t('photography.about.p2') }}</p>
           <div class="flex flex-wrap gap-4">
-            <a href="/about" class="inline-flex items-center text-neon-cyan font-semibold hover:drop-shadow-[0_0_8px_rgba(0,240,255,0.5)] transition-all">
+            <a href="/about" class="inline-flex items-center text-neon-green font-semibold hover:drop-shadow-[0_0_8px_rgba(155,188,15,0.5)] transition-all">
               <span>{{ t('photography.about.learnMore') }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -160,24 +157,24 @@ const introImages = computed(() =>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-4">
-            <div class="overflow-hidden rounded-2xl border border-white/10 transform translate-y-8">
+            <div class="cartridge overflow-hidden transform translate-y-8">
               <img v-if="introImages[0]" :src="introImages[0].src" :alt="introImages[0].alt"
                    class="w-full h-64 object-cover hover:scale-110 transition-transform duration-700">
               <div v-else class="w-full h-64 bg-gradient-to-br from-dark-200 to-dark-300"></div>
             </div>
-            <div class="overflow-hidden rounded-2xl border border-white/10">
+            <div class="cartridge overflow-hidden">
               <img v-if="introImages[1]" :src="introImages[1].src" :alt="introImages[1].alt"
                    class="w-full h-48 object-cover hover:scale-110 transition-transform duration-700">
               <div v-else class="w-full h-48 bg-gradient-to-br from-dark-200 to-dark-300"></div>
             </div>
           </div>
           <div class="space-y-4">
-            <div class="overflow-hidden rounded-2xl border border-white/10">
+            <div class="cartridge overflow-hidden">
               <img v-if="introImages[2]" :src="introImages[2].src" :alt="introImages[2].alt"
                    class="w-full h-48 object-cover hover:scale-110 transition-transform duration-700">
               <div v-else class="w-full h-48 bg-gradient-to-br from-dark-200 to-dark-300"></div>
             </div>
-            <div class="overflow-hidden rounded-2xl border border-white/10 transform translate-y-8">
+            <div class="cartridge overflow-hidden transform translate-y-8">
               <img v-if="introImages[3]" :src="introImages[3].src" :alt="introImages[3].alt"
                    class="w-full h-64 object-cover hover:scale-110 transition-transform duration-700">
               <div v-else class="w-full h-64 bg-gradient-to-br from-dark-200 to-dark-300"></div>
@@ -193,8 +190,8 @@ const introImages = computed(() =>
     <!-- Grid overlay -->
     <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
     <!-- Glow orbs -->
-    <div class="absolute top-20 left-20 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-20 right-20 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute top-20 left-20 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-20 right-20 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="container mx-auto px-4 relative z-10">
       <div class="text-center mb-12">
         <h2 class="section-heading text-4xl font-bold text-white mb-4">{{ t('photography.collections.title') }}</h2>
@@ -228,7 +225,7 @@ const introImages = computed(() =>
     <!-- Grid overlay -->
     <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
     <!-- Glow orbs -->
-    <div class="absolute top-10 right-20 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute top-10 right-20 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="absolute bottom-10 left-20 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="container mx-auto px-4 relative z-10">
       <div class="text-center mb-10">
@@ -241,8 +238,8 @@ const introImages = computed(() =>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
-          <div class="w-16 h-16 rounded-full bg-neon-cyan/10 border border-neon-cyan/30 flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-16 h-16 rounded-full bg-neon-green/10 border border-neon-green/30 flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
@@ -251,8 +248,8 @@ const introImages = computed(() =>
         </div>
 
         <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
-          <div class="w-16 h-16 rounded-full bg-neon-magenta/10 border border-neon-magenta/30 flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-magenta" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-16 h-16 rounded-full bg-neon-purple/10 border border-neon-purple/30 flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
@@ -281,36 +278,33 @@ const introImages = computed(() =>
   </section>
 
   <!-- Call to Action Section -->
-  <section class="py-20 bg-gradient-to-br from-neon-cyan/10 via-dark to-neon-magenta/10 text-white text-center relative overflow-hidden">
+  <section class="py-20 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10 text-white text-center relative overflow-hidden">
     <!-- Grid overlay -->
     <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
     <!-- Glow orbs -->
-    <div class="absolute top-10 left-1/4 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute top-10 left-1/4 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="container mx-auto px-4 relative z-10">
       <h2 class="text-4xl font-bold mb-6 gradient-text">{{ t('photography.ctaBlock.title') }}</h2>
       <p class="text-xl mb-10 max-w-3xl mx-auto text-gray-300">
         {{ t('photography.ctaBlock.subtitle') }}
       </p>
-      <a href="/contact" class="btn-neon">
+      <a href="/contact" class="btn-neon font-pixel animate-glow-pulse">
         {{ t('photography.ctaBlock.button') }}
       </a>
     </div>
   </section>
-
-  <footer-component></footer-component>
 </template>
 
 <style scoped>
 /* Hero section styles */
 .hero {
-  height: 100vh;
-  min-height: 600px;
+  min-height: calc(100vh - 13rem);
   position: relative;
   display: flex;
   align-items: center;
   color: white;
-  background-color: #0a0a0f;
+  background-color: rgb(var(--c-bg));
 }
 
 .hero-slide {
@@ -333,102 +327,6 @@ const introImages = computed(() =>
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-/* Dark theme backgrounds */
-.bg-dark {
-  background-color: #0a0a0f;
-}
-
-.bg-dark-100 {
-  background-color: #16161f;
-}
-
-/* Grid pattern overlay */
-.bg-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-/* Glass card */
-.glass-card {
-  background: rgba(22, 22, 31, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-}
-
-/* Neon border glow */
-.neon-border {
-  border: 1px solid rgba(0, 240, 255, 0.2);
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.05), inset 0 0 15px rgba(0, 240, 255, 0.02);
-}
-
-/* Section heading */
-.section-heading {
-  color: white;
-  text-align: center;
-  font-weight: bold;
-}
-
-/* Section divider - gradient line */
-.section-divider {
-  width: 6rem;
-  height: 3px;
-  background: linear-gradient(to right, #00f0ff, #8b5cf6, #ff00aa);
-  border-radius: 2px;
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(to right, #00f0ff, #8b5cf6, #ff00aa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Neon accent colors */
-.text-neon-cyan { color: #00f0ff; }
-.text-neon-magenta { color: #ff00aa; }
-.text-neon-purple { color: #8b5cf6; }
-.text-neon-green { color: #39ff14; }
-
-/* Buttons */
-.btn-neon {
-  background-color: #00f0ff;
-  color: #0a0a0f;
-  font-weight: bold;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  transition: all 0.3s ease;
-  display: inline-block;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.1);
-}
-
-.btn-neon:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.5), 0 0 60px rgba(0, 240, 255, 0.2);
-  background-color: #33f3ff;
-}
-
-.btn-neon-outline {
-  background-color: transparent;
-  color: #00f0ff;
-  font-weight: bold;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  border: 2px solid #00f0ff;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.btn-neon-outline:hover {
-  background-color: rgba(0, 240, 255, 0.1);
-  transform: translateY(-3px);
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.1);
-}
-
 /* Scroll indicator */
 .scroll-indicator {
   display: flex;
@@ -439,7 +337,7 @@ const introImages = computed(() =>
 .mouse {
   width: 30px;
   height: 50px;
-  border: 2px solid rgba(0, 240, 255, 0.5);
+  border: 2px solid rgba(155, 188, 15, 0.5);
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -449,7 +347,7 @@ const introImages = computed(() =>
 .wheel {
   width: 4px;
   height: 8px;
-  background: #00f0ff;
+  background: rgb(var(--c-green));
   border-radius: 2px;
   margin-top: 10px;
   animation: scroll 1.5s infinite;
@@ -469,8 +367,8 @@ const introImages = computed(() =>
 .arrow-down {
   width: 10px;
   height: 10px;
-  border-right: 2px solid rgba(0, 240, 255, 0.5);
-  border-bottom: 2px solid rgba(0, 240, 255, 0.5);
+  border-right: 2px solid rgba(155, 188, 15, 0.5);
+  border-bottom: 2px solid rgba(155, 188, 15, 0.5);
   transform: rotate(45deg);
   margin: 0 0 3px 0;
   animation: arrow 1.5s infinite;
@@ -503,8 +401,8 @@ const introImages = computed(() =>
 
 .wedding-feature:hover {
   transform: translateY(-10px);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
-  border-color: rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 30px rgba(155, 188, 15, 0.18);
+  border-color: rgba(155, 188, 15, 0.3);
 }
 
 .wedding-feature .w-16 {
@@ -521,16 +419,12 @@ const introImages = computed(() =>
 }
 
 .pricing-card:hover {
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
-  border-color: rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 30px rgba(155, 188, 15, 0.18);
+  border-color: rgba(155, 188, 15, 0.3);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .hero {
-    min-height: 500px;
-  }
-
   .hero-title {
     font-size: 2.5rem;
   }

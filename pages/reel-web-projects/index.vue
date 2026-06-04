@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Navigation from "~/components/navigation.vue";
-import FooterComponent from "~/components/footerComponent.vue";
 import ProjectGrid from "~/components/projectGrid.vue";
 import { ref } from 'vue';
 
@@ -15,12 +13,12 @@ useSeoMeta({
 });
 
 const skills = ref([
-  { name: 'JavaScript / TypeScript', percentage: 95, color: '#00ff88' },
-  { name: 'Vue.js / Nuxt.js', percentage: 95, color: '#42B883' },
-  { name: 'PHP (Symfony, Laravel)', percentage: 90, color: '#8b5cf6' },
-  { name: 'CSS (Tailwind, Bootstrap)', percentage: 90, color: '#00f0ff' },
-  { name: 'Databases (MySQL, PostgreSQL)', percentage: 85, color: '#ff00aa' },
-  { name: 'Node.js / Python', percentage: 75, color: '#ffb800' },
+  { name: 'JavaScript / TypeScript', percentage: 95, color: 'rgb(155, 188, 15)' },
+  { name: 'Vue.js / Nuxt.js', percentage: 95, color: 'rgb(155, 188, 15)' },
+  { name: 'PHP (Symfony, Laravel)', percentage: 90, color: '#7c4dc4' },
+  { name: 'CSS (Tailwind, Bootstrap)', percentage: 90, color: 'rgb(139, 172, 15)' },
+  { name: 'Databases (MySQL, PostgreSQL)', percentage: 85, color: '#7c4dc4' },
+  { name: 'Node.js / Python', percentage: 75, color: 'rgb(155, 188, 15)' },
 ]);
 
 const career = ref([
@@ -98,15 +96,13 @@ const personalProjects = ref([
 </script>
 
 <template>
-  <navigation></navigation>
-
   <!-- Hero -->
-  <section class="hero relative min-h-screen flex items-center justify-center overflow-hidden">
+  <section class="hero relative min-h-[calc(100vh-13rem)] flex items-center justify-center overflow-hidden">
     <div class="hero-background absolute inset-0 z-0"></div>
     <div class="code-animation absolute inset-0 z-0 opacity-20"></div>
     <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] z-0"></div>
     <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] z-0"></div>
-    <div class="container mx-auto px-6 py-16 z-10 text-center">
+    <div class="container mx-auto px-6 py-16 z-10 text-center animate-slide-up">
       <h1 class="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 hero-title">
         <span class="text-white block">Web</span>
         <span class="gradient-text block mt-2">Development</span>
@@ -115,8 +111,8 @@ const personalProjects = ref([
         I build things for the web. Clean code, great UX, modern stack.
       </p>
       <div class="flex flex-wrap justify-center gap-4">
-        <a href="#career" class="btn-neon">My Career</a>
-        <a href="#projects" class="btn-neon-outline">Side Projects</a>
+        <a href="#career" class="btn-neon font-pixel animate-glow-pulse">My Career</a>
+        <a href="#projects" class="btn-neon-outline font-pixel">Side Projects</a>
       </div>
     </div>
   </section>
@@ -149,7 +145,7 @@ const personalProjects = ref([
       <div class="max-w-4xl mx-auto space-y-6">
         <div v-for="(job, index) in career" :key="index" class="glass-card p-6 md:p-8 relative overflow-hidden group" :class="job.current ? 'neon-border' : ''">
           <!-- Current badge -->
-          <span v-if="job.current" class="absolute top-4 right-4 text-xs px-2.5 py-1 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/30 animate-pulse">Current</span>
+          <span v-if="job.current" class="absolute top-4 right-4 text-[10px] font-pixel px-2.5 py-1 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/30 animate-pulse">Current</span>
 
           <div class="flex flex-col md:flex-row md:items-start gap-4 mb-5">
             <div class="md:w-48 flex-shrink-0">
@@ -166,7 +162,7 @@ const personalProjects = ref([
               <h4 class="font-semibold text-white text-sm group-hover:text-neon-green transition-colors">{{ project.name }} <span class="text-neon-green/0 group-hover:text-neon-green/60 text-xs transition-colors">→</span></h4>
               <p class="text-gray-400 text-sm mt-1">{{ project.desc }}</p>
               <div class="flex flex-wrap gap-1.5 mt-2">
-                <span v-for="tag in project.tags" :key="tag" class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500 border border-white/5">{{ tag }}</span>
+                <span v-for="tag in project.tags" :key="tag" class="gb-chip">{{ tag }}</span>
               </div>
             </NuxtLink>
           </div>
@@ -191,13 +187,13 @@ const personalProjects = ref([
             <div class="p-6">
               <div class="flex items-start justify-between gap-2 mb-1">
                 <h3 class="text-xl font-bold text-white group-hover:text-neon-green transition-colors">{{ project.name }}</h3>
-                <span v-if="job.current" class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 flex-shrink-0 mt-1">Current</span>
+                <span v-if="job.current" class="text-[10px] font-pixel px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 flex-shrink-0 mt-1">Current</span>
               </div>
               <p class="text-neon-green/60 text-xs mb-3">{{ job.company }} · {{ job.period }}</p>
               <p class="text-gray-400 text-sm mb-4">{{ project.desc }}</p>
               <div class="flex items-center justify-between">
                 <div class="flex flex-wrap gap-1.5">
-                  <span v-for="tag in project.tags" :key="tag" class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500 border border-white/5">{{ tag }}</span>
+                  <span v-for="tag in project.tags" :key="tag" class="gb-chip">{{ tag }}</span>
                 </div>
                 <span class="text-neon-green text-sm opacity-0 group-hover:opacity-100 transition-all duration-300">Details →</span>
               </div>
@@ -231,24 +227,22 @@ const personalProjects = ref([
       <p class="text-xl mb-10 max-w-2xl mx-auto text-gray-300">
         I'm open to new opportunities and interesting projects. Let's talk.
       </p>
-      <a href="/contact" class="btn-neon">Get in Touch</a>
+      <a href="/contact" class="btn-neon font-pixel animate-glow-pulse">Get in Touch</a>
     </div>
   </section>
-
-  <footer-component></footer-component>
 </template>
 
 <style scoped>
 .hero {
-  background: linear-gradient(to bottom right, #0a0a0f, #16161f);
+  background: linear-gradient(to bottom right, rgb(var(--c-bg)), rgb(var(--c-bg-100)));
 }
 
 .hero-background {
-  background: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.08) 0%, rgba(0, 0, 0, 0) 50%);
+  background: radial-gradient(circle at 50% 50%, rgba(155, 188, 15, 0.08) 0%, rgba(0, 0, 0, 0) 50%);
 }
 
 .code-animation {
-  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='code' patternUnits='userSpaceOnUse' width='100' height='100' patternTransform='scale(0.75) rotate(0)'%3E%3Ctext x='0' y='30' font-family='monospace' font-size='20' fill='%2300ff88'%3E%26lt;/%3E%3Ctext%3E%3Ctext x='50' y='60' font-family='monospace' font-size='20' fill='%2300ff88'%3E%7B%7D%3C/text%3E%3Ctext x='25' y='90' font-family='monospace' font-size='20' fill='%2300ff88'%3E();%3C/text%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23code)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='code' patternUnits='userSpaceOnUse' width='100' height='100' patternTransform='scale(0.75)'%3E%3Ctext x='0' y='30' font-family='monospace' font-size='20' fill='%239bbc0f'%3E%26lt;/%26gt;%3C/text%3E%3Ctext x='50' y='60' font-family='monospace' font-size='20' fill='%239bbc0f'%3E%7B%7D%3C/text%3E%3Ctext x='25' y='90' font-family='monospace' font-size='20' fill='%239bbc0f'%3E();%3C/text%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23code)'/%3E%3C/svg%3E");
   animation: slide 20s linear infinite;
 }
 
@@ -272,6 +266,6 @@ const personalProjects = ref([
 }
 .project-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(0, 255, 136, 0.4);
+  border-color: rgba(155, 188, 15, 0.4);
 }
 </style>

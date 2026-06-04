@@ -1,7 +1,5 @@
 <template>
-  <navigation></navigation>
-
-  <hero 
+  <hero
     title="Landscape & Nature" 
     description="BREATHTAKING VIEWS AND INTIMATE DETAILS OF THE NATURAL WORLD" 
     :image="heroImage"
@@ -10,7 +8,7 @@
 
   <div class="container mx-auto py-16 fade-in">
     <div class="max-w-3xl mx-auto px-4 mb-16">
-      <h2 class="text-3xl font-semibold text-neon-cyan mb-6">About Landscape & Nature Photography</h2>
+      <h2 class="text-3xl font-semibold mb-6 gradient-text">About Landscape & Nature Photography</h2>
       <p class="text-lg text-gray-300 mb-4">
         From expansive mountain ranges to delicate wildflowers, landscape and nature photography 
         captures the beauty of our world in both grand vistas and intimate details. These images 
@@ -33,7 +31,7 @@
       <div 
         v-for="image in images" 
         :key="image.id" 
-        class="masonry-item cursor-pointer overflow-hidden rounded-xl border border-white/10 hover:border-neon-cyan/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.1)]"
+        class="masonry-item cartridge cursor-pointer overflow-hidden rounded-xl border border-white/10 hover:border-neon-green/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(155,188,15,0.18)]"
         @click="openDetail(image.id)"
       >
         <div class="relative">
@@ -52,13 +50,11 @@
 
   <div class="container mx-auto pb-16 fade-in">
     <div class="flex justify-center mb-8">
-      <NuxtLink to="/photography" class="btn-neon-outline inline-block">
+      <NuxtLink to="/photography" class="btn-neon-outline inline-block font-pixel text-xs">
         Back to Photography Collections
       </NuxtLink>
     </div>
   </div>
-
-  <footer-component></footer-component>
 </template>
 
 <script setup>

@@ -35,16 +35,16 @@ const { data: projectGridTiles, error } = await useAsyncData(
     Couldn't load projects right now. Please try again later.
   </p>
   <div v-else class="mx-4 md:mx-10 my-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-    <NuxtLink v-for="project in projectGridTiles" :key="project.id" :to="`${basePath}/${project.id}`" class="project-card glass-card neon-border overflow-hidden group block">
-      <figure class="relative overflow-hidden">
+    <NuxtLink v-for="project in projectGridTiles" :key="project.id" :to="`${basePath}/${project.id}`" class="project-card glass-card neon-border overflow-hidden group block animate-slide-up">
+      <figure class="cartridge relative overflow-hidden m-3">
         <img :src="project.image" class="w-full h-48 object-cover object-center transition-transform duration-500 group-hover:scale-105">
         <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-60"></div>
       </figure>
-      <div class="p-6">
+      <div class="p-6 pt-3">
         <h2 class="text-xl font-bold text-white mb-2 group-hover:text-neon-cyan transition-colors duration-300">{{ project.title }}</h2>
         <p class="text-neon-cyan/70 text-sm mb-2">{{ project.role }}</p>
         <p class="text-gray-400 text-sm mb-4">{{ project.description }}</p>
-        <span class="text-neon-cyan text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+        <span class="font-pixel text-neon-cyan text-[0.65rem] flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
           {{ t('common.viewProject') }}
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
         </span>
@@ -60,6 +60,6 @@ const { data: projectGridTiles, error } = await useAsyncData(
 
 .project-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(0, 240, 255, 0.4);
+  border-color: rgba(155, 188, 15, 0.4);
 }
 </style>

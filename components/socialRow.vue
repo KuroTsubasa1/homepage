@@ -21,6 +21,6 @@
 }
 .social-link:hover {
   @apply border-neon-green/40 bg-neon-green/5;
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+  box-shadow: 0 0 15px rgba(155, 188, 15, 0.18);
 }
 </style>

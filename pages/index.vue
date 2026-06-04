@@ -25,15 +25,15 @@ const techStack = [
         <div class="flex flex-col md:flex-row items-center justify-between gap-8">
           <!-- Currently at -->
           <div class="flex items-center gap-4">
-            <div class="w-3 h-3 rounded-full bg-neon-green animate-pulse shadow-[0_0_10px_rgba(0,255,136,0.6)]"></div>
+            <div class="w-3 h-3 rounded-full bg-neon-green animate-pulse shadow-[0_0_10px_rgba(155,188,15,0.6)]"></div>
             <div>
-              <p class="text-gray-500 text-xs uppercase tracking-widest">{{ $t('home.currentlyAt') }}</p>
+              <p class="text-gray-500 text-xs uppercase tracking-widest font-pixel">{{ $t('home.currentlyAt') }}</p>
               <p class="text-white font-bold">DIU MarTech Solutions GmbH</p>
             </div>
           </div>
           <!-- Tech marquee -->
           <div class="flex flex-wrap justify-center gap-2">
-            <span v-for="tech in techStack" :key="tech" class="px-3 py-1 text-xs rounded-full border border-white/10 text-gray-400 hover:border-neon-green/30 hover:text-neon-green transition-all duration-300">{{ tech }}</span>
+            <span v-for="tech in techStack" :key="tech" class="gb-chip">{{ tech }}</span>
           </div>
         </div>
       </div>
@@ -45,29 +45,29 @@ const techStack = [
       <div class="absolute top-0 right-0 w-80 h-80 bg-neon-green/5 rounded-full blur-[100px]"></div>
       <div class="container mx-auto px-4 relative z-10">
         <div class="max-w-4xl mx-auto">
-          <p class="text-gray-500 text-xs uppercase tracking-widest mb-6 text-center">{{ $t('home.workingOnTitle') }}</p>
+          <p class="text-gray-500 text-xs uppercase tracking-widest mb-6 text-center font-pixel">{{ $t('home.workingOnTitle') }}</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <NuxtLink to="/reel-web-projects/suzuki-hit" class="glass-card neon-border p-6 group block hover:-translate-y-1 transition-all duration-300">
+            <NuxtLink to="/reel-web-projects/suzuki-hit" class="glass-card neon-border p-6 group block hover:-translate-y-1 transition-all duration-300 animate-slide-up">
               <div class="flex items-start justify-between mb-3">
                 <h3 class="text-lg font-bold text-white group-hover:text-neon-green transition-colors">Suzuki HIT</h3>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20">{{ $t('home.current') }}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 font-pixel">{{ $t('home.current') }}</span>
               </div>
               <p class="text-gray-400 text-sm mb-3">{{ $t('home.featuredHitDesc') }}</p>
               <div class="flex items-center gap-2">
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500">Vue.js</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500">Enterprise</span>
+                <span class="gb-chip">Vue.js</span>
+                <span class="gb-chip">Enterprise</span>
                 <span class="text-neon-green text-xs ml-auto opacity-0 group-hover:opacity-100 transition-opacity">Details →</span>
               </div>
             </NuxtLink>
-            <NuxtLink to="/reel-web-projects/suzuki-ssbp-nxt" class="glass-card neon-border p-6 group block hover:-translate-y-1 transition-all duration-300">
+            <NuxtLink to="/reel-web-projects/suzuki-ssbp-nxt" class="glass-card neon-border p-6 group block hover:-translate-y-1 transition-all duration-300 animate-slide-up">
               <div class="flex items-start justify-between mb-3">
                 <h3 class="text-lg font-bold text-white group-hover:text-neon-green transition-colors">Suzuki SSBP-Nxt</h3>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20">{{ $t('home.current') }}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 font-pixel">{{ $t('home.current') }}</span>
               </div>
               <p class="text-gray-400 text-sm mb-3">{{ $t('home.featuredSsbpDesc') }}</p>
               <div class="flex items-center gap-2">
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500">Vue.js</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500">Rewrite</span>
+                <span class="gb-chip">Vue.js</span>
+                <span class="gb-chip">Rewrite</span>
                 <span class="text-neon-green text-xs ml-auto opacity-0 group-hover:opacity-100 transition-opacity">Details →</span>
               </div>
             </NuxtLink>
@@ -101,7 +101,7 @@ const techStack = [
             <div class="flex-1">
               <div class="flex items-center gap-3 mb-2">
                 <h3 class="text-2xl font-bold text-white group-hover:text-neon-green transition-colors duration-300">{{ $t('home.webDev.title') }}</h3>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20">{{ $t('home.mainFocus') }}</span>
+                <span class="text-xs px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 font-pixel">{{ $t('home.mainFocus') }}</span>
               </div>
               <p class="text-gray-400 leading-relaxed mb-3">{{ $t('home.webDev.description') }}</p>
               <span class="text-neon-green text-sm font-medium flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-300">
@@ -113,7 +113,7 @@ const techStack = [
         </NuxtLink>
 
         <!-- Hobbies -->
-        <p class="text-center text-gray-500 text-sm uppercase tracking-widest mb-6">{{ $t('home.hobbies') }}</p>
+        <p class="text-center text-gray-500 text-sm uppercase tracking-widest mb-6 font-pixel">{{ $t('home.hobbies') }}</p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <NuxtLink to="/photography" class="service-card group">
@@ -183,7 +183,7 @@ const techStack = [
           <span class="gradient-text">{{ $t('cta.title') }}</span>
         </h2>
         <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">{{ $t('cta.description') }}</p>
-        <NuxtLink to="/contact" class="btn-neon inline-block">
+        <NuxtLink to="/contact" class="btn-neon inline-block animate-glow-pulse">
           {{ $t('cta.button') }}
         </NuxtLink>
       </div>
@@ -197,7 +197,7 @@ const techStack = [
 }
 .featured-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(0, 255, 136, 0.4);
+  border-color: rgba(155, 188, 15, 0.4);
 }
 
 .card-glow-featured {
@@ -231,6 +231,6 @@ const techStack = [
   transition: transform 0.3s ease, border-color 0.3s ease;
 }
 .project-card:hover {
-  border-color: rgba(0, 255, 136, 0.4);
+  border-color: rgba(155, 188, 15, 0.4);
 }
 </style>

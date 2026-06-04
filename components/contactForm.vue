@@ -6,22 +6,22 @@
 
     <form @submit.prevent="handleSubmit" class="glass-card neon-border p-8 md:w-1/2 w-full max-w-xl space-y-5">
       <div>
-        <label class="block text-sm font-medium text-gray-300 mb-2" for="name">{{ t('contactForm.name') }}</label>
+        <label class="block text-xs font-pixel text-gray-300 mb-2" for="name">{{ t('contactForm.name') }}</label>
         <input type="text" id="name" v-model="form.name" class="form-input" required>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-300 mb-2" for="email">{{ t('contactForm.email') }}</label>
+        <label class="block text-xs font-pixel text-gray-300 mb-2" for="email">{{ t('contactForm.email') }}</label>
         <input type="email" id="email" v-model="form.email" class="form-input" required>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-300 mb-2" for="message">{{ t('contactForm.message') }}</label>
+        <label class="block text-xs font-pixel text-gray-300 mb-2" for="message">{{ t('contactForm.message') }}</label>
         <textarea id="message" v-model="form.message" class="form-input resize-none" rows="5" required></textarea>
       </div>
 
       <div class="text-center">
-        <button type="submit" class="btn-neon">{{ t('contactForm.send') }}</button>
+        <button type="submit" class="btn-neon font-pixel animate-glow-pulse">{{ t('contactForm.send') }}</button>
       </div>
     </form>
 
@@ -86,6 +86,6 @@ const handleSubmit = () => {
 }
 .form-input:focus {
   @apply outline-none border-neon-green/50 bg-dark-300;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+  box-shadow: 0 0 20px rgba(155, 188, 15, 0.18);
 }
 </style>

@@ -1,23 +1,22 @@
 <template>
-  <navigation></navigation>
-
   <div class="container mx-auto pt-24 py-16">
-    <div class="text-center mb-8">
+    <div class="text-center mb-8 animate-slide-up">
       <h1 class="text-4xl font-bold text-white mb-4">{{ imageData.alt || 'Portrait Photography' }}</h1>
-      <NuxtLink to="/photography/portraits-people" class="btn-neon-outline inline-block text-sm">
+      <NuxtLink to="/photography/portraits-people" class="btn-neon-outline inline-block text-sm font-pixel">
         Back to Portraits Gallery
       </NuxtLink>
     </div>
 
     <div class="max-w-4xl mx-auto px-4">
-      <img
-        v-if="imageData.src"
-        :src="imageData.src"
-        :alt="imageData.alt"
-        class="w-full rounded-2xl border border-white/10 mb-8"
-      />
+      <div v-if="imageData.src" class="cartridge mb-8 animate-pixel-in">
+        <img
+          :src="imageData.src"
+          :alt="imageData.alt"
+          class="w-full"
+        />
+      </div>
 
-      <div class="glass-card neon-border p-6 mb-8">
+      <div class="glass-card neon-border p-6 mb-8 animate-slide-up">
         <h2 class="text-2xl font-semibold text-neon-cyan mb-4">Image Details</h2>
         <div class="space-y-3 text-gray-300">
           <p v-if="imageData.alt"><strong class="text-white">Title:</strong> {{ imageData.alt }}</p>
@@ -32,7 +31,7 @@
         <NuxtLink
           v-if="prevImage"
           :to="`/photography/portraits-people/${prevImage.id}`"
-          class="btn-neon-outline inline-block text-sm"
+          class="btn-neon-outline inline-block text-sm font-pixel"
         >
           ← Previous Image
         </NuxtLink>
@@ -41,7 +40,7 @@
         <NuxtLink
           v-if="nextImage"
           :to="`/photography/portraits-people/${nextImage.id}`"
-          class="btn-neon-outline inline-block text-sm"
+          class="btn-neon-outline inline-block text-sm font-pixel"
         >
           Next Image →
         </NuxtLink>
@@ -49,14 +48,9 @@
       </div>
     </div>
   </div>
-
-  <footer-component></footer-component>
 </template>
 
 <script setup>
-import Navigation from '~/components/navigation.vue';
-import FooterComponent from '~/components/footerComponent.vue';
-
 // SSR fetch + SEO meta + prev/next handled by the shared composable.
 const { imageData, prevImage, nextImage } = useGalleryDetail('people', 'Portrait Photography');
 </script>

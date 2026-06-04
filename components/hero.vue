@@ -21,7 +21,7 @@ const props = defineProps<{
 
     <!-- Content -->
     <div class="relative z-20 flex items-center justify-center min-h-[70vh]">
-      <div class="text-center max-w-2xl px-4">
+      <div class="text-center max-w-2xl px-4 animate-slide-up">
         <h1 class="text-4xl md:text-6xl font-black mb-5 uppercase">
           <span class="gradient-text">{{ props.title }}</span>
         </h1>

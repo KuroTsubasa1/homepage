@@ -72,7 +72,7 @@ const handleSubmit = async () => {
       <h2 class="section-heading">{{ t('contactSection.title') }}</h2>
       <div class="section-divider"></div>
 
-      <div class="max-w-3xl mx-auto">
+      <div class="max-w-3xl mx-auto animate-slide-up">
         <!-- Success/Error Messages -->
         <div v-if="successMessage" class="glass-card border border-neon-green/40 text-neon-green px-5 py-3 rounded-xl mb-6">
           {{ successMessage }}
@@ -85,7 +85,7 @@ const handleSubmit = async () => {
         <form @submit.prevent="handleSubmit" class="glass-card neon-border p-8 space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-300 mb-2">{{ t('contactSection.name') }} <span class="text-neon-magenta">*</span></label>
+              <label for="name" class="block text-xs font-pixel text-gray-300 mb-2">{{ t('contactSection.name') }} <span class="text-neon-magenta">*</span></label>
               <input
                 type="text" id="name" v-model="name" required
                 class="form-input"
@@ -93,7 +93,7 @@ const handleSubmit = async () => {
               >
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-300 mb-2">{{ t('contactSection.email') }} <span class="text-neon-magenta">*</span></label>
+              <label for="email" class="block text-xs font-pixel text-gray-300 mb-2">{{ t('contactSection.email') }} <span class="text-neon-magenta">*</span></label>
               <input
                 type="email" id="email" v-model="email" required
                 class="form-input"
@@ -103,7 +103,7 @@ const handleSubmit = async () => {
           </div>
 
           <div>
-            <label for="service" class="block text-sm font-medium text-gray-300 mb-2">{{ t('contactSection.service') }}</label>
+            <label for="service" class="block text-xs font-pixel text-gray-300 mb-2">{{ t('contactSection.service') }}</label>
             <select id="service" v-model="service" class="form-input">
               <option value="" disabled selected>{{ t('contactSection.serviceOptions.select') }}</option>
               <option v-for="option in services" :key="option.value" :value="option.value">{{ option.label }}</option>
@@ -111,7 +111,7 @@ const handleSubmit = async () => {
           </div>
 
           <div>
-            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">{{ t('contactSection.message') }} <span class="text-neon-magenta">*</span></label>
+            <label for="message" class="block text-xs font-pixel text-gray-300 mb-2">{{ t('contactSection.message') }} <span class="text-neon-magenta">*</span></label>
             <textarea
               id="message" v-model="message" required rows="5"
               class="form-input resize-none"
@@ -120,7 +120,7 @@ const handleSubmit = async () => {
           </div>
 
           <div class="text-center">
-            <button type="submit" class="btn-neon" :disabled="isSubmitting">
+            <button type="submit" class="btn-neon font-pixel text-xs animate-glow-pulse" :disabled="isSubmitting">
               <span v-if="!isSubmitting">{{ t('contactSection.sendMessage') }}</span>
               <span v-else class="flex items-center justify-center gap-2">
                 <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -141,7 +141,7 @@ const handleSubmit = async () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 class="text-sm font-bold text-white mb-1">{{ t('contactSection.contactInfo.email.title') }}</h3>
+            <h3 class="text-xs font-pixel text-white mb-2">{{ t('contactSection.contactInfo.email.title') }}</h3>
             <a href="mailto:lasse@lasseharm.space" class="text-sm text-gray-400 hover:text-neon-green transition-colors">{{ t('contactSection.contactInfo.email.value') }}</a>
           </div>
 
@@ -152,7 +152,7 @@ const handleSubmit = async () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h3 class="text-sm font-bold text-white mb-1">{{ t('contactSection.contactInfo.location.title') }}</h3>
+            <h3 class="text-xs font-pixel text-white mb-2">{{ t('contactSection.contactInfo.location.title') }}</h3>
             <p class="text-sm text-gray-400">{{ t('contactSection.contactInfo.location.value') }}</p>
           </div>
 
@@ -162,7 +162,7 @@ const handleSubmit = async () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="text-sm font-bold text-white mb-1">{{ t('contactSection.contactInfo.hours.title') }}</h3>
+            <h3 class="text-xs font-pixel text-white mb-2">{{ t('contactSection.contactInfo.hours.title') }}</h3>
             <p class="text-sm text-gray-400">{{ t('contactSection.contactInfo.hours.value') }}</p>
           </div>
         </div>
@@ -177,6 +177,6 @@ const handleSubmit = async () => {
 }
 .form-input:focus {
   @apply outline-none border-neon-green/50 bg-dark-300;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+  box-shadow: 0 0 20px rgba(155, 188, 15, 0.18);
 }
 </style>

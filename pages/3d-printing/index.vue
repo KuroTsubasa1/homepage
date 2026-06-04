@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Navigation from "~/components/navigation.vue";
-import FooterComponent from "~/components/footerComponent.vue";
 import ProjectGrid from "~/components/projectGrid.vue";
 import { useI18n } from 'vue-i18n';
 
@@ -17,21 +15,19 @@ useSeoMeta({
 </script>
 
 <template>
-  <navigation></navigation>
-
   <!-- Hero -->
   <section class="relative min-h-[70vh] flex items-center overflow-hidden" style="background-image: url('https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=1920x1080'); background-size: cover; background-position: center;">
     <div class="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/60 to-dark z-10"></div>
     <div class="absolute inset-0 bg-grid opacity-20 z-10"></div>
     <div class="relative z-20 container mx-auto px-6 py-20">
-      <div class="max-w-2xl">
+      <div class="max-w-2xl animate-slide-up">
         <h1 class="text-5xl md:text-7xl font-black mb-4">
           <span class="text-white">{{ t('printing.hero.title1') }}</span><br>
           <span class="gradient-text">{{ t('printing.hero.title2') }}</span>
         </h1>
         <p class="text-lg text-gray-300 mb-8">{{ t('printing.hero.subtitle') }}</p>
         <div class="flex flex-wrap gap-4">
-          <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon inline-block">{{ t('printing.hero.visit') }}</a>
+          <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon font-pixel inline-block">{{ t('printing.hero.visit') }}</a>
         </div>
       </div>
     </div>
@@ -102,14 +98,12 @@ useSeoMeta({
 
   <!-- CTA -->
   <section class="py-20 relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-cyan/10"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10"></div>
     <div class="absolute inset-0 bg-grid opacity-10"></div>
     <div class="container mx-auto px-6 text-center relative z-10">
       <h2 class="text-3xl md:text-4xl font-black mb-6"><span class="gradient-text">{{ t('printing.ctaBlock.title') }}</span></h2>
       <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">{{ t('printing.ctaBlock.subtitle') }}</p>
-      <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon inline-block">{{ t('printing.hero.visit') }}</a>
+      <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon font-pixel inline-block animate-glow-pulse">{{ t('printing.hero.visit') }}</a>
     </div>
   </section>
-
-  <footer-component></footer-component>
 </template>

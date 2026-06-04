@@ -1,16 +1,14 @@
 <template>
-  <navigation></navigation>
-
-  <hero 
-    title="Portraits & People" 
-    description="AUTHENTIC EMOTIONS AND HUMAN STORIES" 
+  <hero
+    title="Portraits & People"
+    description="AUTHENTIC EMOTIONS AND HUMAN STORIES"
     :image="heroImage"
     class="fade-in"
   ></hero>
 
   <div class="container mx-auto py-16 fade-in">
-    <div class="max-w-3xl mx-auto px-4 mb-16">
-      <h2 class="text-3xl font-semibold text-neon-cyan mb-6">About Portrait Photography</h2>
+    <div class="max-w-3xl mx-auto px-4 mb-16 animate-slide-up">
+      <h2 class="text-3xl font-semibold mb-6 gradient-text">About Portrait Photography</h2>
       <p class="text-lg text-gray-300 mb-4">
         Portrait photography is about capturing the essence of a person – their personality, emotions, 
         and unique characteristics. Whether through studio portraits or candid moments, I aim to create 
@@ -27,19 +25,19 @@
 
   <!-- Gallery Grid -->
   <div class="container mx-auto px-4 mb-16 fade-in">
-    <h2 class="text-3xl font-semibold text-white mb-8 text-center">Portrait Gallery</h2>
-    
+    <h2 class="text-3xl font-semibold text-white mb-8 text-center gradient-text">Portrait Gallery</h2>
+
     <div class="masonry-gallery">
-      <div 
-        v-for="image in images" 
-        :key="image.id" 
-        class="masonry-item cursor-pointer overflow-hidden rounded-xl border border-white/10 hover:border-neon-cyan/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.1)]"
+      <div
+        v-for="image in images"
+        :key="image.id"
+        class="masonry-item cartridge cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(155,188,15,0.18)]"
         @click="openDetail(image.id)"
       >
         <div class="relative">
-          <img 
-            :src="image.thumbnail" 
-            :alt="image.alt" 
+          <img
+            :src="image.thumbnail"
+            :alt="image.alt"
             class="w-full transition-transform duration-500 hover:scale-110"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
@@ -52,13 +50,11 @@
 
   <div class="container mx-auto pb-16 fade-in">
     <div class="flex justify-center mb-8">
-      <NuxtLink to="/photography" class="btn-neon-outline inline-block">
+      <NuxtLink to="/photography" class="btn-neon-outline inline-block font-pixel">
         Back to Photography Collections
       </NuxtLink>
     </div>
   </div>
-
-  <footer-component></footer-component>
 </template>
 
 <script setup>

@@ -67,7 +67,7 @@ onUnmounted(() => {
 
       <div v-if="filteredTestimonials.length > 0" class="relative max-w-3xl mx-auto">
         <!-- Testimonial card -->
-        <div class="glass-card neon-border p-8 md:p-10 relative">
+        <div class="glass-card neon-border p-8 md:p-10 relative animate-slide-up">
           <!-- Quote icon -->
           <div class="absolute -top-4 -left-2 w-10 h-10 bg-neon-green/20 rounded-full flex items-center justify-center">
             <svg class="w-5 h-5 text-neon-green" fill="currentColor" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@ onUnmounted(() => {
           </div>
 
           <div class="flex flex-col md:flex-row items-start md:items-center mb-6 gap-4">
-            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-neon-purple/40 flex-shrink-0">
+            <div class="cartridge w-14 h-14 rounded-full overflow-hidden border-2 border-neon-purple/40 flex-shrink-0">
               <img
                 :src="filteredTestimonials[currentTestimonialIndex].avatar || '/images/testimonials/default-avatar.svg'"
                 alt="Client avatar"
@@ -88,7 +88,7 @@ onUnmounted(() => {
               <h3 class="text-lg font-bold text-white">
                 {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.name`) }}
               </h3>
-              <p class="text-sm text-neon-purple">
+              <p class="text-sm text-neon-purple font-pixel">
                 {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.role`) }}
                 {{ t('testimonials.at') }}
                 {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.company`) }}
@@ -105,7 +105,7 @@ onUnmounted(() => {
         <template v-if="filteredTestimonials.length > 1">
           <button
             @click="prevTestimonial"
-            class="absolute top-1/2 -left-4 md:-left-6 -translate-y-1/2 w-10 h-10 rounded-full bg-dark-200 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-green hover:border-neon-green/40 transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+            class="absolute top-1/2 -left-4 md:-left-6 -translate-y-1/2 w-10 h-10 rounded-full bg-dark-200 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-green hover:border-neon-green/40 transition-all duration-300 hover:shadow-[0_0_15px_rgba(155,188,15,0.2)]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -113,7 +113,7 @@ onUnmounted(() => {
           </button>
           <button
             @click="nextTestimonial"
-            class="absolute top-1/2 -right-4 md:-right-6 -translate-y-1/2 w-10 h-10 rounded-full bg-dark-200 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-green hover:border-neon-green/40 transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+            class="absolute top-1/2 -right-4 md:-right-6 -translate-y-1/2 w-10 h-10 rounded-full bg-dark-200 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-green hover:border-neon-green/40 transition-all duration-300 hover:shadow-[0_0_15px_rgba(155,188,15,0.2)]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -129,7 +129,7 @@ onUnmounted(() => {
             @click="currentTestimonialIndex = index"
             class="w-2 h-2 rounded-full transition-all duration-300"
             :class="currentTestimonialIndex === index
-              ? 'bg-neon-green w-6 shadow-[0_0_10px_rgba(0,240,255,0.5)]'
+              ? 'bg-neon-green w-6 shadow-[0_0_10px_rgba(155,188,15,0.5)]'
               : 'bg-dark-400 hover:bg-dark-300'"
           ></button>
         </div>

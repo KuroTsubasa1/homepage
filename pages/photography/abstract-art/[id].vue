@@ -1,21 +1,20 @@
 <template>
-  <navigation></navigation>
-
-  <div class="container mx-auto pt-24 py-16">
+  <div class="container mx-auto pt-24 py-16 animate-slide-up">
     <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold text-white mb-4">{{ imageData.alt || 'Abstract & Art Photography' }}</h1>
-      <NuxtLink to="/photography/abstract-art" class="btn-neon-outline inline-block text-sm">
+      <h1 class="text-4xl font-bold gradient-text mb-4">{{ imageData.alt || 'Abstract & Art Photography' }}</h1>
+      <NuxtLink to="/photography/abstract-art" class="btn-neon-outline inline-block text-sm font-pixel">
         Back to Abstract Gallery
       </NuxtLink>
     </div>
 
     <div class="max-w-4xl mx-auto px-4">
-      <img
-        v-if="imageData.src"
-        :src="imageData.src"
-        :alt="imageData.alt"
-        class="w-full rounded-2xl border border-white/10 mb-8"
-      />
+      <div v-if="imageData.src" class="cartridge mb-8">
+        <img
+          :src="imageData.src"
+          :alt="imageData.alt"
+          class="w-full"
+        />
+      </div>
 
       <div class="glass-card neon-border p-6 mb-8">
         <h2 class="text-2xl font-semibold text-neon-cyan mb-4">Image Details</h2>
@@ -49,14 +48,9 @@
       </div>
     </div>
   </div>
-
-  <footer-component></footer-component>
 </template>
 
 <script setup>
-import Navigation from '~/components/navigation.vue';
-import FooterComponent from '~/components/footerComponent.vue';
-
 // SSR fetch + SEO meta + prev/next handled by the shared composable.
 const { imageData, prevImage, nextImage } = useGalleryDetail('abstract', 'Abstract & Art Photography');
 </script>
