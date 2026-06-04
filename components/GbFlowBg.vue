@@ -162,6 +162,29 @@ defineProps<{ variant: string }>()
   100% { transform: scale(1.5); opacity: 0; }
 }
 
+/* ---- WEB : matrix-style data rain falling straight down (parallax) ---- */
+.flow-web .fl1 {
+  background-image: radial-gradient(circle, rgb(var(--c-green) / 0.16) 1.6px, transparent 2.2px);
+  background-size: 22px 22px;
+  opacity: 0.55;
+  animation: web-fall-a 3s linear infinite;
+}
+.flow-web .fl2 {
+  background-image: radial-gradient(circle, rgb(var(--c-green-2) / 0.13) 1.2px, transparent 1.7px);
+  background-size: 16px 16px;
+  opacity: 0.45;
+  animation: web-fall-b 1.9s linear infinite;
+}
+.flow-web .fl3 {
+  background-image: radial-gradient(circle, rgb(var(--c-velvet) / 0.12) 1.3px, transparent 1.9px);
+  background-size: 30px 30px;
+  opacity: 0.4;
+  animation: web-fall-c 4.4s linear infinite;
+}
+@keyframes web-fall-a { from { background-position: 0 0; } to { background-position: 0 22px; } }
+@keyframes web-fall-b { from { background-position: 0 0; } to { background-position: 0 16px; } }
+@keyframes web-fall-c { from { background-position: 0 0; } to { background-position: 0 30px; } }
+
 @media (prefers-reduced-motion: reduce) {
   .fl { animation: none !important; }
 }

@@ -58,6 +58,7 @@ const flowVariant = computed(() => {
   if (p.startsWith('/photography')) return 'photo'
   if (p.startsWith('/drone')) return 'drone'
   if (p.startsWith('/3d-printing')) return 'print'
+  if (p.startsWith('/reel-web-projects')) return 'web'
   if (p === '/about') return 'about'
   if (p === '/contact') return 'contact'
   return ''
@@ -208,6 +209,7 @@ const onKey = (e: KeyboardEvent) => {
     case 'm': case 'M': gb.toggleMute(); break
     case 'p': case 'P': gb.cyclePalette(); break
     case 's': case 'S': onStart(); break
+    case 'c': case 'C': gb.toggleDeck(); break
   }
 }
 
@@ -249,7 +251,7 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
 </script>
 
 <template>
-  <div class="gb-console min-h-screen bg-dark text-gray-300">
+  <div class="gb-console min-h-screen bg-dark text-gray-300" :class="{ 'deck-collapsed': !gb.deckOpen.value }">
 
     <!-- ================= BOOT SEQUENCE ================= -->
     <transition name="boot-fade">
@@ -358,6 +360,7 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
                 <li><kbd>S</kbd><span>Open menu</span></li>
                 <li><kbd>M</kbd><span>Sound</span></li>
                 <li><kbd>P</kbd><span>Palette</span></li>
+                <li><kbd>C</kbd><span>Hide controls</span></li>
               </ul>
               <p class="gb-menu-hint font-pixel">▲▼ MOVE · A SELECT · B BACK · click works too</p>
             </div>
@@ -367,14 +370,23 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
     </transition>
 
     <!-- ================= BOTTOM CONTROL DECK ================= -->
-    <footer class="gb-deck shell-surface">
-      <div class="gb-deck-label">
-        <span class="gb-dot"></span>
-        <span class="font-pixel">DOT MATRIX WITH STEREO SOUND</span>
-        <span class="gb-stripe"></span>
-      </div>
+    <footer class="gb-deck shell-surface" :class="{ 'is-collapsed': !gb.deckOpen.value }">
+      <!-- fold / unfold tab (always visible) -->
+      <button class="gb-deck-toggle" @click="gb.toggleDeck()"
+              :aria-label="gb.deckOpen.value ? 'Hide controls' : 'Show controls'"
+              :aria-expanded="gb.deckOpen.value">
+        <span class="gb-deck-grip"></span>
+        <span class="font-pixel">{{ gb.deckOpen.value ? '▼ HIDE' : '▲ CONTROLS' }}</span>
+      </button>
 
-      <div class="gb-deck-controls">
+      <div class="gb-deck-collapsible">
+        <div class="gb-deck-label">
+          <span class="gb-dot"></span>
+          <span class="font-pixel">DOT MATRIX WITH STEREO SOUND</span>
+          <span class="gb-stripe"></span>
+        </div>
+
+        <div class="gb-deck-controls">
         <!-- D-PAD -->
         <div class="gb-dpad" role="group" aria-label="Direction pad">
           <button class="dpad-btn dpad-up" :class="{ 'is-down': pressed === 'up' }" @click="onDir('up')" aria-label="Up">▲</button>
@@ -410,8 +422,9 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
         </div>
       </div>
 
-      <!-- footer strip welded into the bottom edge of the console -->
-      <footer-component />
+        <!-- footer strip welded into the bottom edge of the console -->
+        <footer-component />
+      </div>
     </footer>
   </div>
 </template>
@@ -427,6 +440,11 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
 }
 @media (min-width: 768px) {
   .gb-screen { padding-top: 60px; padding-bottom: 212px; }
+}
+/* When the deck is folded away, reclaim the space (only the toggle tab remains). */
+.gb-console.deck-collapsed .gb-screen { padding-bottom: 64px; }
+@media (min-width: 768px) {
+  .gb-console.deck-collapsed .gb-screen { padding-bottom: 68px; }
 }
 
 /* ---------- plastic shell surface ---------- */
@@ -672,6 +690,43 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
   z-index: 50;
   box-shadow: 0 -4px 0 rgba(0,0,0,0.18), 0 -8px 22px rgba(0,0,0,0.35);
 }
+
+/* fold / unfold tab */
+.gb-deck-toggle {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px 6px;
+  color: #45433a;
+  border-bottom: 2px solid rgba(44, 44, 40, 0.2);
+}
+.gb-deck-toggle .font-pixel { font-size: 0.46rem; letter-spacing: 0.06em; }
+.gb-deck-toggle:hover { color: #5b3490; }
+.gb-deck-grip {
+  width: 42px;
+  height: 5px;
+  border-radius: 999px;
+  background: #8e8b7a;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.gb-deck-toggle:hover .gb-deck-grip { background: #5b3490; }
+
+/* collapsible body */
+.gb-deck-collapsible {
+  overflow: hidden;
+  max-height: 460px;
+  opacity: 1;
+  transition: max-height 0.32s ease, opacity 0.22s ease;
+}
+.gb-deck.is-collapsed .gb-deck-collapsible {
+  max-height: 0;
+  opacity: 0;
+}
+
 .gb-deck-label {
   position: relative; z-index: 2;
   display: flex; align-items: center; justify-content: center;

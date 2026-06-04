@@ -33,6 +33,7 @@ export const GB_ROUTES = [
 const palette = ref<GbPalette>('night')
 const muted = ref(false)        // master sound switch (audio still gated by browser gesture)
 const musicOn = ref(true)       // background chiptune on/off
+const deckOpen = ref(true)      // bottom control deck expanded/collapsed
 const menuOpen = ref(false)
 const booted = ref(false)       // flips true once the boot sequence finishes
 const hydrated = ref(false)     // becomes true after we read persisted prefs on the client
@@ -104,31 +105,51 @@ const sfx = {
 }
 
 /* ----------------------------------------------------------------------
-   Background chiptune — a looping lead + bass over C · G · Am · F.
-   Scheduled with the standard Web Audio look-ahead technique so it loops
-   seamlessly regardless of timer jitter.
+   Background chiptune — a 4-channel loop (lead pulse + shimmering arp pulse +
+   driving triangle bass + noise hats) over a catchy Am · F · C · G
+   progression, 8 bars with melodic variation. Look-ahead scheduled so it
+   loops seamlessly regardless of timer jitter.
    ---------------------------------------------------------------------- */
-const N = {
+const NT = {
+  F2: 87.31, G2: 98.0, A2: 110.0, C3: 130.81, D3: 146.83, E3: 164.81, G3: 196.0,
+  G4: 392.0, A4: 440.0, B4: 493.88,
   C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.0, B5: 987.77,
-  A4: 440.0,
-  C3: 130.81, G2: 98.0, A2: 110.0, F2: 87.31,
 }
-// 32 eighth-note lead steps (4 bars), 0 = rest.
-const MELODY = [
-  N.C5, N.E5, N.G5, N.E5, N.C5, N.E5, N.G5, N.B5,   // C
-  N.D5, N.G5, N.B5, N.G5, N.D5, N.G5, N.B5, N.A5,   // G
-  N.A4, N.C5, N.E5, N.C5, N.A4, N.C5, N.E5, N.G5,   // Am
-  N.A4, N.C5, N.F5, N.C5, N.A4, N.C5, N.F5, N.E5,   // F
+// Lead melody — 8 bars × 8 eighth-notes (0 = rest), built from chord tones.
+const LEAD = [
+  NT.A4, 0, NT.C5, NT.E5, 0, NT.C5, NT.A4, 0,        // Am
+  NT.A4, 0, NT.C5, NT.F5, 0, NT.C5, NT.A4, 0,        // F
+  NT.G4, 0, NT.C5, NT.E5, 0, NT.G5, NT.E5, 0,        // C
+  NT.G4, 0, NT.B4, NT.D5, 0, NT.G5, NT.D5, 0,        // G
+  NT.E5, 0, NT.A5, NT.E5, NT.C5, 0, NT.A4, 0,        // Am
+  NT.F5, 0, NT.A5, NT.F5, NT.C5, 0, NT.A4, 0,        // F
+  NT.D5, 0, NT.G5, NT.D5, NT.B4, 0, NT.G4, 0,        // G
+  NT.D5, 0, NT.G5, NT.B5, 0, NT.D5, 0, 0,            // G (turnaround)
 ]
-// Bass root per half-bar (indexed by floor(step/4)); plays on every 4th step.
-const BASS_ROOTS = [N.C3, N.C3, N.G2, N.G2, N.A2, N.A2, N.F2, N.F2]
-const STEP_DUR = 0.17        // seconds per eighth note (~176 BPM feel)
+// Chord tones per bar — drive the fast shimmering arpeggio channel.
+const CHORDS = [
+  [NT.A4, NT.C5, NT.E5], [NT.A4, NT.C5, NT.F5], [NT.G4, NT.C5, NT.E5], [NT.G4, NT.B4, NT.D5],
+  [NT.A4, NT.C5, NT.E5], [NT.A4, NT.C5, NT.F5], [NT.G4, NT.B4, NT.D5], [NT.G4, NT.B4, NT.D5],
+]
+const ROOTS  = [NT.A2, NT.F2, NT.C3, NT.G2, NT.A2, NT.F2, NT.G2, NT.G2]
+const FIFTHS = [NT.E3, NT.C3, NT.G3, NT.D3, NT.E3, NT.C3, NT.D3, NT.D3]
+const STEP_DUR = 0.15        // seconds per eighth note (~200 BPM-ish groove)
 const LOOKAHEAD = 0.12       // schedule this far ahead (s)
 const TICK = 25              // scheduler poll (ms)
 
 let musicTimer: any = null
 let nextNoteTime = 0
 let stepIndex = 0
+let noiseBuf: AudioBuffer | null = null
+
+function getNoise(ctx: AudioContext): AudioBuffer {
+  if (!noiseBuf) {
+    noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.4), ctx.sampleRate)
+    const d = noiseBuf.getChannelData(0)
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1
+  }
+  return noiseBuf
+}
 
 function musicNote(freq: number, dur: number, type: OscillatorType, vol: number, t0: number) {
   if (!audioCtx || !musicGain) return
@@ -144,16 +165,39 @@ function musicNote(freq: number, dur: number, type: OscillatorType, vol: number,
   osc.stop(t0 + dur + 0.03)
 }
 
+function noiseHit(t0: number, dur: number, vol: number) {
+  if (!audioCtx || !musicGain) return
+  const src = audioCtx.createBufferSource()
+  src.buffer = getNoise(audioCtx)
+  const hp = audioCtx.createBiquadFilter()
+  hp.type = 'highpass'
+  hp.frequency.value = 7000
+  const g = audioCtx.createGain()
+  g.gain.setValueAtTime(vol, t0)
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur)
+  src.connect(hp).connect(g).connect(musicGain)
+  src.start(t0)
+  src.stop(t0 + dur + 0.02)
+}
+
 function musicLoop() {
   if (!audioCtx) return
   while (nextNoteTime < audioCtx.currentTime + LOOKAHEAD) {
-    const s = stepIndex % MELODY.length
-    const lead = MELODY[s]
-    if (lead) musicNote(lead, STEP_DUR * 0.92, 'square', 0.05, nextNoteTime)
-    if (s % 4 === 0) {
-      const bass = BASS_ROOTS[Math.floor(s / 4)]
-      if (bass) musicNote(bass, STEP_DUR * 3.6, 'triangle', 0.06, nextNoteTime)
+    const s = stepIndex % LEAD.length
+    const bar = (s / 8) | 0
+    const beat = s % 8
+    // lead (pulse 1)
+    const lead = LEAD[s]
+    if (lead) musicNote(lead, STEP_DUR * 0.9, 'square', 0.05, nextNoteTime)
+    // shimmering arpeggio (quiet pulse 2)
+    const chord = CHORDS[bar]
+    musicNote(chord[s % chord.length], STEP_DUR * 0.55, 'square', 0.02, nextNoteTime)
+    // driving triangle bass on the beats (fifth on beat 6)
+    if (beat % 2 === 0) {
+      musicNote(beat === 6 ? FIFTHS[bar] : ROOTS[bar], STEP_DUR * 1.7, 'triangle', 0.06, nextNoteTime)
     }
+    // noise hi-hats on the off-beats
+    if (beat % 2 === 1) noiseHit(nextNoteTime, 0.03, 0.018)
     nextNoteTime += STEP_DUR
     stepIndex += 1
   }
@@ -191,6 +235,9 @@ function bindPersistence() {
   watch(musicOn, (m) => {
     try { localStorage.setItem('gb-music', m ? '1' : '0') } catch {}
   })
+  watch(deckOpen, (m) => {
+    try { localStorage.setItem('gb-deck', m ? '1' : '0') } catch {}
+  })
 }
 
 /** Read persisted prefs + reflect palette onto <html>. Call once on mount. */
@@ -203,6 +250,8 @@ function hydrate() {
     if (m !== null) muted.value = m === '1'
     const mu = localStorage.getItem('gb-music')
     if (mu !== null) musicOn.value = mu === '1'
+    const dk = localStorage.getItem('gb-deck')
+    if (dk !== null) deckOpen.value = dk === '1'
   } catch {}
   applyPaletteToDom()
   bindPersistence()
@@ -241,6 +290,8 @@ export function useGameboy() {
   const closeMenu = () => { menuOpen.value = false; sfx.back() }
   const toggleMenu = () => { menuOpen.value ? closeMenu() : openMenu() }
 
+  const toggleDeck = () => { deckOpen.value = !deckOpen.value; sfx.toggle() }
+
   const finishBoot = () => { booted.value = true }
 
   return {
@@ -248,6 +299,7 @@ export function useGameboy() {
     palette,
     muted,
     musicOn,
+    deckOpen,
     menuOpen,
     booted,
     hydrated,
@@ -263,6 +315,7 @@ export function useGameboy() {
     cyclePalette,
     toggleMute,
     toggleMusic,
+    toggleDeck,
     openMenu,
     closeMenu,
     toggleMenu,

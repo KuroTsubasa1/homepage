@@ -1,6 +1,12 @@
 <script lang="ts" setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 // Title screen — no image carousel; a repeating phosphor flow drifts
 // diagonally from the top-right to the bottom-left behind the plaque.
+const gb = useGameboy()
+const hideHint = ref(false)
+const onScroll = () => { hideHint.value = window.scrollY > 60 }
+onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
@@ -49,12 +55,48 @@
 
       <social-row></social-row>
     </div>
+
+    <!-- scroll-down hint (fixed above the deck; fades out once you scroll) -->
+    <div class="title-scroll" :class="{ 'is-hidden': hideHint }"
+         :style="{ bottom: gb.deckOpen.value ? '13.5rem' : '5rem' }" aria-hidden="true">
+      <span class="pixel-label">SCROLL</span>
+      <span class="title-scroll-arrow">▼</span>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .title-screen {
   background: rgb(var(--c-bg));
+}
+
+/* scroll-down hint — fixed above the control deck, fades out on scroll */
+.title-scroll {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.3s ease, bottom 0.3s ease;
+}
+.title-scroll.is-hidden { opacity: 0; pointer-events: none; }
+.title-scroll .pixel-label { color: rgb(var(--c-ink-3)); font-size: 0.5rem; }
+.title-scroll-arrow {
+  font-size: 0.95rem;
+  line-height: 1;
+  color: rgb(var(--c-green));
+  text-shadow: 0 0 8px rgb(var(--c-green) / 0.5);
+  animation: scroll-bob 1.2s steps(3) infinite;
+}
+@keyframes scroll-bob {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50%      { transform: translateY(6px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .title-scroll-arrow { animation: none; }
 }
 
 /* Each flow layer tiles a square pattern and scrolls exactly one tile

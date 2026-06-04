@@ -1,88 +1,99 @@
 <template>
-  <!-- Hero -->
-  <section class="pt-28 py-16 bg-dark-100 relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px]"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <NuxtLink to="/reel-web-projects" class="btn-neon-outline font-pixel text-sm !py-2 !px-4 inline-flex items-center gap-2 mb-8">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-        {{ $t('common.back') }}
-      </NuxtLink>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-slide-up">
-      <div class="flex flex-col justify-center">
-        <div class="flex items-center gap-3 mb-4 flex-wrap">
-          <h2 class="text-3xl md:text-4xl font-bold text-white">{{ projectData.title }}</h2>
-          <span v-if="projectData.company" class="gb-chip font-pixel text-xs">{{ projectData.company }}</span>
-        </div>
-        <p class="text-gray-300 leading-relaxed mb-6">{{ projectData.longDescription }}</p>
-        <ul class="space-y-2 text-gray-300">
-          <li v-if="projectData.role"><span class="text-neon-green font-medium">Role:</span> {{ projectData.role }}</li>
-          <li v-if="projectData.category"><span class="text-neon-green font-medium">Type:</span> {{ projectData.category }}</li>
-          <li v-if="projectData.fromDate"><span class="text-neon-green font-medium">Period:</span> {{ projectData.fromDate }}{{ projectData.toDate ? ' — ' + projectData.toDate : '' }}</li>
-        </ul>
-      </div>
-      <div>
-        <video v-if="projectData.videos && projectData.videos.length > 0" class="cartridge w-full" controls>
-          <source :src="projectData.videos[0]" type="video/mp4">
-        </video>
-        <img v-else-if="projectData.images && projectData.images.length > 0" :src="projectData.images[0]" class="cartridge w-full" :alt="projectData.title" />
-        <div v-else class="cartridge w-full h-64 bg-gradient-to-br from-dark-200 to-dark-400 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-dark-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-        </div>
-      </div>
-      </div>
-    </div>
-  </section>
+  <div class="container mx-auto px-4 max-w-5xl py-12 space-y-10">
 
-  <!-- Technologies -->
-  <section v-if="technologies.length" class="py-16 bg-dark">
-    <div class="container mx-auto px-4">
-      <h2 class="section-heading">Technologies</h2>
-      <div class="section-divider"></div>
-      <div class="flex flex-wrap justify-center gap-3">
+    <!-- BACK -->
+    <NuxtLink to="/reel-web-projects" class="btn-neon-outline font-pixel text-sm !py-2 !px-4 inline-flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      {{ $t('common.back') }}
+    </NuxtLink>
+
+    <!-- TITLE + COVER -->
+    <GbWindow :title="projectData.title || 'PROJECT'" class="animate-slide-up">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div class="space-y-4 order-2 md:order-1">
+          <div class="flex items-center gap-3 flex-wrap">
+            <h2 class="text-3xl md:text-4xl font-bold text-white">{{ projectData.title }}</h2>
+            <span v-if="projectData.company" class="gb-chip font-pixel text-xs">{{ projectData.company }}</span>
+          </div>
+          <p class="text-gray-300 leading-relaxed">{{ projectData.longDescription }}</p>
+        </div>
+        <div class="order-1 md:order-2">
+          <div class="gb-tile">
+            <video v-if="projectData.videos && projectData.videos.length > 0" class="w-full" controls>
+              <source :src="projectData.videos[0]" type="video/mp4">
+            </video>
+            <img v-else-if="projectData.images && projectData.images.length > 0" :src="projectData.images[0]" class="w-full" :alt="projectData.title" />
+            <div v-else class="w-full h-64 bg-dark-200 flex items-center justify-center dither">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-dark-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+            </div>
+            <span class="gb-tile-label">{{ projectData.title }}</span>
+          </div>
+        </div>
+      </div>
+    </GbWindow>
+
+    <!-- DATA -->
+    <GbWindow
+      v-if="projectData.role || projectData.category || projectData.fromDate"
+      title="DATA"
+      class="animate-slide-up"
+    >
+      <div class="gb-menu-list">
+        <div v-if="projectData.role" class="gb-menu-row">
+          <span>Role</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ projectData.role }}</span>
+        </div>
+        <div v-if="projectData.category" class="gb-menu-row">
+          <span>Type</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ projectData.category }}</span>
+        </div>
+        <div v-if="projectData.fromDate" class="gb-menu-row">
+          <span>Period</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ projectData.fromDate }}{{ projectData.toDate ? ' — ' + projectData.toDate : '' }}</span>
+        </div>
+      </div>
+    </GbWindow>
+
+    <!-- TECHNOLOGIES -->
+    <GbWindow v-if="technologies.length" title="Technologies" class="animate-slide-up">
+      <div class="flex flex-wrap gap-3">
         <span v-for="(tech, index) in technologies" :key="index" class="gb-chip font-pixel text-xs">
           {{ typeof tech === 'string' ? tech : tech.name }}
         </span>
       </div>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- Image Gallery -->
-  <section v-if="projectData.images && projectData.images.length > 1" class="py-16 bg-dark-100">
-    <div class="container mx-auto px-4">
-      <h2 class="section-heading">Gallery</h2>
-      <div class="section-divider"></div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="(image, index) in projectData.images.slice(1)" :key="index" class="cartridge overflow-hidden transition-all duration-300">
-          <img :src="image" :alt="'Gallery Image ' + (index + 1)" class="w-full transition-transform hover:scale-105 duration-500" loading="lazy" />
+    <!-- GALLERY -->
+    <GbWindow v-if="projectData.images && projectData.images.length > 1" title="Gallery" class="animate-slide-up">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-for="(image, index) in projectData.images.slice(1)" :key="index" class="gb-tile">
+          <img :src="image" :alt="'Gallery Image ' + (index + 1)" class="w-full h-36 sm:h-40 object-cover" loading="lazy" />
         </div>
       </div>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- Challenges -->
-  <section v-if="challenges.length" class="py-16 bg-dark">
-    <div class="container mx-auto px-4">
-      <h2 class="section-heading">Highlights</h2>
-      <div class="section-divider"></div>
-      <div class="max-w-3xl mx-auto space-y-6">
-        <div v-for="(challenge, index) in challenges" :key="index" class="glass-card neon-border p-6">
+    <!-- HIGHLIGHTS -->
+    <GbWindow v-if="challenges.length" title="Highlights" accent="velvet" class="animate-slide-up">
+      <div class="space-y-6">
+        <div v-for="(challenge, index) in challenges" :key="index">
           <h3 class="text-lg font-semibold text-neon-green mb-2">{{ typeof challenge === 'string' ? challenge : challenge.title }}</h3>
           <p v-if="typeof challenge !== 'string'" class="text-gray-300 leading-relaxed">{{ challenge.solution }}</p>
         </div>
       </div>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- CTA -->
-  <section v-if="projectData.link" class="py-16 relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10"></div>
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="container mx-auto px-4 text-center relative z-10">
-      <h2 class="text-3xl font-bold mb-6"><span class="gradient-text">Want to explore this project?</span></h2>
-      <a :href="projectData.link" target="_blank" class="btn-neon font-pixel text-sm inline-block animate-glow-pulse">Visit Project</a>
-    </div>
-  </section>
+    <!-- CTA -->
+    <GbWindow v-if="projectData.link" class="animate-slide-up">
+      <div class="text-center">
+        <h2 class="text-3xl font-bold mb-6"><span class="gradient-text">Want to explore this project?</span></h2>
+        <a :href="projectData.link" target="_blank" class="btn-neon font-pixel text-sm inline-block animate-glow-pulse">Visit Project</a>
+      </div>
+    </GbWindow>
+
+  </div>
 </template>
 
 <script setup>
