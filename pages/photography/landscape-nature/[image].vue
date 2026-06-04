@@ -1,87 +1,94 @@
 <template>
-  <!-- Sticky Header -->
-  <header class="sticky top-0 bg-dark/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-neon-green/5 z-10">
-    <div class="container mx-auto flex justify-between items-center px-4 py-3">
-      <h1 class="text-2xl font-bold text-white">{{ imageData.alt || 'Landscape & Nature Photography' }}</h1>
-      <button
-          class="btn-neon-outline text-sm font-pixel"
-          @click="$router.push('/photography/landscape-nature')"
-      >
-        Back to Landscape Gallery
-      </button>
+  <div class="container mx-auto px-4 max-w-5xl py-12 space-y-10">
+
+    <!-- TITLE PLAQUE -->
+    <div class="gb-titlecard animate-slide-up">
+      <h1 class="text-3xl md:text-5xl font-black gradient-text mb-3">{{ imageData.alt || 'Landscape & Nature Photography' }}</h1>
+      <p class="pixel-label text-lcd-dim">LANDSCAPE &amp; NATURE</p>
     </div>
-  </header>
 
-  <!-- Main Image Section -->
-  <section class="image-section py-16">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto animate-slide-up">
-        <div v-if="imageData.src" class="cartridge mb-8">
-          <img
-            :src="imageData.src"
-            :alt="imageData.alt"
-            class="w-full"
-          />
-        </div>
-
-        <div class="glass-card neon-border p-6">
-          <h2 class="text-2xl font-semibold text-neon-green mb-4">Image Details</h2>
-          <div class="space-y-3 text-gray-300">
-            <p v-if="imageData.alt"><strong class="text-white">Title:</strong> {{ imageData.alt }}</p>
-            <p v-if="imageData.description"><strong class="text-white">Description:</strong> {{ imageData.description }}</p>
-            <p v-if="imageData.location"><strong class="text-white">Location:</strong> {{ imageData.location }}</p>
-            <p v-if="imageData.date"><strong class="text-white">Date:</strong> {{ imageData.date }}</p>
-            <p v-if="imageData.camera"><strong class="text-white">Camera:</strong> {{ imageData.camera }}</p>
-            <p v-if="imageData.lens"><strong class="text-white">Lens:</strong> {{ imageData.lens }}</p>
-            <p v-if="imageData.settings"><strong class="text-white">Settings:</strong> {{ imageData.settings }}</p>
-            <p><strong class="text-white">Category:</strong> Landscape & Nature</p>
-          </div>
-        </div>
-      </div>
+    <!-- PHOTO -->
+    <div v-if="imageData.src" class="cartridge animate-slide-up">
+      <img
+        :src="imageData.src"
+        :alt="imageData.alt"
+        class="w-full"
+      />
     </div>
-  </section>
 
-  <!-- More Images Section -->
-  <section class="related-images-section py-16 bg-dark-100">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-white mb-8 text-center">More Landscape & Nature Photography</h2>
+    <!-- DATA -->
+    <GbWindow title="DATA" class="animate-slide-up">
+      <p class="pixel-label text-neon-green mb-4">▸ IMAGE DETAILS</p>
+      <dl class="gb-data">
+        <template v-if="imageData.alt">
+          <dt class="pixel-label text-neon-green">Title</dt>
+          <dd class="text-gray-300">{{ imageData.alt }}</dd>
+        </template>
+        <template v-if="imageData.description">
+          <dt class="pixel-label text-neon-green">Description</dt>
+          <dd class="text-gray-300">{{ imageData.description }}</dd>
+        </template>
+        <template v-if="imageData.location">
+          <dt class="pixel-label text-neon-green">Location</dt>
+          <dd class="text-gray-300">{{ imageData.location }}</dd>
+        </template>
+        <template v-if="imageData.date">
+          <dt class="pixel-label text-neon-green">Date</dt>
+          <dd class="text-gray-300">{{ imageData.date }}</dd>
+        </template>
+        <template v-if="imageData.camera">
+          <dt class="pixel-label text-neon-green">Camera</dt>
+          <dd class="text-gray-300">{{ imageData.camera }}</dd>
+        </template>
+        <template v-if="imageData.lens">
+          <dt class="pixel-label text-neon-green">Lens</dt>
+          <dd class="text-gray-300">{{ imageData.lens }}</dd>
+        </template>
+        <template v-if="imageData.settings">
+          <dt class="pixel-label text-neon-green">Settings</dt>
+          <dd class="text-gray-300">{{ imageData.settings }}</dd>
+        </template>
+        <dt class="pixel-label text-neon-green">Category</dt>
+        <dd class="text-gray-300">Landscape &amp; Nature</dd>
+      </dl>
+    </GbWindow>
+
+    <!-- MORE -->
+    <GbWindow title="More Landscape &amp; Nature Photography" class="animate-slide-up">
       <div class="more-images-container">
         <image-gallery category="nature" :useDetailPages="false" class="fade-in"></image-gallery>
       </div>
+    </GbWindow>
+
+    <!-- NAVIGATION -->
+    <div class="flex flex-wrap justify-between items-center gap-3 animate-slide-up">
+      <button
+        v-if="prevImage"
+        @click="navigateToImage(prevImage.id)"
+        class="btn-neon-outline text-sm font-pixel"
+      >
+        ← Previous Image
+      </button>
+      <div v-else></div>
+
+      <button
+        @click="$router.push('/photography/landscape-nature')"
+        class="btn-neon-outline text-sm font-pixel"
+      >
+        Back to Gallery
+      </button>
+
+      <button
+        v-if="nextImage"
+        @click="navigateToImage(nextImage.id)"
+        class="btn-neon-outline text-sm font-pixel"
+      >
+        Next Image →
+      </button>
+      <div v-else></div>
     </div>
-  </section>
 
-  <!-- Navigation for Images -->
-  <section class="image-navigation py-8">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between">
-        <button
-          v-if="prevImage"
-          @click="navigateToImage(prevImage.id)"
-          class="btn-neon-outline text-sm font-pixel"
-        >
-          ← Previous Image
-        </button>
-        <div v-else></div>
-
-        <button
-          @click="$router.push('/photography/landscape-nature')"
-          class="btn-neon text-sm font-pixel"
-        >
-          Back to Gallery
-        </button>
-
-        <button
-          v-if="nextImage"
-          @click="navigateToImage(nextImage.id)"
-          class="btn-neon-outline text-sm font-pixel"
-        >
-          Next Image →
-        </button>
-        <div v-else></div>
-      </div>
-    </div>
-  </section>
+  </div>
 </template>
 
 <script setup>
@@ -103,6 +110,29 @@ const { imageData, prevImage, nextImage } = useGalleryDetail('nature', 'Landscap
 @keyframes fadeIn {
   to {
     opacity: 1;
+  }
+}
+
+/* DATA window: pixel-font labels, readable VT323 values */
+.gb-data {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+}
+.gb-data dt {
+  white-space: nowrap;
+}
+.gb-data dd {
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .gb-data {
+    grid-template-columns: 1fr;
+    gap: 0.15rem 0;
+  }
+  .gb-data dd {
+    margin-bottom: 0.5rem;
   }
 }
 

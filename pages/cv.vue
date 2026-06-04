@@ -1,128 +1,131 @@
 <template>
-  <!-- Hero -->
-  <section class="relative overflow-hidden pt-28 pb-16">
-    <div class="absolute inset-0 bg-grid opacity-20"></div>
-    <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-neon-green/10 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full blur-[120px]"></div>
+  <div class="container mx-auto px-4 max-w-4xl py-12 space-y-10">
 
-    <div class="container mx-auto px-6 relative z-10">
-      <h1 class="text-5xl md:text-7xl font-black mb-3 animate-slide-up">
-        <span class="gradient-text">{{ profile.name }}</span>
-      </h1>
-      <h2 class="text-xl md:text-2xl font-semibold text-gray-300 mb-8">{{ profile.title }}</h2>
-
-      <div class="flex flex-wrap gap-4">
-        <a :href="pdfUrl" target="_blank" rel="noopener" class="btn-neon font-pixel inline-flex items-center gap-2 animate-glow-pulse">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M4 6h16M4 6a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2" /></svg>
-          {{ t('about.cta.downloadCv') }}
-        </a>
-        <NuxtLink to="/contact" class="btn-neon-outline font-pixel inline-flex items-center gap-2">
-          {{ t('nav.contact') }}
-        </NuxtLink>
-      </div>
-    </div>
-  </section>
-
-  <div class="container mx-auto px-6 pb-24 relative z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-      <!-- Main column -->
-      <div class="lg:col-span-2 space-y-12">
-        <!-- Profile summary -->
-        <div class="glass-card neon-border p-6 md:p-8">
-          <p class="text-gray-300 leading-relaxed">{{ profile.summary }}</p>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span v-for="tech in profile.coreTech" :key="tech" class="gb-chip">{{ tech }}</span>
-          </div>
+    <!-- PLAYER CARD -->
+    <GbWindow title="PLAYER CARD" class="animate-slide-up">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-6xl font-black mb-2">
+          <span class="gradient-text">{{ profile.name }}</span>
+        </h1>
+        <p class="pixel-label text-lcd-dim mb-6">{{ profile.title }}</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a :href="pdfUrl" target="_blank" rel="noopener" class="btn-neon font-pixel inline-flex items-center gap-2 animate-glow-pulse">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M4 6h16M4 6a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2" /></svg>
+            {{ t('about.cta.downloadCv') }}
+          </a>
+          <NuxtLink to="/contact" class="btn-neon-outline font-pixel inline-flex items-center gap-2">
+            {{ t('nav.contact') }}
+          </NuxtLink>
         </div>
+      </div>
+    </GbWindow>
 
-        <!-- Experience -->
-        <section>
-          <h2 class="text-2xl font-bold text-white mb-2">Berufserfahrung</h2>
-          <div class="h-1 w-16 bg-gradient-to-r from-neon-green to-neon-cyan rounded-full mb-8"></div>
+    <!-- PROFILE -->
+    <GbWindow title="PROFILE" class="animate-slide-up">
+      <p class="text-gray-300 leading-relaxed">{{ profile.summary }}</p>
+      <div class="gb-hr my-5"></div>
+      <p class="pixel-label text-neon-green mb-3">CORE TECH</p>
+      <div class="flex flex-wrap gap-2">
+        <span v-for="tech in profile.coreTech" :key="tech" class="gb-chip">{{ tech }}</span>
+      </div>
+    </GbWindow>
 
-          <div class="relative border-l border-white/10 pl-8 space-y-10">
-            <div v-for="(job, i) in experience" :key="i" class="relative">
-              <!-- timeline dot -->
-              <span
-                class="absolute -left-[39px] top-1.5 w-4 h-4 rounded-full border-2"
-                :class="job.current ? 'bg-neon-green border-neon-green shadow-[0_0_10px_rgba(155,188,15,0.6)] animate-pulse' : 'bg-dark border-neon-cyan/50'"
-              ></span>
+    <!-- EXPERIENCE -->
+    <GbWindow title="Berufserfahrung" class="animate-slide-up">
+      <ul class="gb-menu-list">
+        <li v-for="(job, i) in experience" :key="i">
+          <div class="gb-menu-row !items-start !cursor-default">
+            <span class="flex-1 min-w-0">
+              <span class="flex flex-wrap items-baseline gap-2">
+                <span class="text-white font-semibold">{{ job.company }}</span>
+                <span v-if="job.current" class="gb-chip">ACTIVE</span>
+              </span>
+              <span class="block mt-1 text-neon-cyan/80 text-sm">{{ job.role }}</span>
 
-              <div class="flex flex-wrap items-baseline justify-between gap-x-3">
-                <h3 class="text-lg font-bold text-white">{{ job.company }}</h3>
-                <span class="text-xs text-gray-500 whitespace-nowrap">{{ job.period }}</span>
-              </div>
-              <p class="text-neon-cyan/80 text-sm mb-4">{{ job.role }}</p>
-
-              <div class="space-y-4">
-                <div v-for="(p, j) in job.projects" :key="j" class="glass-card border border-white/5 p-4 rounded-xl">
-                  <h4 class="text-white font-semibold mb-1">{{ p.name }}</h4>
-                  <p class="text-gray-400 text-sm mb-3">{{ p.desc }}</p>
-                  <div class="flex flex-wrap gap-1.5">
+              <span class="block mt-3 space-y-3">
+                <span v-for="(p, j) in job.projects" :key="j" class="block">
+                  <span class="block text-white font-semibold">▸ {{ p.name }}</span>
+                  <span class="block mt-1 gb-row-desc">{{ p.desc }}</span>
+                  <span class="flex flex-wrap gap-1.5 mt-2">
                     <span v-for="tech in p.tech" :key="tech" class="gb-chip">{{ tech }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+                  </span>
+                </span>
+              </span>
+            </span>
+            <span class="hidden sm:block w-40 flex-shrink-0 text-right">
+              <span class="gb-menu-value">{{ job.period }}</span>
+            </span>
           </div>
-        </section>
+          <span class="sm:hidden block mt-1 text-xs text-gray-500">{{ job.period }}</span>
+        </li>
+      </ul>
+    </GbWindow>
 
-        <!-- Education -->
-        <section>
-          <h2 class="text-2xl font-bold text-white mb-2">Bildung</h2>
-          <div class="h-1 w-16 bg-gradient-to-r from-neon-green to-neon-cyan rounded-full mb-8"></div>
-
-          <div class="space-y-4">
-            <div v-for="(edu, i) in education" :key="i" class="glass-card neon-border p-5">
-              <div class="flex flex-wrap items-baseline justify-between gap-x-3">
-                <h3 class="text-white font-semibold">{{ edu.school }}</h3>
-                <span class="text-xs text-gray-500 whitespace-nowrap">{{ edu.period }}</span>
-              </div>
-              <p class="text-gray-400 text-sm uppercase tracking-wide mt-1">{{ edu.degree }}</p>
-            </div>
+    <!-- EDUCATION -->
+    <GbWindow title="Bildung" class="animate-slide-up">
+      <ul class="gb-menu-list">
+        <li v-for="(edu, i) in education" :key="i">
+          <div class="gb-menu-row !items-start !cursor-default">
+            <span class="flex-1 min-w-0">
+              <span class="block text-white font-semibold">{{ edu.school }}</span>
+              <span class="block mt-1 gb-row-desc">{{ edu.degree }}</span>
+            </span>
+            <span class="hidden sm:block w-40 flex-shrink-0 text-right">
+              <span class="gb-menu-value">{{ edu.period }}</span>
+            </span>
           </div>
-        </section>
+          <span class="sm:hidden block mt-1 text-xs text-gray-500">{{ edu.period }}</span>
+        </li>
+      </ul>
+    </GbWindow>
+
+    <!-- SKILLS -->
+    <GbWindow title="Technische Fähigkeiten" class="animate-slide-up">
+      <div class="space-y-5">
+        <div v-for="(block, i) in skills" :key="i">
+          <p class="pixel-label text-neon-green mb-2">{{ block.title }}</p>
+          <p class="gb-row-desc">{{ block.items }}</p>
+        </div>
       </div>
+    </GbWindow>
 
-      <!-- Sidebar -->
-      <aside class="space-y-8">
-        <!-- Contact -->
-        <div class="glass-card neon-border p-6">
-          <h3 class="font-pixel text-[10px] uppercase tracking-widest text-neon-green mb-4">Kontakt</h3>
-          <ul class="space-y-2 text-sm text-gray-300">
-            <li>{{ profile.contact.address }}</li>
-            <li><a :href="`tel:${profile.contact.phone.replace(/[^+\d]/g, '')}`" class="hover:text-neon-green transition-colors">{{ profile.contact.phone }}</a></li>
-            <li><a :href="`mailto:${profile.contact.email}`" class="hover:text-neon-green transition-colors break-all">{{ profile.contact.email }}</a></li>
-            <li><a :href="`https://${profile.contact.website}`" target="_blank" rel="noopener" class="hover:text-neon-cyan transition-colors">{{ profile.contact.website }}</a></li>
-            <li><a :href="`https://${profile.contact.github}`" target="_blank" rel="noopener" class="hover:text-neon-cyan transition-colors break-all">{{ profile.contact.github }}</a></li>
-            <li><a :href="`https://${profile.contact.linkedin}`" target="_blank" rel="noopener" class="hover:text-neon-cyan transition-colors break-all">{{ profile.contact.linkedin }}</a></li>
-          </ul>
-        </div>
+    <!-- CONTACT + HOBBIES -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <GbWindow title="Kontakt" accent="velvet" class="animate-slide-up">
+        <ul class="gb-menu-list">
+          <li>
+            <span class="gb-menu-row !cursor-default text-gray-300">{{ profile.contact.address }}</span>
+          </li>
+          <li>
+            <a :href="`tel:${profile.contact.phone.replace(/[^+\d]/g, '')}`" class="gb-menu-row break-all">{{ profile.contact.phone }}</a>
+          </li>
+          <li>
+            <a :href="`mailto:${profile.contact.email}`" class="gb-menu-row break-all">{{ profile.contact.email }}</a>
+          </li>
+          <li>
+            <a :href="`https://${profile.contact.website}`" target="_blank" rel="noopener" class="gb-menu-row break-all">{{ profile.contact.website }}</a>
+          </li>
+          <li>
+            <a :href="`https://${profile.contact.github}`" target="_blank" rel="noopener" class="gb-menu-row break-all">{{ profile.contact.github }}</a>
+          </li>
+          <li>
+            <a :href="`https://${profile.contact.linkedin}`" target="_blank" rel="noopener" class="gb-menu-row break-all">{{ profile.contact.linkedin }}</a>
+          </li>
+        </ul>
+      </GbWindow>
 
-        <!-- Skills -->
-        <div class="glass-card neon-border p-6">
-          <h3 class="font-pixel text-[10px] uppercase tracking-widest text-neon-green mb-4">Technische Fähigkeiten</h3>
-          <div class="space-y-4">
-            <div v-for="(block, i) in skills" :key="i">
-              <h4 class="text-neon-green text-sm font-semibold mb-1">{{ block.title }}</h4>
-              <p class="text-gray-400 text-sm leading-relaxed">{{ block.items }}</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hobbies -->
-        <div class="glass-card neon-border p-6">
-          <h3 class="font-pixel text-[10px] uppercase tracking-widest text-neon-green mb-4">Hobbys</h3>
-          <ul class="space-y-2">
-            <li v-for="(h, i) in hobbies" :key="i" class="text-gray-300 text-sm flex gap-2">
-              <span class="text-neon-green">▹</span>
-              <span>{{ h }}</span>
-            </li>
-          </ul>
-        </div>
-      </aside>
+      <GbWindow title="Hobbys" class="animate-slide-up">
+        <ul class="gb-menu-list">
+          <li v-for="(h, i) in hobbies" :key="i">
+            <span class="gb-menu-row !cursor-default">
+              <span class="text-neon-green flex-shrink-0">▹</span>
+              <span class="gb-row-desc">{{ h }}</span>
+            </span>
+          </li>
+        </ul>
+      </GbWindow>
     </div>
+
   </div>
 </template>
 
@@ -241,3 +244,15 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 });
 </script>
+
+<style scoped>
+/* Flavour/body text inside menu rows (readable VT323, not pixel font) */
+.gb-row-desc {
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgb(var(--c-ink-2));
+}
+</style>

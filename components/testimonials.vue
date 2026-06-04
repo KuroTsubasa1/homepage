@@ -57,87 +57,92 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="py-24 bg-dark-100 relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-neon-purple/5 rounded-full blur-[120px]"></div>
+  <div>
+    <GbWindow :title="t('testimonials.title')" class="animate-slide-up">
 
-    <div class="container mx-auto px-4 relative z-10">
-      <h2 class="section-heading">{{ t('testimonials.title') }}</h2>
-      <div class="section-divider"></div>
-
-      <div v-if="filteredTestimonials.length > 0" class="relative max-w-3xl mx-auto">
+      <div v-if="filteredTestimonials.length > 0">
         <!-- Testimonial card -->
-        <div class="glass-card neon-border p-8 md:p-10 relative animate-slide-up">
-          <!-- Quote icon -->
-          <div class="absolute -top-4 -left-2 w-10 h-10 bg-neon-green/20 rounded-full flex items-center justify-center">
-            <svg class="w-5 h-5 text-neon-green" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-            </svg>
-          </div>
-
-          <div class="flex flex-col md:flex-row items-start md:items-center mb-6 gap-4">
-            <div class="cartridge w-14 h-14 rounded-full overflow-hidden border-2 border-neon-purple/40 flex-shrink-0">
-              <img
-                :src="filteredTestimonials[currentTestimonialIndex].avatar || '/images/testimonials/default-avatar.svg'"
-                alt="Client avatar"
-                class="w-full h-full object-cover"
-                @error="$event.target.src = '/images/testimonials/default-avatar.svg'"
-              >
+        <div class="gb-tile dither">
+          <div class="p-6 md:p-8">
+            <div class="flex flex-col md:flex-row items-start md:items-center mb-6 gap-4">
+              <div class="cartridge w-14 h-14 overflow-hidden flex-shrink-0">
+                <img
+                  :src="filteredTestimonials[currentTestimonialIndex].avatar || '/images/testimonials/default-avatar.svg'"
+                  alt="Client avatar"
+                  class="w-full h-full object-cover"
+                  @error="$event.target.src = '/images/testimonials/default-avatar.svg'"
+                >
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-white">
+                  {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.name`) }}
+                </h3>
+                <p class="pixel-label text-neon-purple">
+                  {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.role`) }}
+                  {{ t('testimonials.at') }}
+                  {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.company`) }}
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 class="text-lg font-bold text-white">
-                {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.name`) }}
-              </h3>
-              <p class="text-sm text-neon-purple font-pixel">
-                {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.role`) }}
-                {{ t('testimonials.at') }}
-                {{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.company`) }}
-              </p>
-            </div>
-          </div>
 
-          <p class="text-gray-300 leading-relaxed italic text-lg">
-            "{{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.text`) }}"
-          </p>
+            <p class="text-gray-300 leading-relaxed italic text-lg">
+              "{{ t(`testimonials.clients.${filteredTestimonials[currentTestimonialIndex].clientKey}.text`) }}"
+            </p>
+          </div>
         </div>
 
-        <!-- Navigation arrows -->
-        <template v-if="filteredTestimonials.length > 1">
+        <!-- Navigation + position -->
+        <div v-if="filteredTestimonials.length > 1" class="flex items-center justify-between gap-3 mt-6">
           <button
             @click="prevTestimonial"
-            class="absolute top-1/2 -left-4 md:-left-6 -translate-y-1/2 w-10 h-10 rounded-full bg-dark-200 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-green hover:border-neon-green/40 transition-all duration-300 hover:shadow-[0_0_15px_rgba(155,188,15,0.2)]"
+            class="btn-neon-outline inline-flex items-center gap-2"
+            aria-label="Previous"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
+            <span aria-hidden="true">◄</span>
           </button>
+
+          <!-- Position chips -->
+          <div class="flex flex-wrap justify-center gap-2">
+            <button
+              v-for="(_, index) in filteredTestimonials"
+              :key="index"
+              @click="currentTestimonialIndex = index"
+              class="gb-chip"
+              :class="currentTestimonialIndex === index ? 'is-active' : ''"
+              :aria-label="`Testimonial ${index + 1}`"
+            >{{ index + 1 }}</button>
+          </div>
+
           <button
             @click="nextTestimonial"
-            class="absolute top-1/2 -right-4 md:-right-6 -translate-y-1/2 w-10 h-10 rounded-full bg-dark-200 border border-white/10 flex items-center justify-center text-gray-400 hover:text-neon-green hover:border-neon-green/40 transition-all duration-300 hover:shadow-[0_0_15px_rgba(155,188,15,0.2)]"
+            class="btn-neon-outline inline-flex items-center gap-2"
+            aria-label="Next"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <span aria-hidden="true">►</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </button>
-        </template>
-
-        <!-- Dots -->
-        <div v-if="filteredTestimonials.length > 1" class="flex justify-center mt-8 gap-2">
-          <button
-            v-for="(_, index) in filteredTestimonials"
-            :key="index"
-            @click="currentTestimonialIndex = index"
-            class="w-2 h-2 rounded-full transition-all duration-300"
-            :class="currentTestimonialIndex === index
-              ? 'bg-neon-green w-6 shadow-[0_0_10px_rgba(155,188,15,0.5)]'
-              : 'bg-dark-400 hover:bg-dark-300'"
-          ></button>
         </div>
       </div>
 
       <div v-else class="text-center text-gray-500 py-12">
         {{ t('testimonials.noTestimonials') }}
       </div>
-    </div>
-  </section>
+
+    </GbWindow>
+  </div>
 </template>
+
+<style scoped>
+/* Active position chip uses the green fill to read like a selected slot */
+.gb-chip.is-active {
+  background: rgb(var(--c-green));
+  color: rgb(var(--c-bg));
+  border-color: rgb(var(--c-green));
+  box-shadow: 0 0 10px rgba(155, 188, 15, 0.5);
+}
+</style>

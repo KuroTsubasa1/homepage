@@ -2,6 +2,8 @@
 import ProjectGrid from "~/components/projectGrid.vue";
 import { ref } from 'vue';
 
+const { sfx } = useGameboy()
+
 useSeoMeta({
   title: 'Web Development Portfolio | Lasse Harm',
   ogTitle: 'Web Development Portfolio | Lasse Harm',
@@ -96,176 +98,146 @@ const personalProjects = ref([
 </script>
 
 <template>
-  <!-- Hero -->
-  <section class="hero relative min-h-[calc(100vh-13rem)] flex items-center justify-center overflow-hidden">
-    <div class="hero-background absolute inset-0 z-0"></div>
-    <div class="code-animation absolute inset-0 z-0 opacity-20"></div>
-    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] z-0"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] z-0"></div>
-    <div class="container mx-auto px-6 py-16 z-10 text-center animate-slide-up">
-      <h1 class="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 hero-title">
-        <span class="text-white block">Web</span>
-        <span class="gradient-text block mt-2">Development</span>
-      </h1>
-      <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12">
-        I build things for the web. Clean code, great UX, modern stack.
-      </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="#career" class="btn-neon font-pixel animate-glow-pulse">My Career</a>
-        <a href="#projects" class="btn-neon-outline font-pixel">Side Projects</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Skills -->
-  <section class="py-20 bg-dark relative overflow-hidden">
-    <div class="bg-grid absolute inset-0 opacity-10"></div>
-    <div class="container mx-auto px-6 relative z-10">
-      <h2 class="section-heading">Tech Stack</h2>
-      <div class="section-divider"></div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        <div v-for="skill in skills" :key="skill.name" class="glass-card rounded-2xl p-5">
-          <h3 class="text-sm font-semibold text-white mb-3">{{ skill.name }}</h3>
-          <div class="w-full bg-dark-300 rounded-full h-2">
-            <div class="h-2 rounded-full transition-all duration-1000" :style="{ width: skill.percentage + '%', backgroundColor: skill.color }"></div>
+  <div>
+    <!-- TITLE SCREEN -->
+    <section class="relative bg-dark overflow-hidden py-16 md:py-24">
+      <div class="bg-grid absolute inset-0 opacity-10"></div>
+      <div class="dither absolute inset-0 opacity-30"></div>
+      <div class="container mx-auto px-4 relative z-10 animate-slide-up">
+        <div class="gb-titlecard">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 hero-title">
+            <span class="text-white block">Web</span>
+            <span class="gradient-text block mt-2">Development</span>
+          </h1>
+          <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+            I build things for the web. Clean code, great UX, modern stack.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="#career" class="btn-neon font-pixel animate-glow-pulse">My Career</a>
+            <a href="#projects" class="btn-neon-outline font-pixel">Side Projects</a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Career Timeline -->
-  <section id="career" class="py-24 bg-dark-100 relative overflow-hidden">
-    <div class="bg-grid absolute inset-0 opacity-10"></div>
-    <div class="absolute top-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px]"></div>
-    <div class="container mx-auto px-6 relative z-10">
-      <h2 class="section-heading">My Journey</h2>
-      <div class="section-divider"></div>
+    <!-- MENU SCREENS -->
+    <div class="container mx-auto px-4 max-w-4xl py-12 space-y-10">
 
-      <div class="max-w-4xl mx-auto space-y-6">
-        <div v-for="(job, index) in career" :key="index" class="glass-card p-6 md:p-8 relative overflow-hidden group" :class="job.current ? 'neon-border' : ''">
-          <!-- Current badge -->
-          <span v-if="job.current" class="absolute top-4 right-4 text-[10px] font-pixel px-2.5 py-1 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/30 animate-pulse">Current</span>
-
-          <div class="flex flex-col md:flex-row md:items-start gap-4 mb-5">
-            <div class="md:w-48 flex-shrink-0">
-              <p class="text-neon-green font-mono text-sm">{{ job.period }}</p>
+      <!-- TECH STACK — skill bars -->
+      <GbWindow title="Tech Stack" class="animate-slide-up">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
+          <div v-for="skill in skills" :key="skill.name" class="flex flex-col gap-2">
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-white text-sm">{{ skill.name }}</span>
+              <span class="gb-menu-value">{{ skill.percentage }}%</span>
             </div>
-            <div>
-              <h3 class="text-xl font-bold text-white">{{ job.company }}</h3>
-              <p class="text-gray-400 text-sm">{{ job.role }}</p>
-            </div>
+            <span class="gb-bar block w-full" :style="`--pct:${skill.percentage}%`"></span>
           </div>
+        </div>
+      </GbWindow>
 
-          <div class="space-y-4 md:ml-52">
-            <NuxtLink v-for="project in job.projects" :key="project.id" :to="`/reel-web-projects/${project.id}`" class="border-l-2 border-neon-green/20 pl-4 block group hover:border-neon-green/50 transition-colors">
-              <h4 class="font-semibold text-white text-sm group-hover:text-neon-green transition-colors">{{ project.name }} <span class="text-neon-green/0 group-hover:text-neon-green/60 text-xs transition-colors">→</span></h4>
-              <p class="text-gray-400 text-sm mt-1">{{ project.desc }}</p>
-              <div class="flex flex-wrap gap-1.5 mt-2">
+      <!-- MY JOURNEY — career timeline -->
+      <GbWindow id="career" title="My Journey" class="animate-slide-up">
+        <div class="space-y-8">
+          <div v-for="(job, index) in career" :key="index">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
+              <h3 class="text-lg font-bold text-white">{{ job.company }}</h3>
+              <span v-if="job.current" class="gb-chip animate-pulse">Current</span>
+            </div>
+            <p class="pixel-label text-neon-green">{{ job.period }}</p>
+            <p class="text-gray-400 text-sm mb-3">{{ job.role }}</p>
+
+            <ul class="gb-menu-list">
+              <li v-for="project in job.projects" :key="project.id">
+                <NuxtLink :to="`/reel-web-projects/${project.id}`" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+                  <span class="flex-1 min-w-0">
+                    <span class="text-white">{{ project.name }}</span>
+                    <span class="block mt-1 gb-row-desc">{{ project.desc }}</span>
+                    <span class="flex flex-wrap gap-1.5 mt-2">
+                      <span v-for="tag in project.tags" :key="tag" class="gb-chip">{{ tag }}</span>
+                    </span>
+                  </span>
+                </NuxtLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </GbWindow>
+
+      <!-- THINGS I'VE BUILT — project tiles -->
+      <GbWindow id="projects" title="Things I've Built" class="animate-slide-up">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <template v-for="job in career" :key="job.company">
+            <NuxtLink
+              v-for="project in job.projects"
+              :key="project.id"
+              :to="`/reel-web-projects/${project.id}`"
+              class="gb-tile group flex flex-col p-4"
+              @mouseenter="sfx.hover()"
+              @click="sfx.select()"
+            >
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="text-lg font-bold text-white group-hover:text-neon-green transition-colors">{{ project.name }}</h3>
+                <span v-if="job.current" class="gb-chip flex-shrink-0">Current</span>
+              </div>
+              <p class="pixel-label text-neon-purple mb-2">{{ job.company }} · {{ job.period }}</p>
+              <p class="gb-row-desc flex-1">{{ project.desc }}</p>
+              <div class="flex flex-wrap gap-1.5 mt-3">
                 <span v-for="tag in project.tags" :key="tag" class="gb-chip">{{ tag }}</span>
               </div>
             </NuxtLink>
-          </div>
+          </template>
         </div>
-      </div>
-    </div>
-  </section>
+      </GbWindow>
 
-  <!-- Open Source / Side Projects -->
-  <section id="projects" class="py-24 bg-dark relative overflow-hidden">
-    <div class="bg-grid absolute inset-0 opacity-10"></div>
-    <div class="absolute top-0 right-0 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px]"></div>
-    <div class="container mx-auto px-6 relative z-10">
-      <h2 class="section-heading">Things I've Built</h2>
-      <div class="section-divider"></div>
-
-      <!-- Employment projects -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mx-4 md:mx-10 mb-8">
-        <template v-for="job in career" :key="job.company">
-          <NuxtLink v-for="project in job.projects" :key="project.id" :to="`/reel-web-projects/${project.id}`" class="project-card glass-card neon-border overflow-hidden group block">
-            <div class="h-2 w-full" :class="job.current ? 'bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple' : 'bg-dark-300'"></div>
-            <div class="p-6">
-              <div class="flex items-start justify-between gap-2 mb-1">
-                <h3 class="text-xl font-bold text-white group-hover:text-neon-green transition-colors">{{ project.name }}</h3>
-                <span v-if="job.current" class="text-[10px] font-pixel px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 flex-shrink-0 mt-1">Current</span>
-              </div>
-              <p class="text-neon-green/60 text-xs mb-3">{{ job.company }} · {{ job.period }}</p>
-              <p class="text-gray-400 text-sm mb-4">{{ project.desc }}</p>
-              <div class="flex items-center justify-between">
-                <div class="flex flex-wrap gap-1.5">
-                  <span v-for="tag in project.tags" :key="tag" class="gb-chip">{{ tag }}</span>
-                </div>
-                <span class="text-neon-green text-sm opacity-0 group-hover:opacity-100 transition-all duration-300">Details →</span>
-              </div>
-            </div>
-          </NuxtLink>
-        </template>
-      </div>
-
-      <!-- Open source -->
-      <div class="mt-16 text-center">
-        <h3 class="text-xl font-bold text-white mb-2">Open Source</h3>
-        <p class="text-gray-500 text-sm mb-8">
+      <!-- OPEN SOURCE — side projects -->
+      <GbWindow title="Open Source" class="animate-slide-up">
+        <p class="gb-row-desc mb-4">
           Side projects on
           <a href="https://github.com/KuroTsubasa1" target="_blank" rel="noopener noreferrer" class="text-neon-green hover:underline">GitHub</a>
         </p>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-4xl mx-auto">
-          <a v-for="project in personalProjects" :key="project.name" :href="project.url" target="_blank" rel="noopener noreferrer"
-            class="glass-card px-4 py-3 group hover:border-neon-purple/40 transition-all duration-300 hover:-translate-y-1 block text-center">
-            <h4 class="font-bold text-white text-sm group-hover:text-neon-purple transition-colors">{{ project.name }}</h4>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+        <ul class="gb-menu-list">
+          <li v-for="project in personalProjects" :key="project.name">
+            <a :href="project.url" target="_blank" rel="noopener noreferrer" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex-1 min-w-0">
+                <span class="text-white">{{ project.name }}</span>
+                <span class="block mt-1 gb-row-desc">{{ project.description }}</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </GbWindow>
 
-  <!-- CTA -->
-  <section class="py-20 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10 relative overflow-hidden">
-    <div class="bg-grid absolute inset-0 opacity-10"></div>
-    <div class="container mx-auto px-6 text-center relative z-10">
-      <h2 class="text-4xl font-bold mb-6"><span class="gradient-text">Interested in working together?</span></h2>
-      <p class="text-xl mb-10 max-w-2xl mx-auto text-gray-300">
-        I'm open to new opportunities and interesting projects. Let's talk.
-      </p>
-      <a href="/contact" class="btn-neon font-pixel animate-glow-pulse">Get in Touch</a>
+      <!-- CTA -->
+      <GbWindow class="animate-slide-up">
+        <div class="text-center py-2">
+          <h2 class="text-2xl md:text-4xl font-black mb-4">
+            <span class="gradient-text">Interested in working together?</span>
+          </h2>
+          <p class="text-gray-400 text-lg mb-7 max-w-2xl mx-auto">
+            I'm open to new opportunities and interesting projects. Let's talk.
+          </p>
+          <p class="gb-prompt animate-blink mb-5">NEW GAME?</p>
+          <a href="/contact" class="btn-neon font-pixel animate-glow-pulse inline-block">Get in Touch</a>
+        </div>
+      </GbWindow>
+
     </div>
-  </section>
+  </div>
 </template>
 
 <style scoped>
-.hero {
-  background: linear-gradient(to bottom right, rgb(var(--c-bg)), rgb(var(--c-bg-100)));
-}
-
-.hero-background {
-  background: radial-gradient(circle at 50% 50%, rgba(155, 188, 15, 0.08) 0%, rgba(0, 0, 0, 0) 50%);
-}
-
-.code-animation {
-  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='code' patternUnits='userSpaceOnUse' width='100' height='100' patternTransform='scale(0.75)'%3E%3Ctext x='0' y='30' font-family='monospace' font-size='20' fill='%239bbc0f'%3E%26lt;/%26gt;%3C/text%3E%3Ctext x='50' y='60' font-family='monospace' font-size='20' fill='%239bbc0f'%3E%7B%7D%3C/text%3E%3Ctext x='25' y='90' font-family='monospace' font-size='20' fill='%239bbc0f'%3E();%3C/text%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23code)'/%3E%3C/svg%3E");
-  animation: slide 20s linear infinite;
-}
-
-@keyframes slide {
-  0% { background-position: 0 0; }
-  100% { background-position: 500px 500px; }
-}
-
 .hero-title {
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  animation: fadeInUp 1s ease-out;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.project-card {
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-.project-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(155, 188, 15, 0.4);
+/* Flavour text under each menu row / tile (readable VT323, not pixel font) */
+.gb-row-desc {
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgb(var(--c-ink-2));
 }
 </style>

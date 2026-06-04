@@ -63,120 +63,147 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <section id="contact" class="py-24 bg-dark relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-0 right-0 w-80 h-80 bg-neon-green/5 rounded-full blur-[100px]"></div>
-    <div class="absolute bottom-0 left-0 w-80 h-80 bg-neon-magenta/5 rounded-full blur-[100px]"></div>
+  <div id="contact" class="space-y-10">
 
-    <div class="container mx-auto px-4 relative z-10">
-      <h2 class="section-heading">{{ t('contactSection.title') }}</h2>
-      <div class="section-divider"></div>
-
-      <div class="max-w-3xl mx-auto animate-slide-up">
-        <!-- Success/Error Messages -->
-        <div v-if="successMessage" class="glass-card border border-neon-green/40 text-neon-green px-5 py-3 rounded-xl mb-6">
-          {{ successMessage }}
-        </div>
-        <div v-if="errorMessage" class="glass-card border border-red-500/40 text-red-400 px-5 py-3 rounded-xl mb-6">
-          {{ errorMessage }}
-        </div>
-
-        <!-- Form -->
-        <form @submit.prevent="handleSubmit" class="glass-card neon-border p-8 space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label for="name" class="block text-xs font-pixel text-gray-300 mb-2">{{ t('contactSection.name') }} <span class="text-neon-magenta">*</span></label>
-              <input
-                type="text" id="name" v-model="name" required
-                class="form-input"
-                :placeholder="t('contactSection.name')"
-              >
-            </div>
-            <div>
-              <label for="email" class="block text-xs font-pixel text-gray-300 mb-2">{{ t('contactSection.email') }} <span class="text-neon-magenta">*</span></label>
-              <input
-                type="email" id="email" v-model="email" required
-                class="form-input"
-                :placeholder="t('contactSection.email')"
-              >
-            </div>
-          </div>
-
-          <div>
-            <label for="service" class="block text-xs font-pixel text-gray-300 mb-2">{{ t('contactSection.service') }}</label>
-            <select id="service" v-model="service" class="form-input">
-              <option value="" disabled selected>{{ t('contactSection.serviceOptions.select') }}</option>
-              <option v-for="option in services" :key="option.value" :value="option.value">{{ option.label }}</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="message" class="block text-xs font-pixel text-gray-300 mb-2">{{ t('contactSection.message') }} <span class="text-neon-magenta">*</span></label>
-            <textarea
-              id="message" v-model="message" required rows="5"
-              class="form-input resize-none"
-              :placeholder="t('contactSection.messagePlaceholder')"
-            ></textarea>
-          </div>
-
-          <div class="text-center">
-            <button type="submit" class="btn-neon font-pixel text-xs animate-glow-pulse" :disabled="isSubmitting">
-              <span v-if="!isSubmitting">{{ t('contactSection.sendMessage') }}</span>
-              <span v-else class="flex items-center justify-center gap-2">
-                <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                {{ t('contactSection.sending') }}
-              </span>
-            </button>
-          </div>
-        </form>
-
-        <!-- Contact Info Cards -->
-        <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="glass-card p-6 text-center group hover:border-neon-green/30 transition-all duration-300">
-            <div class="w-12 h-12 rounded-xl bg-neon-green/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-neon-green/20 transition-colors duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neon-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h3 class="text-xs font-pixel text-white mb-2">{{ t('contactSection.contactInfo.email.title') }}</h3>
-            <a href="mailto:lasse@lasseharm.space" class="text-sm text-gray-400 hover:text-neon-green transition-colors">{{ t('contactSection.contactInfo.email.value') }}</a>
-          </div>
-
-          <div class="glass-card p-6 text-center group hover:border-neon-magenta/30 transition-all duration-300">
-            <div class="w-12 h-12 rounded-xl bg-neon-magenta/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-neon-magenta/20 transition-colors duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neon-magenta" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-            </div>
-            <h3 class="text-xs font-pixel text-white mb-2">{{ t('contactSection.contactInfo.location.title') }}</h3>
-            <p class="text-sm text-gray-400">{{ t('contactSection.contactInfo.location.value') }}</p>
-          </div>
-
-          <div class="glass-card p-6 text-center group hover:border-neon-purple/30 transition-all duration-300">
-            <div class="w-12 h-12 rounded-xl bg-neon-purple/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-neon-purple/20 transition-colors duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neon-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h3 class="text-xs font-pixel text-white mb-2">{{ t('contactSection.contactInfo.hours.title') }}</h3>
-            <p class="text-sm text-gray-400">{{ t('contactSection.contactInfo.hours.value') }}</p>
-          </div>
-        </div>
+    <!-- TRANSMIT — contact form -->
+    <GbWindow :title="t('contactSection.title')" class="animate-slide-up">
+      <!-- Success/Error Messages -->
+      <div v-if="successMessage" class="gb-msg gb-msg-ok mb-6">
+        <span class="pixel-label">OK</span>
+        <span>{{ successMessage }}</span>
       </div>
-    </div>
-  </section>
+      <div v-if="errorMessage" class="gb-msg gb-msg-err mb-6">
+        <span class="pixel-label">ERR</span>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Form -->
+      <form @submit.prevent="handleSubmit" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="name" class="block pixel-label text-neon-green mb-2">{{ t('contactSection.name') }} <span class="text-neon-magenta">*</span></label>
+            <input
+              type="text" id="name" v-model="name" required
+              class="form-input"
+              :placeholder="t('contactSection.name')"
+            >
+          </div>
+          <div>
+            <label for="email" class="block pixel-label text-neon-green mb-2">{{ t('contactSection.email') }} <span class="text-neon-magenta">*</span></label>
+            <input
+              type="email" id="email" v-model="email" required
+              class="form-input"
+              :placeholder="t('contactSection.email')"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label for="service" class="block pixel-label text-neon-green mb-2">{{ t('contactSection.service') }}</label>
+          <select id="service" v-model="service" class="form-input">
+            <option value="" disabled selected>{{ t('contactSection.serviceOptions.select') }}</option>
+            <option v-for="option in services" :key="option.value" :value="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message" class="block pixel-label text-neon-green mb-2">{{ t('contactSection.message') }} <span class="text-neon-magenta">*</span></label>
+          <textarea
+            id="message" v-model="message" required rows="5"
+            class="form-input resize-none"
+            :placeholder="t('contactSection.messagePlaceholder')"
+          ></textarea>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn-neon font-pixel text-xs animate-glow-pulse" :disabled="isSubmitting">
+            <span v-if="!isSubmitting">{{ t('contactSection.sendMessage') }}</span>
+            <span v-else class="flex items-center justify-center gap-2">
+              <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {{ t('contactSection.sending') }}
+            </span>
+          </button>
+        </div>
+      </form>
+    </GbWindow>
+
+    <!-- DATA — contact info -->
+    <GbWindow title="DATA" class="animate-slide-up">
+      <ul class="gb-menu-list">
+        <li>
+          <a href="mailto:lasse@lasseharm.space" class="gb-menu-row !items-start">
+            <span class="text-neon-green flex-shrink-0">@</span>
+            <span class="flex-1 min-w-0">
+              <span class="block">{{ t('contactSection.contactInfo.email.title') }}</span>
+              <span class="block mt-2 gb-row-desc">{{ t('contactSection.contactInfo.email.value') }}</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <div class="gb-menu-row !items-start">
+            <span class="text-neon-magenta flex-shrink-0">[o]</span>
+            <span class="flex-1 min-w-0">
+              <span class="block">{{ t('contactSection.contactInfo.location.title') }}</span>
+              <span class="block mt-2 gb-row-desc">{{ t('contactSection.contactInfo.location.value') }}</span>
+            </span>
+          </div>
+        </li>
+        <li>
+          <div class="gb-menu-row !items-start">
+            <span class="text-neon-purple flex-shrink-0">[t]</span>
+            <span class="flex-1 min-w-0">
+              <span class="block">{{ t('contactSection.contactInfo.hours.title') }}</span>
+              <span class="block mt-2 gb-row-desc">{{ t('contactSection.contactInfo.hours.value') }}</span>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </GbWindow>
+
+  </div>
 </template>
 
 <style scoped>
 .form-input {
-  @apply w-full px-4 py-3 bg-dark-200 border border-white/10 rounded-xl text-gray-200 placeholder-gray-600 transition-all duration-300;
+  @apply w-full px-4 py-3 bg-dark-200 text-gray-200 placeholder-gray-600 transition-colors duration-150;
+  border: 2px solid rgb(var(--c-green) / 0.3);
+  border-radius: 4px;
 }
 .form-input:focus {
-  @apply outline-none border-neon-green/50 bg-dark-300;
-  box-shadow: 0 0 20px rgba(155, 188, 15, 0.18);
+  @apply outline-none bg-dark-300;
+  border-color: rgb(var(--c-green) / 0.7);
+}
+
+/* Status banner (success / error) — flat blocky panel, not a glass card */
+.gb-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 0.9rem;
+  border: 2px solid;
+  border-radius: 4px;
+}
+.gb-msg-ok {
+  color: rgb(var(--c-green));
+  border-color: rgb(var(--c-green) / 0.5);
+  background: rgb(var(--c-green) / 0.08);
+}
+.gb-msg-err {
+  color: rgb(var(--c-crimson));
+  border-color: rgb(var(--c-crimson) / 0.5);
+  background: rgb(var(--c-crimson) / 0.08);
+}
+
+/* Flavour/value text under each menu row (readable VT323, not pixel font) */
+.gb-row-desc {
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgb(var(--c-ink-2));
 }
 </style>

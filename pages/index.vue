@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { sfx } = useGameboy()
+
 useSeoMeta({
   title: 'Lasse Harm | Web Developer, Photographer & Maker',
   ogTitle: 'Lasse Harm | Web Developer, Photographer & Maker',
@@ -16,221 +18,165 @@ const techStack = [
 
 <template>
   <div>
+    <!-- TITLE SCREEN -->
     <background-image-slider></background-image-slider>
 
-    <!-- Quick Impact Strip — currently at + tech -->
-    <section class="py-10 bg-dark-100 border-y border-white/5 relative overflow-hidden">
-      <div class="absolute inset-0 bg-grid opacity-10"></div>
-      <div class="container mx-auto px-4 relative z-10">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-          <!-- Currently at -->
-          <div class="flex items-center gap-4">
-            <div class="w-3 h-3 rounded-full bg-neon-green animate-pulse shadow-[0_0_10px_rgba(155,188,15,0.6)]"></div>
+    <!-- MENU SCREENS -->
+    <div class="container mx-auto px-4 max-w-4xl py-12 space-y-10">
+
+      <!-- STATUS -->
+      <GbWindow title="STATUS" class="animate-slide-up">
+        <div class="flex flex-col gap-5">
+          <div class="flex items-center gap-3">
+            <span class="w-3 h-3 bg-neon-green animate-pulse flex-shrink-0" style="box-shadow:0 0 8px rgba(155,188,15,.7)"></span>
             <div>
-              <p class="text-gray-500 text-xs uppercase tracking-widest font-pixel">{{ $t('home.currentlyAt') }}</p>
-              <p class="text-white font-bold">DIU MarTech Solutions GmbH</p>
+              <p class="pixel-label text-lcd-faint">{{ $t('home.currentlyAt') }}</p>
+              <p class="text-neon-green text-lg">DIU MarTech Solutions GmbH</p>
             </div>
           </div>
-          <!-- Tech marquee -->
-          <div class="flex flex-wrap justify-center gap-2">
-            <span v-for="tech in techStack" :key="tech" class="gb-chip">{{ tech }}</span>
+          <div>
+            <p class="pixel-label text-lcd-faint mb-3">EQUIPPED</p>
+            <div class="flex flex-wrap gap-2">
+              <span v-for="tech in techStack" :key="tech" class="gb-chip">{{ tech }}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </GbWindow>
 
-    <!-- Featured Current Work -->
-    <section class="py-16 bg-dark relative overflow-hidden">
-      <div class="absolute inset-0 bg-grid opacity-10"></div>
-      <div class="absolute top-0 right-0 w-80 h-80 bg-neon-green/5 rounded-full blur-[100px]"></div>
-      <div class="container mx-auto px-4 relative z-10">
-        <div class="max-w-4xl mx-auto">
-          <p class="text-gray-500 text-xs uppercase tracking-widest mb-6 text-center font-pixel">{{ $t('home.workingOnTitle') }}</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <NuxtLink to="/reel-web-projects/suzuki-hit" class="glass-card neon-border p-6 group block hover:-translate-y-1 transition-all duration-300 animate-slide-up">
-              <div class="flex items-start justify-between mb-3">
-                <h3 class="text-lg font-bold text-white group-hover:text-neon-green transition-colors">Suzuki HIT</h3>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 font-pixel">{{ $t('home.current') }}</span>
-              </div>
-              <p class="text-gray-400 text-sm mb-3">{{ $t('home.featuredHitDesc') }}</p>
-              <div class="flex items-center gap-2">
-                <span class="gb-chip">Vue.js</span>
-                <span class="gb-chip">Enterprise</span>
-                <span class="text-neon-green text-xs ml-auto opacity-0 group-hover:opacity-100 transition-opacity">Details →</span>
-              </div>
+      <!-- WHAT I DO — skill menu -->
+      <GbWindow :title="$t('home.services')" class="animate-slide-up">
+        <ul class="gb-menu-list">
+          <li>
+            <NuxtLink to="/reel-web-projects" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex-1 min-w-0">
+                <span class="flex flex-wrap items-center gap-2">
+                  <span class="text-neon-green">&lt;/&gt;</span>
+                  <span>{{ $t('home.webDev.title') }}</span>
+                  <span class="gb-chip">{{ $t('home.mainFocus') }}</span>
+                </span>
+                <span class="block mt-2 gb-row-desc">{{ $t('home.webDev.description') }}</span>
+              </span>
+              <span class="hidden sm:flex flex-col items-end gap-1.5 w-28 flex-shrink-0 pt-1">
+                <span class="gb-menu-value">LV 99</span>
+                <span class="gb-bar block w-full" style="--pct:100%"></span>
+              </span>
             </NuxtLink>
-            <NuxtLink to="/reel-web-projects/suzuki-ssbp-nxt" class="glass-card neon-border p-6 group block hover:-translate-y-1 transition-all duration-300 animate-slide-up">
-              <div class="flex items-start justify-between mb-3">
-                <h3 class="text-lg font-bold text-white group-hover:text-neon-green transition-colors">Suzuki SSBP-Nxt</h3>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 font-pixel">{{ $t('home.current') }}</span>
-              </div>
-              <p class="text-gray-400 text-sm mb-3">{{ $t('home.featuredSsbpDesc') }}</p>
-              <div class="flex items-center gap-2">
-                <span class="gb-chip">Vue.js</span>
-                <span class="gb-chip">Rewrite</span>
-                <span class="text-neon-green text-xs ml-auto opacity-0 group-hover:opacity-100 transition-opacity">Details →</span>
-              </div>
+          </li>
+          <li>
+            <NuxtLink to="/photography" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex-1 min-w-0">
+                <span class="flex flex-wrap items-center gap-2">
+                  <span class="text-neon-purple">[o]</span>
+                  <span>{{ $t('home.photography.title') }}</span>
+                </span>
+                <span class="block mt-2 gb-row-desc">{{ $t('home.photography.description') }}</span>
+              </span>
+              <span class="hidden sm:flex flex-col items-end gap-1.5 w-28 flex-shrink-0 pt-1">
+                <span class="gb-menu-value">LV 82</span>
+                <span class="gb-bar block w-full" style="--pct:82%"></span>
+              </span>
             </NuxtLink>
-          </div>
-          <div class="text-center mt-6">
-            <NuxtLink to="/reel-web-projects" class="text-neon-green text-sm font-medium hover:underline">{{ $t('home.seeAllProjects') }} →</NuxtLink>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- What I Do Section -->
-    <section class="py-24 bg-dark-100 relative overflow-hidden">
-      <div class="absolute inset-0 bg-grid opacity-20"></div>
-      <div class="absolute top-0 left-1/3 w-80 h-80 bg-neon-green/5 rounded-full blur-[100px]"></div>
-      <div class="absolute bottom-0 right-1/3 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px]"></div>
-
-      <div class="container mx-auto px-4 relative z-10">
-        <h2 class="section-heading">{{ $t('home.services') }}</h2>
-        <div class="section-divider"></div>
-
-        <!-- Web Dev - Featured large card -->
-        <NuxtLink to="/reel-web-projects" class="featured-card glass-card neon-border p-8 md:p-10 mb-8 block group relative overflow-hidden">
-          <div class="card-glow-featured"></div>
-          <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div class="w-16 h-16 rounded-2xl bg-neon-green/10 flex items-center justify-center flex-shrink-0 group-hover:bg-neon-green/20 transition-colors duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-              </svg>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center gap-3 mb-2">
-                <h3 class="text-2xl font-bold text-white group-hover:text-neon-green transition-colors duration-300">{{ $t('home.webDev.title') }}</h3>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 font-pixel">{{ $t('home.mainFocus') }}</span>
-              </div>
-              <p class="text-gray-400 leading-relaxed mb-3">{{ $t('home.webDev.description') }}</p>
-              <span class="text-neon-green text-sm font-medium flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-300">
-                {{ $t('home.viewProjects') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </li>
+          <li>
+            <NuxtLink to="/drone" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex-1 min-w-0">
+                <span class="flex flex-wrap items-center gap-2">
+                  <span class="text-neon-cyan">/\</span>
+                  <span>{{ $t('home.drone.title') }}</span>
+                </span>
+                <span class="block mt-2 gb-row-desc">{{ $t('home.drone.description') }}</span>
               </span>
-            </div>
-          </div>
-        </NuxtLink>
-
-        <!-- Hobbies -->
-        <p class="text-center text-gray-500 text-sm uppercase tracking-widest mb-6 font-pixel">{{ $t('home.hobbies') }}</p>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <NuxtLink to="/photography" class="service-card group">
-            <div class="card-glow card-glow-purple"></div>
-            <div class="relative z-10">
-              <div class="w-14 h-14 rounded-xl bg-neon-purple/10 flex items-center justify-center mb-5 group-hover:bg-neon-purple/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-neon-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neon-purple transition-colors duration-300">{{ $t('home.photography.title') }}</h3>
-              <p class="text-gray-400 text-sm leading-relaxed mb-4">{{ $t('home.photography.description') }}</p>
-              <span class="text-neon-purple text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                {{ $t('home.explorePortfolio') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              <span class="hidden sm:flex flex-col items-end gap-1.5 w-28 flex-shrink-0 pt-1">
+                <span class="gb-menu-value">LV 74</span>
+                <span class="gb-bar block w-full" style="--pct:74%"></span>
               </span>
-            </div>
+            </NuxtLink>
+          </li>
+          <li>
+            <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex-1 min-w-0">
+                <span class="flex flex-wrap items-center gap-2">
+                  <span class="text-neon-magenta">[#]</span>
+                  <span>{{ $t('home.printing.title') }}</span>
+                </span>
+                <span class="block mt-2 gb-row-desc">{{ $t('home.printing.description') }}</span>
+              </span>
+              <span class="hidden sm:flex flex-col items-end gap-1.5 w-28 flex-shrink-0 pt-1">
+                <span class="gb-menu-value">LV 68</span>
+                <span class="gb-bar block w-full" style="--pct:68%"></span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </GbWindow>
+
+      <!-- QUEST LOG — current work -->
+      <GbWindow :title="$t('home.workingOnTitle')" class="animate-slide-up">
+        <ul class="gb-menu-list">
+          <li>
+            <NuxtLink to="/reel-web-projects/suzuki-hit" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex-1 min-w-0">
+                <span class="flex flex-wrap items-center gap-2">
+                  <span>Suzuki HIT</span>
+                  <span class="gb-chip">{{ $t('home.current') }}</span>
+                </span>
+                <span class="block mt-2 gb-row-desc">{{ $t('home.featuredHitDesc') }}</span>
+                <span class="flex flex-wrap gap-2 mt-2">
+                  <span class="gb-chip">Vue.js</span>
+                  <span class="gb-chip">Enterprise</span>
+                </span>
+              </span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="/reel-web-projects/suzuki-ssbp-nxt" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex-1 min-w-0">
+                <span class="flex flex-wrap items-center gap-2">
+                  <span>Suzuki SSBP-Nxt</span>
+                  <span class="gb-chip">{{ $t('home.current') }}</span>
+                </span>
+                <span class="block mt-2 gb-row-desc">{{ $t('home.featuredSsbpDesc') }}</span>
+                <span class="flex flex-wrap gap-2 mt-2">
+                  <span class="gb-chip">Vue.js</span>
+                  <span class="gb-chip">Rewrite</span>
+                </span>
+              </span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="/reel-web-projects" class="gb-menu-row" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span>{{ $t('home.seeAllProjects') }}</span>
+            </NuxtLink>
+          </li>
+        </ul>
+      </GbWindow>
+
+      <!-- CTA -->
+      <GbWindow class="animate-slide-up">
+        <div class="text-center py-2">
+          <h2 class="text-2xl md:text-4xl font-black mb-4">
+            <span class="gradient-text">{{ $t('cta.title') }}</span>
+          </h2>
+          <p class="text-gray-400 text-lg mb-7 max-w-2xl mx-auto">{{ $t('cta.description') }}</p>
+          <p class="gb-prompt animate-blink mb-5">NEW GAME?</p>
+          <NuxtLink to="/contact" class="btn-neon animate-glow-pulse inline-block">
+            {{ $t('cta.button') }}
           </NuxtLink>
-
-          <NuxtLink to="/drone" class="service-card group">
-            <div class="card-glow card-glow-cyan"></div>
-            <div class="relative z-10">
-              <div class="w-14 h-14 rounded-xl bg-neon-cyan/10 flex items-center justify-center mb-5 group-hover:bg-neon-cyan/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-neon-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-4.5-6.5L15 8" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neon-cyan transition-colors duration-300">{{ $t('home.drone.title') }}</h3>
-              <p class="text-gray-400 text-sm leading-relaxed mb-4">{{ $t('home.drone.description') }}</p>
-              <span class="text-neon-cyan text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                {{ $t('home.learnMore') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-              </span>
-            </div>
-          </NuxtLink>
-
-          <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="service-card group">
-            <div class="card-glow card-glow-magenta"></div>
-            <div class="relative z-10">
-              <div class="w-14 h-14 rounded-xl bg-neon-magenta/10 flex items-center justify-center mb-5 group-hover:bg-neon-magenta/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-neon-magenta" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neon-magenta transition-colors duration-300">{{ $t('home.printing.title') }}</h3>
-              <p class="text-gray-400 text-sm leading-relaxed mb-4">{{ $t('home.printing.description') }}</p>
-              <span class="text-neon-magenta text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                {{ $t('home.exploreServices') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-              </span>
-            </div>
-          </a>
         </div>
-      </div>
-    </section>
+      </GbWindow>
 
-    <!-- CTA -->
-    <section class="py-24 relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10"></div>
-      <div class="absolute inset-0 bg-grid opacity-10"></div>
-      <div class="absolute top-0 left-0 w-64 h-64 bg-neon-green/10 rounded-full blur-[80px]"></div>
-      <div class="absolute bottom-0 right-0 w-64 h-64 bg-neon-purple/10 rounded-full blur-[80px]"></div>
-
-      <div class="container mx-auto px-4 text-center relative z-10">
-        <h2 class="text-3xl md:text-5xl font-black mb-6">
-          <span class="gradient-text">{{ $t('cta.title') }}</span>
-        </h2>
-        <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">{{ $t('cta.description') }}</p>
-        <NuxtLink to="/contact" class="btn-neon inline-block animate-glow-pulse">
-          {{ $t('cta.button') }}
-        </NuxtLink>
-      </div>
-    </section>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.featured-card {
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-.featured-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(155, 188, 15, 0.4);
-}
-
-.card-glow-featured {
-  @apply absolute -top-20 -right-20 w-60 h-60 rounded-full blur-[80px] bg-neon-green/10 opacity-0 transition-opacity duration-500;
-}
-.featured-card:hover .card-glow-featured {
-  @apply opacity-100;
-}
-
-.service-card {
-  @apply relative bg-dark-100/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 overflow-hidden transition-all duration-500 cursor-pointer block;
-}
-.service-card:hover {
-  @apply border-white/20;
-  transform: translateY(-5px);
-}
-
-.card-glow {
-  @apply absolute -top-20 -right-20 w-40 h-40 rounded-full blur-[60px] opacity-0 transition-opacity duration-500;
-}
-.service-card:hover .card-glow {
-  @apply opacity-100;
-}
-
-.card-glow-cyan { @apply bg-neon-cyan/20; }
-.card-glow-magenta { @apply bg-neon-magenta/20; }
-.card-glow-purple { @apply bg-neon-purple/20; }
-.card-glow-green { @apply bg-neon-green/20; }
-
-.project-card {
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-.project-card:hover {
-  border-color: rgba(155, 188, 15, 0.4);
+/* Flavour text under each menu row (readable VT323, not pixel font) */
+.gb-row-desc {
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgb(var(--c-ink-2));
 }
 </style>

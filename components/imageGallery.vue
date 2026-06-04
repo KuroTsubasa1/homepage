@@ -90,11 +90,6 @@ const handleImageClick = (image, index) => {
 
 const selectedImage = ref(null);
 const selectedIndex = ref(0);
-const masonryClass = ref("masonry-sm");
-
-const updateMasonryClass = () => {
-  masonryClass.value = window.innerWidth >= 768 ? "masonry-md" : "masonry-sm";
-};
 
 const navigate = (direction) => {
   const index = images.value.indexOf(selectedImage.value);
@@ -121,58 +116,62 @@ const closeLightbox = () => {
 
 onMounted(() => {
   if (process.client) {
-    window.addEventListener('resize', updateMasonryClass);
     window.addEventListener('keyup', handleKeyup);
-    updateMasonryClass();
   }
 });
 
 onBeforeUnmount(() => {
   if (process.client) {
-    window.removeEventListener('resize', updateMasonryClass);
     window.removeEventListener('keyup', handleKeyup);
   }
 });
 </script>
 
 <template>
-  <div class="flex justify-center">
-    <div class="w-3/4">
-      <div :class="masonryClass">
-        <div
-          v-for="(image, index) in images"
-          :key="image.id"
-          class="break-inside cursor-pointer mb-5 flex justify-center group"
-          @click="handleImageClick(image, index)"
-        >
-          <div class="cartridge relative overflow-hidden rounded-xl border border-white/10 transition-all duration-300 group-hover:border-neon-green/40 group-hover:shadow-[0_0_20px_rgba(155,188,15,0.18)]">
-            <div v-if="image.loading" class="loading-container">
-              <img v-lazy="image.thumbnail" :alt="image.alt" class="loading-image" @load="handleImageLoad(image)">
-            </div>
+  <!-- Inventory grid of slots — the consuming page provides the window frame -->
+  <div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div
+        v-for="(image, index) in images"
+        :key="image.id"
+        class="gb-tile cursor-pointer group"
+        @click="handleImageClick(image, index)"
+      >
+        <div class="relative">
+          <div v-if="image.loading" class="loading-container">
             <img
-              v-else
               v-lazy="image.thumbnail"
               :alt="image.alt"
-              class="transition-transform duration-500 group-hover:scale-105"
+              class="loading-image w-full h-36 sm:h-40 object-cover"
               @load="handleImageLoad(image)"
             >
           </div>
+          <img
+            v-else
+            v-lazy="image.thumbnail"
+            :alt="image.alt"
+            class="w-full h-36 sm:h-40 object-cover transition-transform duration-500 group-hover:scale-110"
+            @load="handleImageLoad(image)"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">
+            <p class="text-white text-xs">{{ image.alt }}</p>
+          </div>
         </div>
       </div>
+    </div>
 
-      <p v-if="hasError && !images.length" class="text-center text-gray-400 py-12">
-        Couldn't load images right now. Please try again later.
-      </p>
+    <p v-if="hasError && !images.length" class="text-center text-gray-400 py-8">
+      Couldn't load images right now. Please try again later.
+    </p>
 
-      <div v-if="canLoadMore || (hasError && images.length)" class="flex justify-center mt-8">
-        <button
-          class="btn-neon-outline text-sm"
-          :disabled="loadingMore"
-          @click="loadMore"
-        >
-          {{ loadingMore ? 'Loading…' : (hasError ? 'Retry' : 'Load more') }}
-        </button>
-      </div>
+    <div v-if="canLoadMore || (hasError && images.length)" class="flex justify-center mt-8">
+      <button
+        class="btn-neon-outline text-sm"
+        :disabled="loadingMore"
+        @click="loadMore"
+      >
+        {{ loadingMore ? 'Loading…' : (hasError ? 'Retry' : 'Load more') }}
+      </button>
     </div>
   </div>
 
@@ -193,8 +192,11 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.break-inside {
-  break-inside: avoid;
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .lightbox {
@@ -242,17 +244,6 @@ onBeforeUnmount(() => {
 .right-arrow {
   position: absolute;
   right: 20px;
-}
-
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
 .no-scroll {

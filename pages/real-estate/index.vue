@@ -125,146 +125,113 @@ const pricing = ref([
 </script>
 
 <template>
-  <!-- Hero Section -->
-  <section class="relative bg-cover bg-center min-h-[calc(100vh-13rem)]" style="background-image: url('https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=1920x1080')">
-    <div class="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/60 to-dark"></div>
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-green/10 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-purple/8 rounded-full blur-[100px]"></div>
-    <div class="relative z-10 min-h-[calc(100vh-13rem)] flex items-center justify-center text-center px-4">
-      <div class="max-w-4xl animate-slide-up">
-        <p class="font-pixel text-xs text-neon-green mb-4 tracking-widest">Real Estate</p>
-        <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-          <span class="gradient-text">Professional Real Estate Photography</span>
-        </h1>
-        <p class="text-xl md:text-2xl mb-8 text-gray-300">Showcase properties at their absolute best with stunning photography that sells</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#services" class="btn-neon font-pixel text-lg animate-glow-pulse">View Services</a>
-          <a href="#pricing" class="btn-neon-outline font-pixel text-lg">See Pricing</a>
-        </div>
+  <div class="container mx-auto px-4 max-w-5xl py-12 space-y-10">
+
+    <!-- TITLE SCREEN -->
+    <div class="gb-titlecard animate-slide-up">
+      <p class="font-pixel text-xs text-neon-green mb-4 tracking-widest">Real Estate</p>
+      <h1 class="text-4xl md:text-6xl font-black mb-5 leading-tight">
+        <span class="gradient-text">Professional Real Estate Photography</span>
+      </h1>
+      <p class="text-lg md:text-xl mb-7 text-gray-300 max-w-2xl mx-auto">Showcase properties at their absolute best with stunning photography that sells</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="#services" class="btn-neon animate-glow-pulse inline-block">View Services</a>
+        <a href="#pricing" class="btn-neon-outline inline-block">See Pricing</a>
       </div>
     </div>
-  </section>
 
-  <!-- Services Section -->
-  <section id="services" class="py-24 bg-dark relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-0 right-0 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px]"></div>
-    <div class="absolute bottom-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[120px]"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <h2 class="section-heading">Real Estate Photography Services</h2>
-      <div class="section-divider"></div>
-      <p class="text-lg text-gray-400 max-w-3xl mx-auto text-center mb-16">Comprehensive photography services designed to make your properties stand out in a competitive market</p>
+    <!-- SERVICES -->
+    <GbWindow id="services" title="Real Estate Photography Services" class="animate-slide-up">
+      <p class="pixel-label text-neon-green mb-1">▸ SERVICES</p>
+      <p class="text-gray-400 mb-6">Comprehensive photography services designed to make your properties stand out in a competitive market</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div v-for="(service, index) in services" :key="index" class="glass-card neon-border overflow-hidden transition-all duration-300 group">
-          <div class="cartridge relative overflow-hidden">
-            <img :src="service.image" :alt="service.title" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105">
-            <div class="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div v-for="(service, index) in services" :key="index" class="gb-tile group">
+          <div class="overflow-hidden">
+            <img :src="service.image" :alt="service.title" class="w-full h-44 object-cover transition-transform duration-500 group-hover:scale-105">
           </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-bold text-neon-green mb-3">{{ service.title }}</h3>
-            <p class="text-gray-400 mb-4">{{ service.description }}</p>
-            <ul class="mb-6">
-              <li v-for="(feature, fidx) in service.features" :key="fidx" class="flex items-center mb-2">
-                <svg class="h-5 w-5 text-neon-green mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-                <span class="text-gray-300">{{ feature }}</span>
+          <span class="gb-tile-label">{{ service.title }}</span>
+          <div class="p-4 space-y-3">
+            <p class="gb-row-desc">{{ service.description }}</p>
+            <ul class="gb-menu-list">
+              <li v-for="(feature, fidx) in service.features" :key="fidx">
+                <span class="gb-menu-row !cursor-default">
+                  <span class="text-neon-green">+</span>
+                  <span class="gb-row-desc">{{ feature }}</span>
+                </span>
               </li>
             </ul>
-            <a href="/contact" class="btn-neon font-pixel inline-block">Get a Quote</a>
+            <a href="/contact" class="btn-neon inline-block">Get a Quote</a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- Portfolio Section -->
-  <section class="py-24 bg-dark-100 relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-1/3 right-0 w-72 h-72 bg-neon-purple/5 rounded-full blur-[100px]"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <h2 class="section-heading">Portfolio</h2>
-      <div class="section-divider"></div>
-      <p class="text-lg text-gray-400 max-w-3xl mx-auto text-center mb-12">Browse through samples of our real estate photography work</p>
+    <!-- PORTFOLIO -->
+    <GbWindow title="Portfolio" class="animate-slide-up">
+      <p class="pixel-label text-neon-green mb-1">▸ ALBUM</p>
+      <p class="text-gray-400 mb-5">Browse through samples of our real estate photography work</p>
 
       <!-- Filter Buttons -->
-      <div class="flex flex-wrap justify-center mb-10 gap-4">
-        <button
-          @click="setFilter('all')"
-          class="px-6 py-2 rounded-full transition-all duration-300 font-pixel text-xs"
-          :class="activeFilter === 'all' ? 'bg-neon-green/20 text-neon-green border border-neon-green/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
-        >
-          All Photos
-        </button>
-        <button
-          @click="setFilter('interior')"
-          class="px-6 py-2 rounded-full transition-all duration-300 font-pixel text-xs"
-          :class="activeFilter === 'interior' ? 'bg-neon-green/20 text-neon-green border border-neon-green/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
-        >
-          Interior
-        </button>
-        <button
-          @click="setFilter('aerial')"
-          class="px-6 py-2 rounded-full transition-all duration-300 font-pixel text-xs"
-          :class="activeFilter === 'aerial' ? 'bg-neon-green/20 text-neon-green border border-neon-green/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
-        >
-          Aerial
-        </button>
-        <button
-          @click="setFilter('twilight')"
-          class="px-6 py-2 rounded-full transition-all duration-300 font-pixel text-xs"
-          :class="activeFilter === 'twilight' ? 'bg-neon-green/20 text-neon-green border border-neon-green/40' : 'bg-dark-200 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300'"
-        >
-          Twilight
-        </button>
-      </div>
+      <ul class="gb-menu-list flex flex-wrap gap-x-6 mb-6">
+        <li>
+          <button @click="setFilter('all')" class="gb-menu-row" :class="{ 'is-active': activeFilter === 'all' }">
+            <span>All Photos</span>
+          </button>
+        </li>
+        <li>
+          <button @click="setFilter('interior')" class="gb-menu-row" :class="{ 'is-active': activeFilter === 'interior' }">
+            <span>Interior</span>
+          </button>
+        </li>
+        <li>
+          <button @click="setFilter('aerial')" class="gb-menu-row" :class="{ 'is-active': activeFilter === 'aerial' }">
+            <span>Aerial</span>
+          </button>
+        </li>
+        <li>
+          <button @click="setFilter('twilight')" class="gb-menu-row" :class="{ 'is-active': activeFilter === 'twilight' }">
+            <span>Twilight</span>
+          </button>
+        </li>
+      </ul>
 
-      <!-- Image Gallery -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="(image, index) in filteredImages" :key="index" class="cartridge glass-card neon-border overflow-hidden transition-all duration-300 group">
+      <!-- Inventory grid of slots -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div v-for="(image, index) in filteredImages" :key="index" class="gb-tile group">
           <div class="relative">
-            <img :src="image.src" :alt="image.alt" class="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-105">
-            <div class="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-              <p class="text-gray-200 p-4 font-medium">{{ image.alt }}</p>
+            <img :src="image.src" :alt="image.alt" class="w-full h-36 sm:h-40 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">
+              <p class="text-white text-xs">{{ image.alt }}</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- Pricing Section -->
-  <section id="pricing" class="py-24 bg-dark relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-0 left-1/4 w-96 h-96 bg-neon-green/5 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px]"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <h2 class="section-heading">Transparent Pricing</h2>
-      <div class="section-divider"></div>
-      <p class="text-lg text-gray-400 max-w-3xl mx-auto text-center mb-16">Choose the package that best fits your property's needs</p>
+    <!-- PRICING -->
+    <GbWindow id="pricing" title="Transparent Pricing" class="animate-slide-up">
+      <p class="pixel-label text-neon-green mb-1">▸ SHOP</p>
+      <p class="text-gray-400 mb-6">Choose the package that best fits your property's needs</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div v-for="(plan, index) in pricing" :key="index"
-          class="glass-card overflow-hidden transition-all duration-300 hover:-translate-y-2"
-          :class="plan.recommended ? 'neon-border border-neon-green/60' : 'neon-border'"
+          class="gb-tile flex flex-col"
+          :class="{ 'is-recommended': plan.recommended }"
         >
-          <div v-if="plan.recommended" class="bg-neon-green text-dark text-center py-2">
-            <span class="font-pixel text-xs">Most Popular</span>
-          </div>
-          <div class="p-8">
-            <h3 class="text-2xl font-bold text-neon-green mb-2">{{ plan.name }}</h3>
-            <div class="text-4xl font-bold text-white mb-6">{{ plan.price }}</div>
-            <ul class="mb-8">
-              <li v-for="(feature, fidx) in plan.features" :key="fidx" class="flex items-center mb-3">
-                <svg class="h-5 w-5 text-neon-green mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-                <span class="text-gray-300">{{ feature }}</span>
+          <div v-if="plan.recommended" class="gb-tile-label !relative !w-full text-center">Most Popular</div>
+          <div class="p-5 flex flex-col flex-1">
+            <h3 class="text-2xl font-bold text-neon-green mb-1">{{ plan.name }}</h3>
+            <div class="text-4xl font-bold text-white mb-5">{{ plan.price }}</div>
+            <ul class="gb-menu-list mb-6 flex-1">
+              <li v-for="(feature, fidx) in plan.features" :key="fidx">
+                <span class="gb-menu-row !cursor-default">
+                  <span class="text-neon-green">+</span>
+                  <span class="gb-row-desc">{{ feature }}</span>
+                </span>
               </li>
             </ul>
-            <a href="/contact" class="block text-center font-pixel w-full"
+            <a href="/contact" class="block text-center mt-auto"
               :class="plan.recommended ? 'btn-neon' : 'btn-neon-outline'">
               Choose Plan
             </a>
@@ -272,52 +239,52 @@ const pricing = ref([
         </div>
       </div>
 
-      <div class="text-center mt-10 text-gray-400">
-        <p>Not sure which package is right for you? <a href="/contact" class="text-neon-green font-medium link-glow">Contact us</a> for a custom quote.</p>
-      </div>
-    </div>
-  </section>
+      <p class="text-center mt-8 text-gray-400">Not sure which package is right for you? <a href="/contact" class="text-neon-green font-medium link-glow">Contact us</a> for a custom quote.</p>
+    </GbWindow>
 
-  <!-- Testimonials -->
-  <section class="py-24 bg-dark-100 relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute bottom-0 left-0 w-96 h-96 bg-neon-purple/5 rounded-full blur-[120px]"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <h2 class="section-heading">What Clients Say</h2>
-      <div class="section-divider"></div>
-      <p class="text-lg text-gray-400 max-w-3xl mx-auto text-center mb-16">Don't just take our word for it - hear from real estate professionals who've seen results</p>
+    <!-- TESTIMONIALS -->
+    <GbWindow title="What Clients Say" class="animate-slide-up">
+      <p class="pixel-label text-neon-green mb-1">▸ GUILD</p>
+      <p class="text-gray-400 mb-6">Don't just take our word for it - hear from real estate professionals who've seen results</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div v-for="(testimonial, index) in testimonials" :key="index" class="glass-card neon-border p-8">
-          <div class="flex items-center mb-6">
-            <img :src="testimonial.image" :alt="testimonial.name" class="w-16 h-16 rounded-full mr-4 border-2 border-neon-green/40">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div v-for="(testimonial, index) in testimonials" :key="index" class="gb-tile p-5">
+          <div class="flex items-center mb-4">
+            <img :src="testimonial.image" :alt="testimonial.name" class="w-14 h-14 mr-3 border-2 border-neon-green/40">
             <div>
               <h3 class="font-bold text-lg text-white">{{ testimonial.name }}</h3>
-              <p class="text-gray-400">{{ testimonial.company }}</p>
+              <p class="text-gray-400 text-sm">{{ testimonial.company }}</p>
             </div>
           </div>
-          <p class="text-gray-300 italic">"{{ testimonial.text }}"</p>
+          <p class="gb-row-desc italic">"{{ testimonial.text }}"</p>
         </div>
       </div>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- CTA Section -->
-  <section class="py-20 bg-dark relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-neon-green/10 via-neon-purple/10 to-neon-cyan/10"></div>
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-green/5 rounded-full blur-[150px]"></div>
-    <div class="container mx-auto px-4 text-center relative z-10">
-      <h2 class="text-3xl md:text-4xl font-black mb-6">
-        <span class="gradient-text">Ready to showcase your properties at their best?</span>
-      </h2>
-      <p class="text-xl mb-8 max-w-3xl mx-auto text-gray-300">Contact me today to discuss your real estate photography needs</p>
-      <a href="/contact" class="btn-neon font-pixel text-lg inline-block animate-glow-pulse">
-        Get Started
-      </a>
-    </div>
-  </section>
+    <!-- CTA -->
+    <GbWindow class="animate-slide-up">
+      <div class="text-center py-2">
+        <h2 class="text-2xl md:text-4xl font-black mb-4">
+          <span class="gradient-text">Ready to showcase your properties at their best?</span>
+        </h2>
+        <p class="text-gray-400 text-lg mb-7 max-w-2xl mx-auto">Contact me today to discuss your real estate photography needs</p>
+        <p class="gb-prompt animate-blink mb-5">PRESS START</p>
+        <a href="/contact" class="btn-neon animate-glow-pulse inline-block">Get Started</a>
+      </div>
+    </GbWindow>
+
+  </div>
 </template>
 
 <style scoped>
+/* Flavour/body text inside windows (readable VT323, not pixel font) */
+.gb-row-desc {
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgb(var(--c-ink-2));
+}
+
 </style>

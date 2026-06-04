@@ -1,87 +1,109 @@
 <template>
-  <!-- Sticky Header -->
-  <header class="sticky top-0 bg-dark/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-neon-cyan/5 z-10">
-    <div class="container mx-auto flex justify-between items-center px-4 py-3">
-      <h1 class="text-2xl font-bold text-white">{{ imageData.alt || 'Wedding Photography' }}</h1>
+  <div class="container mx-auto px-4 max-w-5xl py-12 space-y-10">
+
+    <!-- TITLE -->
+    <div class="text-center animate-slide-up space-y-4">
+      <h1 class="text-3xl md:text-5xl font-black">
+        <span class="gradient-text">{{ imageData.alt || 'Wedding Photography' }}</span>
+      </h1>
       <button
-          class="btn-neon-outline text-sm font-pixel"
-          @click="$router.push('/photography/weddings')"
+        class="btn-neon-outline text-sm font-pixel inline-flex"
+        @click="$router.push('/photography/weddings')"
       >
         Back to Wedding Gallery
       </button>
     </div>
-  </header>
 
-  <!-- Main Image Section -->
-  <section class="image-section py-16">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto animate-slide-up">
-        <div v-if="imageData.src" class="cartridge mb-8">
-          <img
-            :src="imageData.src"
-            :alt="imageData.alt"
-            class="w-full"
-          />
-        </div>
-
-        <div class="glass-card neon-border p-6">
-          <h2 class="text-2xl font-semibold text-neon-cyan mb-4">Image Details</h2>
-          <div class="space-y-3 text-gray-300">
-            <p v-if="imageData.alt"><strong class="text-white">Title:</strong> {{ imageData.alt }}</p>
-            <p v-if="imageData.description"><strong class="text-white">Description:</strong> {{ imageData.description }}</p>
-            <p v-if="imageData.location"><strong class="text-white">Location:</strong> {{ imageData.location }}</p>
-            <p v-if="imageData.date"><strong class="text-white">Date:</strong> {{ imageData.date }}</p>
-            <p v-if="imageData.camera"><strong class="text-white">Camera:</strong> {{ imageData.camera }}</p>
-            <p v-if="imageData.lens"><strong class="text-white">Lens:</strong> {{ imageData.lens }}</p>
-            <p v-if="imageData.settings"><strong class="text-white">Settings:</strong> {{ imageData.settings }}</p>
-            <p><strong class="text-white">Category:</strong> Weddings</p>
-          </div>
-        </div>
-      </div>
+    <!-- PHOTO -->
+    <div v-if="imageData.src" class="cartridge animate-slide-up">
+      <img
+        :src="imageData.src"
+        :alt="imageData.alt"
+        class="w-full"
+      />
     </div>
-  </section>
 
-  <!-- More Images Section -->
-  <section class="related-images-section py-16 bg-dark-100">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-white mb-8 text-center">More Wedding Photography</h2>
+    <!-- DATA -->
+    <GbWindow title="DATA" class="animate-slide-up">
+      <ul class="gb-menu-list">
+        <li v-if="imageData.alt" class="gb-menu-row">
+          <span class="gb-menu-label">Title</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.alt }}</span>
+        </li>
+        <li v-if="imageData.location" class="gb-menu-row">
+          <span class="gb-menu-label">Location</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.location }}</span>
+        </li>
+        <li v-if="imageData.date" class="gb-menu-row">
+          <span class="gb-menu-label">Date</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.date }}</span>
+        </li>
+        <li v-if="imageData.camera" class="gb-menu-row">
+          <span class="gb-menu-label">Camera</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.camera }}</span>
+        </li>
+        <li v-if="imageData.lens" class="gb-menu-row">
+          <span class="gb-menu-label">Lens</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.lens }}</span>
+        </li>
+        <li v-if="imageData.settings" class="gb-menu-row">
+          <span class="gb-menu-label">Settings</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.settings }}</span>
+        </li>
+        <li class="gb-menu-row">
+          <span class="gb-menu-label">Category</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-chip">Weddings</span>
+        </li>
+      </ul>
+
+      <p v-if="imageData.description" class="gb-row-desc text-gray-300 leading-relaxed mt-4">
+        {{ imageData.description }}
+      </p>
+    </GbWindow>
+
+    <!-- MORE WEDDINGS -->
+    <GbWindow title="More Wedding Photography" class="animate-slide-up">
       <div class="more-images-container">
         <image-gallery category="weddings" :useDetailPages="false" class="fade-in"></image-gallery>
       </div>
+    </GbWindow>
+
+    <!-- NAVIGATION -->
+    <div class="flex justify-between items-center gap-3 animate-slide-up">
+      <button
+        v-if="prevImage"
+        @click="navigateToImage(prevImage.id)"
+        class="btn-neon-outline text-sm font-pixel"
+      >
+        ← Previous Image
+      </button>
+      <div v-else></div>
+
+      <button
+        @click="$router.push('/photography/weddings')"
+        class="btn-neon text-sm font-pixel"
+      >
+        Back to Gallery
+      </button>
+
+      <button
+        v-if="nextImage"
+        @click="navigateToImage(nextImage.id)"
+        class="btn-neon-outline text-sm font-pixel"
+      >
+        Next Image →
+      </button>
+      <div v-else></div>
     </div>
-  </section>
 
-  <!-- Navigation for Images -->
-  <section class="image-navigation py-8">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between">
-        <button
-          v-if="prevImage"
-          @click="navigateToImage(prevImage.id)"
-          class="btn-neon-outline text-sm font-pixel"
-        >
-          ← Previous Image
-        </button>
-        <div v-else></div>
-
-        <button
-          @click="$router.push('/photography/weddings')"
-          class="btn-neon text-sm font-pixel"
-        >
-          Back to Gallery
-        </button>
-
-        <button
-          v-if="nextImage"
-          @click="navigateToImage(nextImage.id)"
-          class="btn-neon-outline text-sm font-pixel"
-        >
-          Next Image →
-        </button>
-        <div v-else></div>
-      </div>
-    </div>
-  </section>
+  </div>
 </template>
 
 <script setup>
@@ -95,6 +117,23 @@ const { imageData, prevImage, nextImage } = useGalleryDetail('weddings', 'Weddin
 </script>
 
 <style scoped>
+.gb-menu-label {
+  @apply font-pixel uppercase text-xs;
+}
+.gb-row-desc {
+  font-family: 'VT323', monospace;
+  font-size: 1.05rem;
+}
+.gb-menu-value {
+  font-family: 'VT323', monospace;
+  font-size: 1.05rem;
+  color: rgb(var(--c-ink));
+  text-align: right;
+  white-space: normal;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
 .fade-in {
   opacity: 0;
   animation: fadeIn 2s forwards;

@@ -52,6 +52,17 @@ const currentIndex = computed(() => {
   return idx === -1 ? 0 : idx
 })
 
+// Per-page animated background variant (home keeps its own title-screen flow).
+const flowVariant = computed(() => {
+  const p = route.path
+  if (p.startsWith('/photography')) return 'photo'
+  if (p.startsWith('/drone')) return 'drone'
+  if (p.startsWith('/3d-printing')) return 'print'
+  if (p === '/about') return 'about'
+  if (p === '/contact') return 'contact'
+  return ''
+})
+
 const photoOpen = ref(false)
 const navTo = (path: string) => { gb.sfx.select(); photoOpen.value = false; router.push(path) }
 
@@ -309,6 +320,9 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
       <div class="gb-header-stripe"></div>
     </header>
 
+    <!-- ================= PER-PAGE ANIMATED BACKGROUND ================= -->
+    <GbFlowBg v-if="flowVariant" :variant="flowVariant" />
+
     <!-- ================= SCREEN FX OVERLAY ================= -->
     <div class="gb-fx screen-scanlines screen-dots" aria-hidden="true">
       <div class="gb-fx-scan animate-scanline"></div>
@@ -319,7 +333,6 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
     <!-- ================= LCD CONTENT ================= -->
     <main class="gb-screen">
       <slot />
-      <footer-component />
     </main>
 
     <!-- ================= START / D-PAD MENU OVERLAY ================= -->
@@ -336,7 +349,18 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
                 </button>
               </li>
             </ul>
-            <p class="gb-menu-hint font-pixel">▲▼ MOVE · A SELECT · B BACK</p>
+            <div class="gb-keys">
+              <p class="gb-keys-title font-pixel">⌨ KEYBOARD</p>
+              <ul class="gb-keys-list">
+                <li><kbd>↑↓←→</kbd><span>Move / page</span></li>
+                <li><kbd>Enter</kbd><span>A · select</span></li>
+                <li><kbd>Esc</kbd><span>B · back</span></li>
+                <li><kbd>S</kbd><span>Open menu</span></li>
+                <li><kbd>M</kbd><span>Sound</span></li>
+                <li><kbd>P</kbd><span>Palette</span></li>
+              </ul>
+              <p class="gb-menu-hint font-pixel">▲▼ MOVE · A SELECT · B BACK · click works too</p>
+            </div>
           </div>
         </div>
       </div>
@@ -385,6 +409,9 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
           </button>
         </div>
       </div>
+
+      <!-- footer strip welded into the bottom edge of the console -->
+      <footer-component />
     </footer>
   </div>
 </template>
@@ -395,11 +422,11 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
   position: relative;
   z-index: 1;
   padding-top: 56px;
-  padding-bottom: 132px;
+  padding-bottom: 196px;
   min-height: 100vh;
 }
 @media (min-width: 768px) {
-  .gb-screen { padding-top: 60px; padding-bottom: 154px; }
+  .gb-screen { padding-top: 60px; padding-bottom: 212px; }
 }
 
 /* ---------- plastic shell surface ---------- */
@@ -599,7 +626,8 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
   border-radius: 6px;
   padding: 14px 12px;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-  overflow: hidden;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 .gb-menu-title { font-size: 0.7rem; color: rgb(var(--c-green)); margin-bottom: 10px; }
 .gb-menu-item {
@@ -612,7 +640,30 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
 }
 .gb-menu-cursor { color: rgb(var(--c-green)); width: 0.8em; display: inline-block; }
 .gb-menu-sel { color: rgb(var(--c-ink)); background: rgb(var(--c-green) / 0.12); }
-.gb-menu-hint { font-size: 0.42rem; color: rgb(var(--c-ink-3)); margin-top: 12px; letter-spacing: 0.04em; }
+.gb-menu-hint { font-size: 0.42rem; color: rgb(var(--c-ink-3)); margin-top: 12px; letter-spacing: 0.04em; line-height: 1.6; }
+
+/* keyboard legend inside the START menu */
+.gb-keys {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 2px dotted rgb(var(--c-green) / 0.25);
+}
+.gb-keys-title { font-size: 0.5rem; color: rgb(var(--c-green)); margin-bottom: 10px; }
+.gb-keys-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
+.gb-keys-list li { display: flex; align-items: center; gap: 9px; font-size: 0.5rem; color: rgb(var(--c-ink-2)); }
+.gb-keys kbd {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  line-height: 1;
+  color: rgb(var(--c-bg));
+  background: rgb(var(--c-green));
+  border-radius: 3px;
+  box-shadow: 0 2px 0 rgb(var(--c-green) / 0.4);
+  padding: 5px 6px;
+  min-width: 3.4rem;
+  text-align: center;
+  flex-shrink: 0;
+}
 
 /* ---------- BOTTOM DECK ---------- */
 .gb-deck {
@@ -625,7 +676,7 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
   position: relative; z-index: 2;
   display: flex; align-items: center; justify-content: center;
   gap: 8px;
-  padding: 4px 8px;
+  padding: 9px 8px 4px;
   font-size: 0.42rem;
 }
 .gb-deck-label .font-pixel { color: #5b3490; letter-spacing: 0.05em; font-size: 0.42rem; }
@@ -637,7 +688,7 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
   gap: 0.5rem;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 2px 1.2rem 12px;
+  padding: 20px 1.2rem 10px;
 }
 
 /* D-PAD */
@@ -739,7 +790,7 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
   .dpad-left, .dpad-right { top: 24px; }
   .dpad-hub { top: 24px; left: 24px; width: 24px; height: 24px; }
   .ab-btn { width: 36px; height: 36px; }
-  .gb-deck-controls { padding: 2px 0.75rem 10px; }
+  .gb-deck-controls { padding: 16px 0.75rem 8px; }
   .gb-pill-cap { width: 30px; }
 }
 

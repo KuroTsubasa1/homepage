@@ -1,87 +1,103 @@
 <template>
-  <!-- Sticky Header -->
-  <header class="sticky top-0 bg-dark/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-neon-green/10 z-10">
-    <div class="container mx-auto flex justify-between items-center px-4 py-3">
-      <h1 class="text-2xl font-bold text-white">{{ imageData.alt || 'Abstract & Art Photography' }}</h1>
-      <button
-          class="btn-neon-outline text-sm font-pixel"
-          @click="$router.push('/photography/abstract-art')"
-      >
-        Back to Abstract Gallery
-      </button>
+  <div class="container mx-auto px-4 max-w-5xl py-12 space-y-10">
+
+    <!-- TITLE -->
+    <div class="gb-titlecard animate-slide-up">
+      <h1 class="text-3xl md:text-5xl font-black gradient-text">{{ imageData.alt || 'Abstract & Art Photography' }}</h1>
+      <p class="pixel-label text-lcd-dim mt-2">ABSTRACT &amp; ART</p>
     </div>
-  </header>
 
-  <!-- Main Image Section -->
-  <section class="image-section py-16">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto animate-slide-up">
-        <div v-if="imageData.src" class="cartridge mb-8">
-          <img
-            :src="imageData.src"
-            :alt="imageData.alt"
-            class="w-full"
-          />
+    <!-- PHOTO -->
+    <div v-if="imageData.src" class="cartridge animate-slide-up">
+      <img
+        :src="imageData.src"
+        :alt="imageData.alt"
+        class="w-full"
+      />
+    </div>
+
+    <!-- DATA -->
+    <GbWindow title="DATA" class="animate-slide-up">
+      <div class="gb-menu-list">
+        <div v-if="imageData.alt" class="gb-data-row">
+          <span class="gb-data-key">TITLE</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.alt }}</span>
         </div>
-
-        <div class="glass-card neon-border p-6">
-          <h2 class="text-2xl font-semibold text-neon-green mb-4">Image Details</h2>
-          <div class="space-y-3 text-gray-300">
-            <p v-if="imageData.alt"><strong class="text-white">Title:</strong> {{ imageData.alt }}</p>
-            <p v-if="imageData.description"><strong class="text-white">Description:</strong> {{ imageData.description }}</p>
-            <p v-if="imageData.location"><strong class="text-white">Location:</strong> {{ imageData.location }}</p>
-            <p v-if="imageData.date"><strong class="text-white">Date:</strong> {{ imageData.date }}</p>
-            <p v-if="imageData.camera"><strong class="text-white">Camera:</strong> {{ imageData.camera }}</p>
-            <p v-if="imageData.lens"><strong class="text-white">Lens:</strong> {{ imageData.lens }}</p>
-            <p v-if="imageData.settings"><strong class="text-white">Settings:</strong> {{ imageData.settings }}</p>
-            <p><strong class="text-white">Category:</strong> Abstract & Art</p>
-          </div>
+        <div v-if="imageData.description" class="gb-data-row">
+          <span class="gb-data-key">DESCRIPTION</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.description }}</span>
+        </div>
+        <div v-if="imageData.location" class="gb-data-row">
+          <span class="gb-data-key">LOCATION</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.location }}</span>
+        </div>
+        <div v-if="imageData.date" class="gb-data-row">
+          <span class="gb-data-key">DATE</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.date }}</span>
+        </div>
+        <div v-if="imageData.camera" class="gb-data-row">
+          <span class="gb-data-key">CAMERA</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.camera }}</span>
+        </div>
+        <div v-if="imageData.lens" class="gb-data-row">
+          <span class="gb-data-key">LENS</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.lens }}</span>
+        </div>
+        <div v-if="imageData.settings" class="gb-data-row">
+          <span class="gb-data-key">SETTINGS</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value">{{ imageData.settings }}</span>
+        </div>
+        <div class="gb-data-row">
+          <span class="gb-data-key">CATEGORY</span>
+          <span class="gb-menu-leader"></span>
+          <span class="gb-menu-value"><span class="gb-chip">Abstract &amp; Art</span></span>
         </div>
       </div>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- More Images Section -->
-  <section class="related-images-section py-16 bg-dark-100">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-white mb-8 text-center">More Abstract & Art Photography</h2>
+    <!-- ALBUM — more from this collection -->
+    <GbWindow title="More Abstract &amp; Art Photography" class="fade-in">
       <div class="more-images-container">
         <image-gallery category="abstract" :useDetailPages="false" class="fade-in"></image-gallery>
       </div>
+    </GbWindow>
+
+    <!-- NAVIGATION -->
+    <div class="flex flex-wrap justify-between items-center gap-3 animate-slide-up">
+      <button
+        v-if="prevImage"
+        @click="navigateToImage(prevImage.id)"
+        class="btn-neon-outline text-sm font-pixel"
+      >
+        ← Previous Image
+      </button>
+      <div v-else></div>
+
+      <button
+        @click="$router.push('/photography/abstract-art')"
+        class="btn-neon text-sm font-pixel"
+      >
+        Back to Gallery
+      </button>
+
+      <button
+        v-if="nextImage"
+        @click="navigateToImage(nextImage.id)"
+        class="btn-neon-outline text-sm font-pixel"
+      >
+        Next Image →
+      </button>
+      <div v-else></div>
     </div>
-  </section>
 
-  <!-- Navigation for Images -->
-  <section class="image-navigation py-8">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between">
-        <button
-          v-if="prevImage"
-          @click="navigateToImage(prevImage.id)"
-          class="btn-neon-outline text-sm font-pixel"
-        >
-          ← Previous Image
-        </button>
-        <div v-else></div>
-
-        <button
-          @click="$router.push('/photography/abstract-art')"
-          class="btn-neon text-sm font-pixel"
-        >
-          Back to Gallery
-        </button>
-
-        <button
-          v-if="nextImage"
-          @click="navigateToImage(nextImage.id)"
-          class="btn-neon-outline text-sm font-pixel"
-        >
-          Next Image →
-        </button>
-        <div v-else></div>
-      </div>
-    </div>
-  </section>
+  </div>
 </template>
 
 <script setup>
@@ -104,6 +120,28 @@ const { imageData, prevImage, nextImage } = useGalleryDetail('abstract', 'Abstra
   to {
     opacity: 1;
   }
+}
+
+/* DATA rows: pixel label on the left, readable value on the right. */
+.gb-data-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+}
+
+.gb-data-key {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  white-space: nowrap;
+  color: rgb(var(--c-green));
+}
+
+.gb-data-row .gb-menu-value {
+  text-align: right;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: rgb(var(--c-ink));
 }
 
 .more-images-container {

@@ -15,22 +15,21 @@ useSeoMeta({
 </script>
 
 <template>
-  <!-- Hero Section -->
-  <section class="relative py-32 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10"></div>
-    <div class="absolute inset-0 bg-grid opacity-20"></div>
-    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-green/10 rounded-full blur-[100px]"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-neon-purple/10 rounded-full blur-[100px]"></div>
+  <div class="container mx-auto px-4 max-w-4xl py-12 space-y-10">
 
-    <div class="container mx-auto px-4 text-center relative z-10 pt-10 animate-slide-up">
-      <h1 class="text-4xl md:text-6xl font-black mb-4">
-        <span class="gradient-text">{{ t('contact.hero.title') }}</span>
-      </h1>
-      <p class="text-lg text-gray-400 max-w-2xl mx-auto">{{ t('contact.hero.subtitle') }}</p>
-    </div>
-  </section>
+    <!-- HAILING FREQUENCY -->
+    <GbWindow title="CONTACT" class="animate-slide-up">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-6xl font-black mb-3">
+          <span class="gradient-text">{{ t('contact.hero.title') }}</span>
+        </h1>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto">{{ t('contact.hero.subtitle') }}</p>
+        <p class="gb-prompt animate-blink mt-6">PRESS START</p>
+      </div>
+    </GbWindow>
 
-  <!-- Contact Form Section -->
-  <contact-section></contact-section>
+    <!-- CONTACT FORM + INFO (logic lives in the shared component) -->
+    <contact-section></contact-section>
+
+  </div>
 </template>
-

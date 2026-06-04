@@ -1,76 +1,99 @@
 <template>
+  <div class="container mx-auto px-4 max-w-5xl py-12 space-y-10">
 
-  <!-- Back Button -->
-  <div class="w-1/2 flex justify-center mx-auto pt-20 my-10">
-    <button @click="$router.go(-1)" class="btn-neon-outline text-sm font-pixel">
-      Go Back
-    </button>
-  </div>
-
-  <h2 class="font-semibold text-5xl my-10 text-center animate-slide-up">
-    <span class="gradient-text">{{ projectData.title }}</span>
-  </h2>
-
-  <div class="w-3/4 mx-auto p-4 flex justify-center">
-
-    <div class="w-1/2">
-      <!-- Video Section -->
-      <div v-if="projectData.videos && projectData.videos.length" class="video-container mb-4">
-        <div class="cartridge">
-          <video class="w-full h-auto" controls>
-            <source :src="projectData.videos[0]" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-
-      <!-- Images Section -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-        <div v-for="(image, index) in projectData.images" :key="index" class="cartridge">
-          <img :alt="'Image ' + (index + 1)"
-               :src="image" class="w-full h-auto"
-               loading="lazy">
-        </div>
-      </div>
-
+    <!-- Back -->
+    <div class="flex justify-center">
+      <button @click="$router.go(-1)" class="btn-neon-outline text-sm font-pixel">
+        Go Back
+      </button>
     </div>
 
-    <div class="w-1/4  flex flex-wrap justify-end">
-      <!-- Info Card Section -->
-      <div class="glass-card neon-border p-4 w-3/4">
-        <h2 class="text-xl font-bold mb-2 text-neon-cyan font-pixel">Project Information</h2>
-        <ul class="text-gray-300">
-          <li><strong class="text-white">Role:</strong> {{ projectData.role }}</li>
-          <div class="divider divider-neutral"></div>
-          <li><strong class="text-white">Duration:</strong> {{ projectData.fromDate }} - {{ projectData.toDate }}</li>
-          <div class="divider divider-neutral"></div>
-          <li><strong class="text-white">From:</strong> {{ projectData.fromDate }}</li>
-          <div class="divider divider-neutral"></div>
-          <li><strong class="text-white">To:</strong> {{ projectData.toDate }}</li>
-          <!-- Add more info as needed -->
-        </ul>
-
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Description Section -->
-  <div class="w-1/2 flex justify-center mx-auto my-10">
-    <div class="mb-4">
-      <p class="text-lg text-gray-300">
-        {{ projectData.longDescription }}
+    <!-- TITLE -->
+    <div class="gb-titlecard animate-slide-up">
+      <p class="pixel-label text-neon-green mb-3">▸ DRONE PROJECT</p>
+      <h1 class="font-semibold text-4xl md:text-5xl">
+        <span class="gradient-text">{{ projectData.title }}</span>
+      </h1>
+      <p v-if="projectData.shortDescription" class="text-gray-400 text-lg mt-3">
+        {{ projectData.shortDescription }}
       </p>
     </div>
-  </div>
 
-  <!-- Link Section -->
-  <div class="w-1/2 flex justify-center mx-auto my-10">
-    <a :href="projectData.link" class="btn-neon text-sm font-pixel animate-glow-pulse">
-      View Project
-    </a>
-  </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
+      <!-- MEDIA -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Video Section -->
+        <GbWindow v-if="projectData.videos && projectData.videos.length" title="FOOTAGE" class="animate-slide-up">
+          <div class="cartridge">
+            <video class="w-full h-auto" controls>
+              <source :src="projectData.videos[0]" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </GbWindow>
+
+        <!-- Images Section -->
+        <GbWindow v-if="projectData.images && projectData.images.length" title="GALLERY" class="animate-slide-up">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div v-for="(image, index) in projectData.images" :key="index" class="gb-tile">
+              <img :alt="'Image ' + (index + 1)"
+                   :src="image" class="w-full h-36 sm:h-40 object-cover"
+                   loading="lazy">
+            </div>
+          </div>
+        </GbWindow>
+
+      </div>
+
+      <!-- DATA -->
+      <GbWindow title="DATA" accent="velvet" class="animate-slide-up">
+        <ul class="gb-menu-list">
+          <li>
+            <div class="gb-menu-row">
+              <span class="gb-menu-label">Role</span>
+              <span class="gb-menu-leader"></span>
+              <span class="gb-menu-value">{{ projectData.role }}</span>
+            </div>
+          </li>
+          <li>
+            <div class="gb-menu-row">
+              <span class="gb-menu-label">From</span>
+              <span class="gb-menu-leader"></span>
+              <span class="gb-menu-value">{{ projectData.fromDate }}</span>
+            </div>
+          </li>
+          <li>
+            <div class="gb-menu-row">
+              <span class="gb-menu-label">To</span>
+              <span class="gb-menu-leader"></span>
+              <span class="gb-menu-value">{{ projectData.toDate }}</span>
+            </div>
+          </li>
+        </ul>
+        <div v-if="projectData.category" class="mt-4 flex flex-wrap gap-2">
+          <span class="gb-chip">{{ projectData.category }}</span>
+        </div>
+      </GbWindow>
+
+    </div>
+
+    <!-- BRIEFING -->
+    <GbWindow v-if="projectData.longDescription" title="BRIEFING" class="animate-slide-up">
+      <p class="text-lg text-gray-300 leading-relaxed">
+        {{ projectData.longDescription }}
+      </p>
+    </GbWindow>
+
+    <!-- Link -->
+    <div v-if="projectData.link" class="flex justify-center">
+      <a :href="projectData.link" class="btn-neon text-sm font-pixel animate-glow-pulse">
+        View Project
+      </a>
+    </div>
+
+  </div>
 </template>
 
 <script setup>
@@ -107,5 +130,8 @@ useSeoMeta({
 </script>
 
 <style scoped>
-
+.gb-menu-label {
+  flex-shrink: 0;
+  color: rgb(var(--c-ink));
+}
 </style>

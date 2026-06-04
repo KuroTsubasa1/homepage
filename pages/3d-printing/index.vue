@@ -15,95 +15,79 @@ useSeoMeta({
 </script>
 
 <template>
-  <!-- Hero -->
-  <section class="relative min-h-[70vh] flex items-center overflow-hidden" style="background-image: url('https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=1920x1080'); background-size: cover; background-position: center;">
-    <div class="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/60 to-dark z-10"></div>
-    <div class="absolute inset-0 bg-grid opacity-20 z-10"></div>
-    <div class="relative z-20 container mx-auto px-6 py-20">
-      <div class="max-w-2xl animate-slide-up">
-        <h1 class="text-5xl md:text-7xl font-black mb-4">
-          <span class="text-white">{{ t('printing.hero.title1') }}</span><br>
+  <div class="container mx-auto px-4 max-w-4xl py-12 space-y-10">
+
+    <!-- HERO -->
+    <GbWindow title="3D PRINTING" class="animate-slide-up">
+      <div class="gb-tile mb-6">
+        <img
+          src="https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/60sc2mi6uk0lw66/img_1085_yaf6gcg51Y.JPG?thumb=1920x1080"
+          alt="3D printing"
+          class="w-full object-cover h-48 sm:h-64"
+        >
+      </div>
+      <div class="text-center">
+        <h1 class="text-4xl md:text-6xl font-black mb-3">
+          <span class="text-white">{{ t('printing.hero.title1') }}</span>
           <span class="gradient-text">{{ t('printing.hero.title2') }}</span>
         </h1>
-        <p class="text-lg text-gray-300 mb-8">{{ t('printing.hero.subtitle') }}</p>
-        <div class="flex flex-wrap gap-4">
-          <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon font-pixel inline-block">{{ t('printing.hero.visit') }}</a>
-        </div>
+        <p class="text-gray-300 text-lg leading-relaxed mb-5 max-w-xl mx-auto">{{ t('printing.hero.subtitle') }}</p>
+        <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon inline-block">{{ t('printing.hero.visit') }}</a>
       </div>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- Main Content - flowing, personal -->
-  <section class="py-20 bg-dark relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px]"></div>
-
-    <div class="container mx-auto px-6 relative z-10">
-      <div class="max-w-3xl mx-auto space-y-16">
-
-        <!-- The joy -->
-        <div>
-          <h2 class="text-2xl font-bold text-white mb-6">{{ t('printing.why.title') }}</h2>
-          <div class="text-gray-300 leading-relaxed space-y-4">
-            <p>{{ t('printing.why.p1') }}</p>
-            <p>{{ t('printing.why.p2') }}</p>
-            <p v-html="t('printing.why.p3')"></p>
-          </div>
-        </div>
-
-        <!-- CAD & Modeling -->
-        <div>
-          <h2 class="text-2xl font-bold text-white mb-6">{{ t('printing.cad.title') }}</h2>
-          <div class="text-gray-300 leading-relaxed space-y-4">
-            <p v-html="t('printing.cad.p1')"></p>
-            <p v-html="t('printing.cad.p2')"></p>
-            <p>{{ t('printing.cad.p3') }}</p>
-          </div>
-        </div>
-
-        <!-- My machines -->
-        <div>
-          <h2 class="text-2xl font-bold text-white mb-6">{{ t('printing.workshop.title') }}</h2>
-          <div class="text-gray-300 leading-relaxed space-y-4">
-            <p v-html="t('printing.workshop.p1')"></p>
-            <p v-html="t('printing.workshop.p2')"></p>
-            <p v-html="t('printing.workshop.p3')"></p>
-            <p v-html="t('printing.workshop.p4')"></p>
-          </div>
-        </div>
-
-        <!-- Multi-color -->
-        <div>
-          <h2 class="text-2xl font-bold text-white mb-6">{{ t('printing.multicolor.title') }}</h2>
-          <div class="text-gray-300 leading-relaxed space-y-4">
-            <p>{{ t('printing.multicolor.p1') }}</p>
-            <p>{{ t('printing.multicolor.p2') }}</p>
-            <p>{{ t('printing.multicolor.p3') }}</p>
-          </div>
-        </div>
-
+    <!-- The joy -->
+    <GbWindow :title="t('printing.why.title')" class="animate-slide-up">
+      <div class="space-y-4 text-gray-300 leading-relaxed">
+        <p>{{ t('printing.why.p1') }}</p>
+        <p>{{ t('printing.why.p2') }}</p>
+        <p v-html="t('printing.why.p3')"></p>
       </div>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- Prints showcase -->
-  <section class="py-20 bg-dark-100 relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="container mx-auto px-6 relative z-10">
-      <h2 class="section-heading">{{ t('printing.prints.title') }}</h2>
-      <div class="section-divider"></div>
+    <!-- CAD & Modeling -->
+    <GbWindow :title="t('printing.cad.title')" class="animate-slide-up">
+      <div class="space-y-4 text-gray-300 leading-relaxed">
+        <p v-html="t('printing.cad.p1')"></p>
+        <p v-html="t('printing.cad.p2')"></p>
+        <p>{{ t('printing.cad.p3') }}</p>
+      </div>
+    </GbWindow>
+
+    <!-- My machines -->
+    <GbWindow :title="t('printing.workshop.title')" class="animate-slide-up">
+      <div class="space-y-4 text-gray-300 leading-relaxed">
+        <p v-html="t('printing.workshop.p1')"></p>
+        <p v-html="t('printing.workshop.p2')"></p>
+        <p v-html="t('printing.workshop.p3')"></p>
+        <p v-html="t('printing.workshop.p4')"></p>
+      </div>
+    </GbWindow>
+
+    <!-- Multi-color -->
+    <GbWindow :title="t('printing.multicolor.title')" class="animate-slide-up">
+      <div class="space-y-4 text-gray-300 leading-relaxed">
+        <p>{{ t('printing.multicolor.p1') }}</p>
+        <p>{{ t('printing.multicolor.p2') }}</p>
+        <p>{{ t('printing.multicolor.p3') }}</p>
+      </div>
+    </GbWindow>
+
+    <!-- Prints showcase -->
+    <GbWindow :title="t('printing.prints.title')" class="animate-slide-up">
       <project-grid category="3d"></project-grid>
-    </div>
-  </section>
+    </GbWindow>
 
-  <!-- CTA -->
-  <section class="py-20 relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10"></div>
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="container mx-auto px-6 text-center relative z-10">
-      <h2 class="text-3xl md:text-4xl font-black mb-6"><span class="gradient-text">{{ t('printing.ctaBlock.title') }}</span></h2>
-      <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">{{ t('printing.ctaBlock.subtitle') }}</p>
-      <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon font-pixel inline-block animate-glow-pulse">{{ t('printing.hero.visit') }}</a>
-    </div>
-  </section>
+    <!-- CTA -->
+    <GbWindow class="animate-slide-up">
+      <div class="text-center py-2">
+        <h2 class="text-2xl md:text-4xl font-black mb-4">
+          <span class="gradient-text">{{ t('printing.ctaBlock.title') }}</span>
+        </h2>
+        <p class="text-gray-400 text-lg mb-7 max-w-2xl mx-auto">{{ t('printing.ctaBlock.subtitle') }}</p>
+        <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="btn-neon font-pixel inline-block animate-glow-pulse">{{ t('printing.hero.visit') }}</a>
+      </div>
+    </GbWindow>
+
+  </div>
 </template>

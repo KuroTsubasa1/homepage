@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 const { listUrl, fileUrl } = usePocketbase();
+const { sfx } = useGameboy();
 
 useSeoMeta({
   title: 'Photography Portfolio | Lasse Harm | Professional Photographer',
@@ -98,55 +99,38 @@ const introImages = computed(() =>
 </script>
 
 <template>
-  <!-- Hero Section -->
-  <section class="hero relative overflow-hidden">
-    <div class="hero-slider absolute inset-0">
-      <div v-for="(image, index) in introImages" :key="index" class="hero-slide absolute inset-0 opacity-0"
-           :style="{ backgroundImage: `url(${image.src})`, animationDelay: `${index * 5}s` }">
-        <div class="absolute inset-0 bg-black/60"></div>
-      </div>
-    </div>
-    <!-- Glow orbs in hero -->
-    <div class="absolute top-20 left-10 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-20 right-10 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 h-full flex items-center relative z-10">
-      <div class="text-center mx-auto max-w-3xl animate-slide-up">
-        <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 hero-title">
-          {{ t('photography.hero.titlePrefix') }} <span class="gradient-text">{{ t('photography.hero.titleHighlight') }}</span>
-        </h1>
-        <p class="text-xl text-gray-300 mb-8">{{ t('photography.hero.subtitle') }}</p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="#categories" class="btn-neon font-pixel animate-glow-pulse">{{ t('photography.hero.browse') }}</a>
+  <div>
+    <!-- TITLE SCREEN -->
+    <section class="hero relative overflow-hidden">
+      <div class="hero-slider absolute inset-0">
+        <div v-for="(image, index) in introImages" :key="index" class="hero-slide absolute inset-0 opacity-0"
+             :style="{ backgroundImage: `url(${image.src})`, animationDelay: `${index * 5}s` }">
+          <div class="absolute inset-0 bg-black/60"></div>
         </div>
       </div>
-    </div>
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-      <div class="scroll-indicator">
-        <div class="mouse">
-          <div class="wheel"></div>
-        </div>
-        <div class="arrows">
-          <span class="arrow-down"></span>
-          <span class="arrow-down"></span>
+      <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
+      <div class="container mx-auto px-4 h-full flex items-center relative z-10">
+        <div class="gb-titlecard animate-slide-up">
+          <h1 class="text-4xl md:text-6xl font-black mb-5 uppercase">
+            {{ t('photography.hero.titlePrefix') }} <span class="gradient-text">{{ t('photography.hero.titleHighlight') }}</span>
+          </h1>
+          <p class="text-lg text-gray-300 mb-6">{{ t('photography.hero.subtitle') }}</p>
+          <a href="#categories" class="btn-neon font-pixel animate-glow-pulse inline-block">{{ t('photography.hero.browse') }}</a>
+          <p class="gb-prompt animate-blink mt-6">PRESS START</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Introduction Section -->
-  <section class="py-16 bg-dark relative overflow-hidden">
-    <!-- Grid overlay -->
-    <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
-    <!-- Glow orbs -->
-    <div class="absolute top-0 right-0 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 w-80 h-80 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-        <div>
-          <h2 class="text-3xl font-bold text-white mb-6">{{ t('photography.about.title') }}</h2>
-          <p class="text-lg text-gray-300 mb-4">{{ t('photography.about.p1') }}</p>
-          <p class="text-lg text-gray-300 mb-6">{{ t('photography.about.p2') }}</p>
-          <div class="flex flex-wrap gap-4">
+    <!-- MENU SCREENS -->
+    <div class="container mx-auto px-4 max-w-5xl py-12 space-y-10">
+
+      <!-- INTEL — about photography -->
+      <GbWindow :title="t('photography.about.title')" class="animate-slide-up">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div class="space-y-4 text-gray-300 leading-relaxed">
+            <p class="pixel-label text-neon-green mb-1">&#9656; INTEL</p>
+            <p>{{ t('photography.about.p1') }}</p>
+            <p>{{ t('photography.about.p2') }}</p>
             <a href="/about" class="inline-flex items-center text-neon-green font-semibold hover:drop-shadow-[0_0_8px_rgba(155,188,15,0.5)] transition-all">
               <span>{{ t('photography.about.learnMore') }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -154,150 +138,137 @@ const introImages = computed(() =>
               </svg>
             </a>
           </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="space-y-4">
-            <div class="cartridge overflow-hidden transform translate-y-8">
-              <img v-if="introImages[0]" :src="introImages[0].src" :alt="introImages[0].alt"
-                   class="w-full h-64 object-cover hover:scale-110 transition-transform duration-700">
-              <div v-else class="w-full h-64 bg-gradient-to-br from-dark-200 to-dark-300"></div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-4">
+              <div class="cartridge overflow-hidden transform translate-y-8">
+                <img v-if="introImages[0]" :src="introImages[0].src" :alt="introImages[0].alt" loading="lazy"
+                     class="w-full h-64 object-cover hover:scale-110 transition-transform duration-700">
+                <div v-else class="w-full h-64 bg-dark-200"></div>
+              </div>
+              <div class="cartridge overflow-hidden">
+                <img v-if="introImages[1]" :src="introImages[1].src" :alt="introImages[1].alt" loading="lazy"
+                     class="w-full h-48 object-cover hover:scale-110 transition-transform duration-700">
+                <div v-else class="w-full h-48 bg-dark-200"></div>
+              </div>
             </div>
-            <div class="cartridge overflow-hidden">
-              <img v-if="introImages[1]" :src="introImages[1].src" :alt="introImages[1].alt"
-                   class="w-full h-48 object-cover hover:scale-110 transition-transform duration-700">
-              <div v-else class="w-full h-48 bg-gradient-to-br from-dark-200 to-dark-300"></div>
+            <div class="space-y-4">
+              <div class="cartridge overflow-hidden">
+                <img v-if="introImages[2]" :src="introImages[2].src" :alt="introImages[2].alt" loading="lazy"
+                     class="w-full h-48 object-cover hover:scale-110 transition-transform duration-700">
+                <div v-else class="w-full h-48 bg-dark-200"></div>
+              </div>
+              <div class="cartridge overflow-hidden transform translate-y-8">
+                <img v-if="introImages[3]" :src="introImages[3].src" :alt="introImages[3].alt" loading="lazy"
+                     class="w-full h-64 object-cover hover:scale-110 transition-transform duration-700">
+                <div v-else class="w-full h-64 bg-dark-200"></div>
+              </div>
             </div>
           </div>
-          <div class="space-y-4">
-            <div class="cartridge overflow-hidden">
-              <img v-if="introImages[2]" :src="introImages[2].src" :alt="introImages[2].alt"
-                   class="w-full h-48 object-cover hover:scale-110 transition-transform duration-700">
-              <div v-else class="w-full h-48 bg-gradient-to-br from-dark-200 to-dark-300"></div>
-            </div>
-            <div class="cartridge overflow-hidden transform translate-y-8">
-              <img v-if="introImages[3]" :src="introImages[3].src" :alt="introImages[3].alt"
-                   class="w-full h-64 object-cover hover:scale-110 transition-transform duration-700">
-              <div v-else class="w-full h-64 bg-gradient-to-br from-dark-200 to-dark-300"></div>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </GbWindow>
 
-  <!-- Featured Categories Section -->
-  <section id="categories" class="py-16 bg-dark-100 relative overflow-hidden">
-    <!-- Grid overlay -->
-    <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
-    <!-- Glow orbs -->
-    <div class="absolute top-20 left-20 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-20 right-20 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="text-center mb-12">
-        <h2 class="section-heading text-4xl font-bold text-white mb-4">{{ t('photography.collections.title') }}</h2>
-        <div class="section-divider mx-auto mb-6"></div>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-          {{ t('photography.collections.subtitle') }}
-        </p>
-      </div>
+      <!-- ALBUM — category select grid -->
+      <GbWindow id="categories" :title="t('photography.collections.title')" class="animate-slide-up">
+        <p class="gb-row-desc text-gray-400 mb-6">{{ t('photography.collections.subtitle') }}</p>
 
-      <!-- Categories Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <a v-for="category in photographyCategories"
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <a v-for="category in photographyCategories"
              :key="category.i18nKey"
              :href="category.path"
-             class="category-card relative overflow-hidden rounded-2xl border border-white/10 h-64 group transition-all duration-300 block hover:border-neon-green/30">
-          <img v-if="category.image" :src="category.image" :alt="t(`photography.categories.${category.i18nKey}.title`)" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-          <div v-else class="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-400"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent"></div>
-          <div class="absolute bottom-0 left-0 right-0 p-5">
-            <h3 class="text-xl font-bold text-white mb-1">{{ t(`photography.categories.${category.i18nKey}.title`) }}</h3>
-            <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">{{ t(`photography.categories.${category.i18nKey}.description`) }}</p>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Wedding Photography Feature Section -->
-  <section class="py-20 bg-dark relative overflow-hidden">
-    <div class="absolute top-0 left-0 w-full h-full opacity-5" :style="photographyCategories[4]?.image ? { backgroundImage: `url(${photographyCategories[4].image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}"></div>
-    <!-- Grid overlay -->
-    <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
-    <!-- Glow orbs -->
-    <div class="absolute top-10 right-20 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-10 left-20 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="text-center mb-10">
-        <h2 class="section-heading text-4xl font-bold text-white mb-4">{{ t('photography.weddingSection.title') }}</h2>
-        <div class="section-divider mx-auto mb-6"></div>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-10">
-          {{ t('photography.weddingSection.subtitle') }}
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
-          <div class="w-16 h-16 rounded-full bg-neon-green/10 border border-neon-green/30 flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">{{ t('photography.weddingSection.features.engagement.title') }}</h3>
-          <p class="text-gray-400">{{ t('photography.weddingSection.features.engagement.description') }}</p>
+             class="gb-tile group block"
+             @mouseenter="sfx.hover()" @click="sfx.select()">
+            <div class="relative">
+              <img v-if="category.image" :src="category.image" :alt="t(`photography.categories.${category.i18nKey}.title`)" loading="lazy" class="w-full h-36 sm:h-40 object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div v-else class="w-full h-36 sm:h-40 bg-dark-200 dither"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">
+                <p class="text-gray-300 text-sm">{{ t(`photography.categories.${category.i18nKey}.description`) }}</p>
+              </div>
+            </div>
+            <div class="gb-tile-label">{{ t(`photography.categories.${category.i18nKey}.title`) }}</div>
+          </a>
         </div>
+      </GbWindow>
 
-        <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
-          <div class="w-16 h-16 rounded-full bg-neon-purple/10 border border-neon-purple/30 flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">{{ t('photography.weddingSection.features.fullDay.title') }}</h3>
-          <p class="text-gray-400">{{ t('photography.weddingSection.features.fullDay.description') }}</p>
+      <!-- QUEST — wedding feature -->
+      <GbWindow :title="t('photography.weddingSection.title')" accent="velvet" class="animate-slide-up">
+        <p class="gb-row-desc text-gray-400 mb-6">{{ t('photography.weddingSection.subtitle') }}</p>
+
+        <ul class="gb-menu-list mb-8">
+          <li>
+            <a href="/photography/weddings" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex items-start gap-3 flex-1 min-w-0">
+                <span class="w-10 h-10 flex items-center justify-center flex-shrink-0 text-neon-green">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </span>
+                <span class="flex-1 min-w-0">
+                  <span class="block">{{ t('photography.weddingSection.features.engagement.title') }}</span>
+                  <span class="block mt-1 gb-row-desc">{{ t('photography.weddingSection.features.engagement.description') }}</span>
+                </span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="/photography/weddings" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex items-start gap-3 flex-1 min-w-0">
+                <span class="w-10 h-10 flex items-center justify-center flex-shrink-0 text-neon-purple">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </span>
+                <span class="flex-1 min-w-0">
+                  <span class="block">{{ t('photography.weddingSection.features.fullDay.title') }}</span>
+                  <span class="block mt-1 gb-row-desc">{{ t('photography.weddingSection.features.fullDay.description') }}</span>
+                </span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="/photography/weddings" class="gb-menu-row !items-start" @mouseenter="sfx.hover()" @click="sfx.select()">
+              <span class="flex items-start gap-3 flex-1 min-w-0">
+                <span class="w-10 h-10 flex items-center justify-center flex-shrink-0 text-neon-purple">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </span>
+                <span class="flex-1 min-w-0">
+                  <span class="block">{{ t('photography.weddingSection.features.albums.title') }}</span>
+                  <span class="block mt-1 gb-row-desc">{{ t('photography.weddingSection.features.albums.description') }}</span>
+                </span>
+              </span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="text-center">
+          <a href="/photography/weddings" class="btn-neon inline-block">
+            {{ t('photography.weddingSection.seeGallery') }}
+          </a>
         </div>
+      </GbWindow>
 
-        <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
-          <div class="w-16 h-16 rounded-full bg-neon-purple/10 border border-neon-purple/30 flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">{{ t('photography.weddingSection.features.albums.title') }}</h3>
-          <p class="text-gray-400">{{ t('photography.weddingSection.features.albums.description') }}</p>
+      <!-- CTA -->
+      <GbWindow class="animate-slide-up">
+        <div class="text-center py-2">
+          <h2 class="text-2xl md:text-4xl font-black mb-4">
+            <span class="gradient-text">{{ t('photography.ctaBlock.title') }}</span>
+          </h2>
+          <p class="text-gray-300 text-lg mb-7 max-w-2xl mx-auto">{{ t('photography.ctaBlock.subtitle') }}</p>
+          <p class="gb-prompt animate-blink mb-5">NEW GAME?</p>
+          <a href="/contact" class="btn-neon font-pixel animate-glow-pulse inline-block">
+            {{ t('photography.ctaBlock.button') }}
+          </a>
         </div>
-      </div>
+      </GbWindow>
 
-      <div class="text-center">
-        <a href="/photography/weddings" class="btn-neon">
-          {{ t('photography.weddingSection.seeGallery') }}
-        </a>
-      </div>
     </div>
-  </section>
-
-  <!-- Call to Action Section -->
-  <section class="py-20 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10 text-white text-center relative overflow-hidden">
-    <!-- Grid overlay -->
-    <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
-    <!-- Glow orbs -->
-    <div class="absolute top-10 left-1/4 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-bold mb-6 gradient-text">{{ t('photography.ctaBlock.title') }}</h2>
-      <p class="text-xl mb-10 max-w-3xl mx-auto text-gray-300">
-        {{ t('photography.ctaBlock.subtitle') }}
-      </p>
-      <a href="/contact" class="btn-neon font-pixel animate-glow-pulse">
-        {{ t('photography.ctaBlock.button') }}
-      </a>
-    </div>
-  </section>
+  </div>
 </template>
 
 <style scoped>
-/* Hero section styles */
+/* Title-screen slider background */
 .hero {
   min-height: calc(100vh - 13rem);
   position: relative;
@@ -323,110 +294,13 @@ const introImages = computed(() =>
   20%, 35% { opacity: 1; }
 }
 
-.hero-title {
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-/* Scroll indicator */
-.scroll-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.mouse {
-  width: 30px;
-  height: 50px;
-  border: 2px solid rgba(155, 188, 15, 0.5);
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 5px;
-}
-
-.wheel {
-  width: 4px;
-  height: 8px;
-  background: rgb(var(--c-green));
-  border-radius: 2px;
-  margin-top: 10px;
-  animation: scroll 1.5s infinite;
-}
-
-@keyframes scroll {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(15px); opacity: 0; }
-}
-
-.arrows {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.arrow-down {
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid rgba(155, 188, 15, 0.5);
-  border-bottom: 2px solid rgba(155, 188, 15, 0.5);
-  transform: rotate(45deg);
-  margin: 0 0 3px 0;
-  animation: arrow 1.5s infinite;
-}
-
-.arrow-down:nth-child(2) {
-  animation-delay: 0.3s;
-}
-
-@keyframes arrow {
-  0% { opacity: 0; }
-  50% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* Testimonial Slider */
-.testimonial-slide {
-  transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
-/* Category cards animation */
-.category-pill {
-  cursor: pointer;
-}
-
-/* Wedding feature animations */
-.wedding-feature {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.wedding-feature:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 0 30px rgba(155, 188, 15, 0.18);
-  border-color: rgba(155, 188, 15, 0.3);
-}
-
-.wedding-feature .w-16 {
-  transition: transform 0.3s ease;
-}
-
-.wedding-feature:hover .w-16 {
-  transform: scale(1.1);
-}
-
-/* Pricing card hover */
-.pricing-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.pricing-card:hover {
-  box-shadow: 0 0 30px rgba(155, 188, 15, 0.18);
-  border-color: rgba(155, 188, 15, 0.3);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-  }
+/* Flavour text (readable VT323, not pixel font) */
+.gb-row-desc {
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgb(var(--c-ink-2));
 }
 </style>
