@@ -77,7 +77,7 @@ const menuItems = computed<MenuItem[]>(() => [
   { label: t('photoCategories.wildlife'), kind: 'route', path: '/photography/wildlife', indent: true },
   { label: t('photoCategories.weddings'), kind: 'route', path: '/photography/weddings', indent: true },
   { label: `LANG: ${locale.value.toUpperCase()}`, kind: 'lang' },
-  { label: `PALETTE: ${gb.palette.value === 'night' ? 'NIGHT' : 'CLASSIC'}`, kind: 'palette' },
+  { label: `PALETTE: ${gb.palette.value.toUpperCase()}`, kind: 'palette' },
   { label: `SOUND: ${gb.muted.value ? 'OFF' : 'ON'}`, kind: 'sound' },
   { label: `MUSIC: ${gb.musicOn.value ? 'ON' : 'OFF'}`, kind: 'music' },
 ])
@@ -122,6 +122,7 @@ const goRelative = (delta: number) => {
 
 const onDir = (dir: 'up' | 'down' | 'left' | 'right') => {
   flash(dir)
+  if (feedKonami(dir)) return
   if (gb.menuOpen.value) {
     const len = menuItems.value.length
     if (dir === 'up') { menuIndex.value = (menuIndex.value - 1 + len) % len; gb.sfx.move() }
@@ -135,11 +136,13 @@ const onDir = (dir: 'up' | 'down' | 'left' | 'right') => {
 }
 const onA = () => {
   flash('a')
+  if (feedKonami('a')) return
   if (gb.menuOpen.value) { runMenuItem(menuItems.value[menuIndex.value]); return }
   gb.sfx.select(); scrollTop()
 }
 const onB = () => {
   flash('b')
+  if (feedKonami('b')) return
   if (gb.menuOpen.value) { gb.closeMenu(); return }
   gb.sfx.back()
   if (window.history.length > 1) router.back()
@@ -192,13 +195,70 @@ const proceedFromBoot = () => {
 /* ----------------------------------------------------------------------
    Keyboard control
    ---------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------
+   Easter eggs
+   ---------------------------------------------------------------------- */
+// Konami code -> unlock secret palettes + fanfare + pixel-coin rain
+const KONAMI = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a']
+let kPos = 0
+const cheatToast = ref(false)
+const coins = ref<{ id: number; left: number; delay: number; dur: number; glyph: string }[]>([])
+let coinId = 0
+const spawnCoins = () => {
+  const glyphs = ['◆', '★', '♥', '●', '▲']
+  coins.value = Array.from({ length: 28 }, () => ({
+    id: coinId++,
+    left: Math.random() * 96 + 2,
+    delay: Math.random() * 0.9,
+    dur: 1.6 + Math.random() * 1.6,
+    glyph: glyphs[Math.floor(Math.random() * glyphs.length)],
+  }))
+  setTimeout(() => { coins.value = [] }, 3600)
+}
+const triggerCheat = () => {
+  gb.unlockSecret()
+  gb.unlockAudio(); gb.sfx.cheat()
+  cheatToast.value = true
+  spawnCoins()
+  setTimeout(() => { cheatToast.value = false }, 2800)
+}
+// Fed by BOTH the keyboard and the on-screen deck (onDir/onA/onB).
+// Returns true when the input should be swallowed (konami is consuming it).
+const feedKonami = (token: string): boolean => {
+  kPos = (token === KONAMI[kPos]) ? kPos + 1 : (token === KONAMI[0] ? 1 : 0)
+  if (kPos === KONAMI.length) { kPos = 0; triggerCheat(); return true }
+  return kPos >= 5   // swallow the ←→←→ B A tail so it doesn't navigate (keyboard or clicks)
+}
+
+// Power LED -> CRT power-cycle blink
+const powerBlink = ref(false)
+const triggerPower = () => {
+  gb.unlockAudio(); gb.sfx.toggle()
+  powerBlink.value = false
+  requestAnimationFrame(() => {
+    powerBlink.value = true
+    setTimeout(() => { powerBlink.value = false }, 2050)
+  })
+}
+
+// Idle screensaver
+const idle = ref(false)
+let idleTimer: any = null
+const resetIdle = () => {
+  if (idle.value) idle.value = false
+  clearTimeout(idleTimer)
+  idleTimer = setTimeout(() => { idle.value = true }, 45000)
+}
+
 const onKey = (e: KeyboardEvent) => {
   const el = e.target as HTMLElement | null
   const tag = (el?.tagName || '').toLowerCase()
   if (['input', 'textarea', 'select'].includes(tag) || el?.isContentEditable) return
+  resetIdle()
   if (showBoot.value) { proceedFromBoot(); return }
   startSession()
   switch (e.key) {
+    // Arrows + Enter/Backspace feed the Konami detector via onDir/onA/onB.
     case 'ArrowUp': e.preventDefault(); onDir('up'); break
     case 'ArrowDown': e.preventDefault(); onDir('down'); break
     case 'ArrowLeft': onDir('left'); break
@@ -206,6 +266,9 @@ const onKey = (e: KeyboardEvent) => {
     case 'Enter': onA(); break
     case 'Escape': if (gb.menuOpen.value) gb.closeMenu(); break
     case 'Backspace': e.preventDefault(); onB(); break
+    // letter b / a also feed the Konami tail (don't navigate)
+    case 'b': case 'B': if (feedKonami('b')) e.preventDefault(); break
+    case 'a': case 'A': if (feedKonami('a')) e.preventDefault(); break
     case 'm': case 'M': gb.toggleMute(); break
     case 'p': case 'P': gb.cyclePalette(); break
     case 's': case 'S': onStart(); break
@@ -229,6 +292,19 @@ onMounted(async () => {
   window.addEventListener('pointerdown', startSession)
   window.addEventListener('touchstart', startSession)
 
+  // idle screensaver
+  ;['mousemove', 'pointerdown', 'touchstart', 'scroll', 'wheel'].forEach((ev) =>
+    window.addEventListener(ev, resetIdle, { passive: true }))
+  resetIdle()
+
+  // console easter egg
+  try {
+    console.log('%c ▶ LASSE HARM — GAME BOY EDITION ',
+      'background:#0d1609;color:#9bbc0f;font:700 13px monospace;padding:6px 10px;border-radius:4px')
+    console.log('%cPsst… try the Konami code on the page:  ↑ ↑ ↓ ↓ ← → ← → B A',
+      'color:#a282e0;font:12px monospace')
+  } catch {}
+
   // schema (preserved)
   try {
     const [p, b] = await Promise.all([fetch('/schemas/person.json'), fetch('/schemas/business.json')])
@@ -240,6 +316,9 @@ onUnmounted(() => {
   window.removeEventListener('keydown', onKey)
   window.removeEventListener('pointerdown', startSession)
   window.removeEventListener('touchstart', startSession)
+  ;['mousemove', 'pointerdown', 'touchstart', 'scroll', 'wheel'].forEach((ev) =>
+    window.removeEventListener(ev, resetIdle))
+  clearTimeout(idleTimer)
   gb.stopMusic()
   clearTimeout(bootTimer)
   clearTimeout(pressTimer)
@@ -271,7 +350,7 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
       <div class="gb-header-inner">
         <!-- brand + power -->
         <div class="flex items-center gap-2 md:gap-3 min-w-0">
-          <span class="gb-power-led animate-power-pulse" title="Power" aria-hidden="true"></span>
+          <button class="gb-power-led animate-power-pulse" title="Power" aria-label="Power" @click="triggerPower"></button>
           <NuxtLink to="/" class="flex items-center gap-2 group min-w-0" @click="gb.sfx.select()">
             <span class="gb-avatar">
               <img src="https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/apekawb8my5xl5w/img_9077_topaz_denoiseraw_sharpen_no3Chl3kmx.jpg?thumb=120x120"
@@ -426,6 +505,36 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
         <footer-component />
       </div>
     </footer>
+
+    <!-- ================= EASTER EGGS ================= -->
+    <!-- Konami: coin/heart rain + cheat toast -->
+    <div v-if="coins.length" class="gb-coins" aria-hidden="true">
+      <span v-for="c in coins" :key="c.id" class="gb-coin"
+            :style="{ left: c.left + '%', animationDelay: c.delay + 's', animationDuration: c.dur + 's' }">{{ c.glyph }}</span>
+    </div>
+    <transition name="menu-fade">
+      <div v-if="cheatToast" class="gb-cheat-toast">
+        <div class="gb-cheat-box shell-surface">
+          <p class="font-pixel gb-cheat-line">★ CHEAT UNLOCKED ★</p>
+          <p class="font-pixel gb-cheat-sub">SECRET PALETTES — PRESS SELECT</p>
+        </div>
+      </div>
+    </transition>
+
+    <!-- Idle screensaver -->
+    <transition name="menu-fade">
+      <div v-if="idle" class="gb-saver" aria-hidden="true">
+        <div class="gb-saver-sprite">
+          <div class="gb-tile w-20 h-20">
+            <img src="https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/apekawb8my5xl5w/img_9077_topaz_denoiseraw_sharpen_no3Chl3kmx.jpg?thumb=120x120" alt="" class="w-full h-full object-cover pixelated" />
+          </div>
+          <p class="font-pixel gb-saver-zzz">z z Z</p>
+        </div>
+      </div>
+    </transition>
+
+    <!-- Power-LED CRT power-cycle blink -->
+    <div v-if="powerBlink" class="gb-powerfx" aria-hidden="true"></div>
   </div>
 </template>
 
@@ -857,7 +966,86 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
 .drop-enter-active, .drop-leave-active { transition: opacity 0.14s ease, transform 0.14s ease; }
 .drop-enter-from, .drop-leave-to { opacity: 0; transform: translateY(-6px); }
 
+/* ---------- EASTER EGGS ---------- */
+/* Konami coin/heart rain */
+.gb-coins { position: fixed; inset: 0; z-index: 59; pointer-events: none; overflow: hidden; }
+.gb-coin {
+  position: absolute;
+  top: -6%;
+  font-size: 1.4rem;
+  color: rgb(var(--c-green));
+  text-shadow: 0 0 8px rgb(var(--c-green) / 0.6);
+  animation-name: coin-fall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@keyframes coin-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(112vh) rotate(540deg); opacity: 0.9; }
+}
+
+/* Cheat toast */
+.gb-cheat-toast { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; pointer-events: none; }
+.gb-cheat-box {
+  border: 3px solid #8e8b7a;
+  border-radius: 10px;
+  padding: 16px 22px;
+  text-align: center;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.6);
+  animation: cheat-pop 0.3s steps(3) both;
+}
+.gb-cheat-line { position: relative; z-index: 2; font-size: 0.8rem; color: #5b3490; letter-spacing: 0.05em; }
+.gb-cheat-sub { position: relative; z-index: 2; font-size: 0.45rem; color: #45433a; margin-top: 8px; }
+@keyframes cheat-pop { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* Idle screensaver — sprite bounces around (DVD-logo style) */
+.gb-saver { position: fixed; inset: 0; z-index: 58; background: rgb(var(--c-bg) / 0.92); overflow: hidden; }
+.gb-saver-sprite {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: saver-x 8.5s linear infinite alternate, saver-y 6.1s linear infinite alternate;
+}
+.gb-saver-zzz { font-size: 0.55rem; color: rgb(var(--c-green)); }
+@keyframes saver-x { from { left: 3%; } to { left: calc(97% - 80px); } }
+@keyframes saver-y { from { top: 12%; } to { top: calc(88% - 110px); } }
+
+/* Power-LED CRT power-cycle (slow shutdown -> dark hold -> power back on) */
+.gb-powerfx {
+  position: fixed; inset: 0; z-index: 64; pointer-events: none;
+  background: #000; opacity: 0;
+  animation: pf-screen 2s ease both;
+}
+.gb-powerfx::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 100%;
+  transform: translateY(-50%);
+  transform-origin: center;
+  background: linear-gradient(180deg, #c6de8b, #eafff0 50%, #c6de8b);
+  box-shadow: 0 0 30px rgba(200, 255, 200, 0.7);
+  animation: pf-beam 2s ease both;
+}
+@keyframes pf-screen {           /* the black "off" screen */
+  0%   { opacity: 0; }
+  9%   { opacity: 1; }
+  86%  { opacity: 1; }           /* hold dark */
+  100% { opacity: 0; }           /* power back on -> reveal page */
+}
+@keyframes pf-beam {             /* phosphor collapses to a line, then a dot, then re-expands */
+  0%   { opacity: 0;   transform: translateY(-50%) scale(1, 1); }
+  7%   { opacity: 0.95; transform: translateY(-50%) scale(1, 0.6); }
+  20%  { opacity: 1;   transform: translateY(-50%) scale(1, 0.012); }
+  32%  { opacity: 1;   transform: translateY(-50%) scale(0.03, 0.012); }
+  46%  { opacity: 0;   transform: translateY(-50%) scale(0.03, 0.012); }
+  84%  { opacity: 0;   transform: translateY(-50%) scale(1, 0.012); }
+  90%  { opacity: 1;   transform: translateY(-50%) scale(1, 0.04); }
+  100% { opacity: 0;   transform: translateY(-50%) scale(1, 1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-boot-drop, .animate-blink, .animate-power-pulse, .animate-scanline, .animate-flicker { animation: none !important; }
+  .gb-coin, .gb-saver-sprite { animation: none !important; }
 }
 </style>

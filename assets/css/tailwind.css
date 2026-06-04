@@ -54,6 +54,62 @@
     --dot-color: rgba(15, 56, 15, 0.10);
 }
 
+/* ===== SECRET palettes (unlocked via the Konami code) ===== */
+[data-palette="grape"] {
+    --c-bg: 27 15 46;
+    --c-bg-100: 36 22 64;
+    --c-bg-200: 46 28 80;
+    --c-bg-300: 58 37 102;
+    --c-bg-400: 74 48 128;
+    --c-green: 196 163 255;
+    --c-green-2: 155 123 255;
+    --c-crimson: 255 95 162;
+    --c-velvet: 124 77 196;
+    --c-ink: 227 212 255;
+    --c-ink-2: 189 166 232;
+    --c-ink-3: 143 120 192;
+    --c-ink-4: 107 86 148;
+    --lcd-tint: rgba(196, 163, 255, 0.05);
+    --scan-color: rgba(0, 0, 0, 0.35);
+    --dot-color: rgba(196, 163, 255, 0.05);
+}
+[data-palette="berry"] {
+    --c-bg: 42 14 26;
+    --c-bg-100: 58 20 36;
+    --c-bg-200: 74 26 46;
+    --c-bg-300: 94 34 56;
+    --c-bg-400: 120 44 72;
+    --c-green: 255 126 182;
+    --c-green-2: 255 179 209;
+    --c-crimson: 255 77 109;
+    --c-velvet: 196 77 158;
+    --c-ink: 255 214 230;
+    --c-ink-2: 240 168 196;
+    --c-ink-3: 200 122 153;
+    --c-ink-4: 156 90 115;
+    --lcd-tint: rgba(255, 126, 182, 0.05);
+    --scan-color: rgba(0, 0, 0, 0.35);
+    --dot-color: rgba(255, 126, 182, 0.05);
+}
+[data-palette="ocean"] {
+    --c-bg: 6 24 46;
+    --c-bg-100: 10 36 64;
+    --c-bg-200: 14 46 82;
+    --c-bg-300: 20 60 104;
+    --c-bg-400: 29 80 136;
+    --c-green: 95 210 255;
+    --c-green-2: 155 232 255;
+    --c-crimson: 255 122 89;
+    --c-velvet: 124 139 255;
+    --c-ink: 207 238 255;
+    --c-ink-2: 159 208 238;
+    --c-ink-3: 111 160 200;
+    --c-ink-4: 79 122 160;
+    --lcd-tint: rgba(95, 210, 255, 0.05);
+    --scan-color: rgba(0, 0, 0, 0.35);
+    --dot-color: rgba(95, 210, 255, 0.05);
+}
+
 @layer base {
     html {
         scroll-behavior: smooth;

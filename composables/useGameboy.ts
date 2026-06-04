@@ -16,7 +16,11 @@
  */
 import { ref, watch } from 'vue'
 
-export type GbPalette = 'night' | 'classic'
+export type GbPalette = 'night' | 'classic' | 'grape' | 'berry' | 'ocean'
+
+/** Always-available palettes vs. the secret ones unlocked by the Konami code. */
+export const BASE_PALETTES: GbPalette[] = ['night', 'classic']
+export const SECRET_PALETTES: GbPalette[] = ['grape', 'berry', 'ocean']
 
 /** Primary routes the D-pad left/right cycles through. */
 export const GB_ROUTES = [
@@ -34,6 +38,7 @@ const palette = ref<GbPalette>('night')
 const muted = ref(false)        // master sound switch (audio still gated by browser gesture)
 const musicOn = ref(true)       // background chiptune on/off
 const deckOpen = ref(true)      // bottom control deck expanded/collapsed
+const secretUnlocked = ref(false) // Konami code found -> secret palettes available
 const menuOpen = ref(false)
 const booted = ref(false)       // flips true once the boot sequence finishes
 const hydrated = ref(false)     // becomes true after we read persisted prefs on the client
@@ -101,6 +106,12 @@ const sfx = {
     tone(659, 0.1, 'square', 0.09, 0.24)
     tone(784, 0.22, 'square', 0.11, 0.36)
     tone(1046, 0.34, 'triangle', 0.09, 0.58)
+  },
+  // Triumphant "secret found" fanfare (Konami code).
+  cheat: () => {
+    const seq = [523, 659, 784, 1046, 784, 1046, 1318]
+    seq.forEach((f, i) => tone(f, 0.13, 'square', 0.1, i * 0.09))
+    tone(1568, 0.5, 'triangle', 0.09, seq.length * 0.09)
   },
 }
 
@@ -238,14 +249,18 @@ function bindPersistence() {
   watch(deckOpen, (m) => {
     try { localStorage.setItem('gb-deck', m ? '1' : '0') } catch {}
   })
+  watch(secretUnlocked, (s) => {
+    try { localStorage.setItem('gb-secret', s ? '1' : '0') } catch {}
+  })
 }
 
 /** Read persisted prefs + reflect palette onto <html>. Call once on mount. */
 function hydrate() {
   if (!isClient() || hydrated.value) return
   try {
+    if (localStorage.getItem('gb-secret') === '1') secretUnlocked.value = true
     const p = localStorage.getItem('gb-palette') as GbPalette | null
-    if (p === 'night' || p === 'classic') palette.value = p
+    if (p && (BASE_PALETTES.includes(p) || (secretUnlocked.value && SECRET_PALETTES.includes(p)))) palette.value = p
     const m = localStorage.getItem('gb-muted')
     if (m !== null) muted.value = m === '1'
     const mu = localStorage.getItem('gb-music')
@@ -260,8 +275,11 @@ function hydrate() {
 
 export function useGameboy() {
   const setPalette = (p: GbPalette) => { palette.value = p; applyPaletteToDom() }
+  const unlockSecret = () => { secretUnlocked.value = true }
   const cyclePalette = () => {
-    palette.value = palette.value === 'night' ? 'classic' : 'night'
+    const list = secretUnlocked.value ? [...BASE_PALETTES, ...SECRET_PALETTES] : BASE_PALETTES
+    const i = list.indexOf(palette.value)
+    palette.value = list[(i + 1) % list.length] ?? 'night'
     applyPaletteToDom()
     sfx.toggle()
   }
@@ -303,6 +321,7 @@ export function useGameboy() {
     menuOpen,
     booted,
     hydrated,
+    secretUnlocked,
     routes: GB_ROUTES,
     // sound
     sfx,
@@ -313,6 +332,7 @@ export function useGameboy() {
     hydrate,
     setPalette,
     cyclePalette,
+    unlockSecret,
     toggleMute,
     toggleMusic,
     toggleDeck,
