@@ -98,30 +98,26 @@ const personalProjects = ref([
 </script>
 
 <template>
-  <div>
-    <!-- TITLE SCREEN -->
-    <section class="relative bg-dark overflow-hidden py-16 md:py-24">
-      <div class="bg-grid absolute inset-0 opacity-10"></div>
-      <div class="dither absolute inset-0 opacity-30"></div>
-      <div class="container mx-auto px-4 relative z-10 animate-slide-up">
-        <div class="gb-titlecard">
-          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 hero-title">
-            <span class="text-white block">Web</span>
-            <span class="gradient-text block mt-2">Development</span>
-          </h1>
-          <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-            I build things for the web. Clean code, great UX, modern stack.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a href="#career" class="btn-neon font-pixel animate-glow-pulse">My Career</a>
-            <a href="#projects" class="btn-neon-outline font-pixel">Side Projects</a>
-          </div>
+  <div class="container mx-auto px-4 max-w-4xl py-12 space-y-10">
+
+    <!-- HERO (same window style as the Drones page) -->
+    <GbWindow title="WEB PROJECTS" class="animate-slide-up">
+      <div class="gb-tile mb-6">
+        <div class="code-animation w-full h-48 sm:h-64"></div>
+      </div>
+      <div class="text-center">
+        <h1 class="text-4xl md:text-6xl font-black mb-3 hero-title">
+          <span class="text-white">Web </span><span class="gradient-text">Development</span>
+        </h1>
+        <p class="text-gray-300 text-lg leading-relaxed max-w-xl mx-auto mb-5">
+          I build things for the web. Clean code, great UX, modern stack.
+        </p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="#career" class="btn-neon animate-glow-pulse">My Career</a>
+          <a href="#projects" class="btn-neon-outline">Side Projects</a>
         </div>
       </div>
-    </section>
-
-    <!-- MENU SCREENS -->
-    <div class="container mx-auto px-4 max-w-4xl py-12 space-y-10">
+    </GbWindow>
 
       <!-- TECH STACK — skill bars -->
       <GbWindow title="Tech Stack" class="animate-slide-up">
@@ -223,12 +219,27 @@ const personalProjects = ref([
       </GbWindow>
 
     </div>
-  </div>
 </template>
 
 <style scoped>
 .hero-title {
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Animated code-glyph banner — fixed dark "terminal" so the green glyphs stay
+   visible in BOTH palettes (in light mode var(--c-bg) is itself green). */
+.code-animation {
+  background-color: #0d1609;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='4' y='24' font-family='monospace' font-size='18' fill='%239bbc0f' fill-opacity='0.55'%3E%26lt;/%26gt;%3C/text%3E%3Ctext x='42' y='48' font-family='monospace' font-size='18' fill='%239bbc0f' fill-opacity='0.4'%3E%7B%7D%3C/text%3E%3Ctext x='18' y='72' font-family='monospace' font-size='18' fill='%239bbc0f' fill-opacity='0.5'%3E();%3C/text%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  animation: code-slide 5s linear infinite;
+}
+@keyframes code-slide {
+  from { background-position: 0 0; }
+  to   { background-position: 80px 80px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .code-animation { animation: none; }
 }
 
 /* Flavour text under each menu row / tile (readable VT323, not pixel font) */

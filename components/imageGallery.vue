@@ -130,27 +130,18 @@ onBeforeUnmount(() => {
 <template>
   <!-- Inventory grid of slots — the consuming page provides the window frame -->
   <div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="gb-album">
       <div
         v-for="(image, index) in images"
         :key="image.id"
-        class="gb-tile cursor-pointer group"
+        class="gb-tile gb-album-item cursor-pointer group"
         @click="handleImageClick(image, index)"
       >
         <div class="relative">
-          <div v-if="image.loading" class="loading-container">
-            <img
-              v-lazy="image.thumbnail"
-              :alt="image.alt"
-              class="loading-image w-full h-36 sm:h-40 object-cover"
-              @load="handleImageLoad(image)"
-            >
-          </div>
           <img
-            v-else
             v-lazy="image.thumbnail"
             :alt="image.alt"
-            class="w-full h-36 sm:h-40 object-cover transition-transform duration-500 group-hover:scale-110"
+            class="w-full transition-transform duration-500 group-hover:scale-105"
             @load="handleImageLoad(image)"
           >
           <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">

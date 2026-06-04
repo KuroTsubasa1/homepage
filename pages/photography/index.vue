@@ -95,7 +95,16 @@ const introImages = computed(() =>
   })),
 );
 
-
+// Slider index — advanced on a timer; transitions pixelate between images.
+const heroIndex = ref(0);
+let heroTimer: any = null;
+onMounted(() => {
+  heroTimer = setInterval(() => {
+    const n = introImages.value.length;
+    if (n) heroIndex.value = (heroIndex.value + 1) % n;
+  }, 4200);
+});
+onUnmounted(() => clearInterval(heroTimer));
 </script>
 
 <template>
@@ -103,9 +112,11 @@ const introImages = computed(() =>
     <!-- TITLE SCREEN -->
     <section class="hero relative overflow-hidden">
       <div class="hero-slider absolute inset-0">
-        <div v-for="(image, index) in introImages" :key="index" class="hero-slide absolute inset-0 opacity-0"
-             :style="{ backgroundImage: `url(${image.src})`, animationDelay: `${index * 5}s` }">
-          <div class="absolute inset-0 bg-black/60"></div>
+        <div v-for="(image, index) in introImages" :key="index"
+             class="hero-slide absolute inset-0" :class="{ 'is-active': index === heroIndex }">
+          <div class="hero-px" :style="{ backgroundImage: `url(${image.src.replace('960x0', '100x100')})` }"></div>
+          <div class="hero-hd" :style="{ backgroundImage: `url(${image.src})` }"></div>
+          <div class="absolute inset-0 bg-black/55"></div>
         </div>
       </div>
       <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
@@ -278,20 +289,40 @@ const introImages = computed(() =>
   background-color: rgb(var(--c-bg));
 }
 
+/* Slides crossfade with a chunky stepped dissolve; each one first shows a
+   low-res pixelated thumbnail that then resolves to the sharp image. */
 .hero-slide {
+  opacity: 0;
+  z-index: 1;
+  transition: opacity 0.5s steps(5);
+}
+.hero-slide.is-active {
+  opacity: 1;
+  z-index: 2;
+}
+.hero-px,
+.hero-hd {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
-  animation: slideFade 20s infinite;
+}
+.hero-px {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: pixelated;
+}
+.hero-hd {
+  opacity: 0;
+  transition: opacity 0.8s steps(6);
+  transition-delay: 0.12s;         /* on leave: drop back to pixels quickly */
+}
+.hero-slide.is-active .hero-hd {
+  opacity: 1;
+  transition-delay: 0.55s;         /* on enter: hold the blocky look, then resolve */
 }
 
-.hero-slide:nth-child(1) { animation-delay: 0s; }
-.hero-slide:nth-child(2) { animation-delay: 5s; }
-.hero-slide:nth-child(3) { animation-delay: 10s; }
-.hero-slide:nth-child(4) { animation-delay: 15s; }
-
-@keyframes slideFade {
-  0%, 15%, 100% { opacity: 0; }
-  20%, 35% { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide, .hero-hd { transition: opacity 0.3s linear; }
 }
 
 /* Flavour text (readable VT323, not pixel font) */

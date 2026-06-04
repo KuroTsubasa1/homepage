@@ -27,18 +27,18 @@
 
     <!-- ALBUM — inventory grid of slots -->
     <GbWindow title="Landscape &amp; Nature Gallery" class="fade-in">
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div class="gb-album">
         <div
           v-for="image in images"
           :key="image.id"
-          class="gb-tile cursor-pointer group"
+          class="gb-tile gb-album-item cursor-pointer group"
           @click="openDetail(image.id)"
         >
           <div class="relative">
             <img
               :src="image.thumbnail"
               :alt="image.alt"
-              class="w-full h-36 sm:h-40 object-cover transition-transform duration-500 group-hover:scale-110"
+              class="w-full transition-transform duration-500 group-hover:scale-105"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">
               <p class="text-white text-xs">{{ image.alt }}</p>

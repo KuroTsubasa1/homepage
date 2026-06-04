@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
   <!-- Game Boy TITLE SCREEN banner -->
-  <div class="relative min-h-[60vh] w-full overflow-hidden flex items-center justify-center px-4 py-12">
+  <div class="relative min-h-[calc(100vh-13rem)] w-full overflow-hidden flex items-center justify-center px-4 py-12">
     <!-- Background image (dimmed + dithered behind the plaque) -->
     <div class="hero-bg absolute inset-0" :style="{ backgroundImage: `url('${props.image}')` }"></div>
     <div class="absolute inset-0 bg-dark/70 z-10"></div>
