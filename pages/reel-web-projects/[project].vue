@@ -1,97 +1,124 @@
 <template>
-  <navigation></navigation>
+  <div>
+    <!-- Hero -->
+    <section class="relative pt-40 pb-20 overflow-hidden bg-forest">
+      <div class="absolute inset-0 bg-topo opacity-30 pointer-events-none"></div>
+      <div class="absolute inset-0 bg-grid opacity-40 pointer-events-none"></div>
+      <div class="orb top-10 left-1/4 w-96 h-96 bg-amber/10 animate-drift"></div>
+      <div class="orb bottom-0 right-1/4 w-80 h-80 bg-moss/10 animate-drift-slow"></div>
 
-  <!-- Hero -->
-  <section class="pt-28 py-16 bg-dark-100 relative overflow-hidden">
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="absolute top-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px]"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <NuxtLink to="/reel-web-projects" class="btn-neon-outline text-sm !py-2 !px-4 inline-flex items-center gap-2 mb-8">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-        {{ $t('common.back') }}
-      </NuxtLink>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div class="flex flex-col justify-center">
-        <div class="flex items-center gap-3 mb-4">
-          <h2 class="text-3xl md:text-4xl font-bold text-white">{{ projectData.title }}</h2>
-          <span v-if="projectData.company" class="text-xs px-2.5 py-1 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20">{{ projectData.company }}</span>
-        </div>
-        <p class="text-gray-300 leading-relaxed mb-6">{{ projectData.longDescription }}</p>
-        <ul class="space-y-2 text-gray-300">
-          <li v-if="projectData.role"><span class="text-neon-green font-medium">Role:</span> {{ projectData.role }}</li>
-          <li v-if="projectData.category"><span class="text-neon-green font-medium">Type:</span> {{ projectData.category }}</li>
-          <li v-if="projectData.fromDate"><span class="text-neon-green font-medium">Period:</span> {{ projectData.fromDate }}{{ projectData.toDate ? ' — ' + projectData.toDate : '' }}</li>
-        </ul>
-      </div>
-      <div>
-        <video v-if="projectData.videos && projectData.videos.length > 0" class="rounded-2xl border border-white/10 w-full" controls>
-          <source :src="projectData.videos[0]" type="video/mp4">
-        </video>
-        <img v-else-if="projectData.images && projectData.images.length > 0" :src="projectData.images[0]" class="rounded-2xl border border-white/10 w-full" :alt="projectData.title" />
-        <div v-else class="rounded-2xl border border-white/10 w-full h-64 bg-gradient-to-br from-dark-200 to-dark-400 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-dark-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-        </div>
-      </div>
-      </div>
-    </div>
-  </section>
+      <div class="container mx-auto px-6 relative z-10">
+        <NuxtLink to="/reel-web-projects" class="btn-wild-outline text-sm !py-2 !px-5 mb-10" v-reveal>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+          {{ $t('common.back') }}
+        </NuxtLink>
 
-  <!-- Technologies -->
-  <section v-if="technologies.length" class="py-16 bg-dark">
-    <div class="container mx-auto px-4">
-      <h2 class="section-heading">Technologies</h2>
-      <div class="section-divider"></div>
-      <div class="flex flex-wrap justify-center gap-3">
-        <span v-for="(tech, index) in technologies" :key="index" class="glass-card neon-border px-5 py-2.5 text-gray-300 font-medium text-sm">
-          {{ typeof tech === 'string' ? tech : tech.name }}
-        </span>
-      </div>
-    </div>
-  </section>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div class="flex flex-col justify-center" v-reveal:left>
+            <p class="eyebrow mb-4 flex items-center gap-3">
+              <span class="inline-block w-10 h-px bg-amber"></span>
+              Case Study
+            </p>
+            <div class="flex flex-wrap items-center gap-3 mb-6">
+              <h1 class="display-xl text-bone text-4xl md:text-6xl">
+                <span class="gradient-text">{{ projectData.title }}</span>
+              </h1>
+              <span v-if="projectData.company" class="text-[11px] font-condensed uppercase tracking-widest2 px-3 py-1 rounded-full bg-moss/15 text-moss-light border border-moss/25">{{ projectData.company }}</span>
+            </div>
+            <p class="text-lg text-bone-muted leading-relaxed mb-8">{{ projectData.longDescription }}</p>
+            <ul class="space-y-3 font-condensed uppercase tracking-wide text-sm">
+              <li v-if="projectData.role" class="flex items-center gap-3 text-bone-muted">
+                <span class="text-amber w-20 inline-block">Role</span>
+                <span class="text-bone">{{ projectData.role }}</span>
+              </li>
+              <li v-if="projectData.category" class="flex items-center gap-3 text-bone-muted">
+                <span class="text-amber w-20 inline-block">Type</span>
+                <span class="text-bone">{{ projectData.category }}</span>
+              </li>
+              <li v-if="projectData.fromDate" class="flex items-center gap-3 text-bone-muted">
+                <span class="text-amber w-20 inline-block">Period</span>
+                <span class="text-bone">{{ projectData.fromDate }}{{ projectData.toDate ? ' — ' + projectData.toDate : '' }}</span>
+              </li>
+            </ul>
+          </div>
 
-  <!-- Image Gallery -->
-  <section v-if="projectData.images && projectData.images.length > 1" class="py-16 bg-dark-100">
-    <div class="container mx-auto px-4">
-      <h2 class="section-heading">Gallery</h2>
-      <div class="section-divider"></div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="(image, index) in projectData.images.slice(1)" :key="index" class="rounded-2xl overflow-hidden border border-white/10 hover:border-neon-green/30 transition-all duration-300">
-          <img :src="image" :alt="'Gallery Image ' + (index + 1)" class="w-full transition-transform hover:scale-105 duration-500" loading="lazy" />
+          <div v-reveal:right v-tilt="5" class="group">
+            <video v-if="projectData.videos && projectData.videos.length > 0" class="rounded-2xl wild-border w-full overflow-hidden" controls>
+              <source :src="projectData.videos[0]" type="video/mp4">
+            </video>
+            <div v-else-if="projectData.images && projectData.images.length > 0" class="rounded-2xl wild-border w-full overflow-hidden">
+              <img :src="projectData.images[0]" class="w-full object-cover img-zoom" :alt="projectData.title" />
+            </div>
+            <div v-else class="rounded-2xl wild-border w-full h-72 bg-gradient-to-br from-forest-200 to-forest-300 flex items-center justify-center overflow-hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-amber/30 group-hover:text-amber/50 transition-colors duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Challenges -->
-  <section v-if="challenges.length" class="py-16 bg-dark">
-    <div class="container mx-auto px-4">
-      <h2 class="section-heading">Highlights</h2>
-      <div class="section-divider"></div>
-      <div class="max-w-3xl mx-auto space-y-6">
-        <div v-for="(challenge, index) in challenges" :key="index" class="glass-card neon-border p-6">
-          <h3 class="text-lg font-semibold text-neon-green mb-2">{{ typeof challenge === 'string' ? challenge : challenge.title }}</h3>
-          <p v-if="typeof challenge !== 'string'" class="text-gray-300 leading-relaxed">{{ challenge.solution }}</p>
+    <!-- Technologies -->
+    <section v-if="technologies.length" class="relative py-24 overflow-hidden bg-forest-100">
+      <div class="absolute inset-0 bg-topo opacity-25 pointer-events-none"></div>
+      <div class="orb top-0 right-1/4 w-80 h-80 bg-amber/10"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading eyebrow="The Toolkit" title="Technologies" />
+        <div class="flex flex-wrap justify-center gap-3" v-reveal.stagger>
+          <span v-for="(tech, index) in technologies" :key="index" v-tilt="8" class="panel wild-border px-5 py-2.5 font-condensed uppercase tracking-wide text-bone text-sm hover:text-amber transition-colors duration-300">
+            {{ typeof tech === 'string' ? tech : tech.name }}
+          </span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA -->
-  <section v-if="projectData.link" class="py-16 relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10"></div>
-    <div class="absolute inset-0 bg-grid opacity-10"></div>
-    <div class="container mx-auto px-4 text-center relative z-10">
-      <h2 class="text-3xl font-bold mb-6"><span class="gradient-text">Want to explore this project?</span></h2>
-      <a :href="projectData.link" target="_blank" class="btn-neon inline-block">Visit Project</a>
-    </div>
-  </section>
+    <!-- Image Gallery -->
+    <section v-if="projectData.images && projectData.images.length > 1" class="relative py-24 overflow-hidden bg-forest">
+      <div class="absolute inset-0 bg-grid opacity-40 pointer-events-none"></div>
+      <div class="orb bottom-0 left-1/4 w-96 h-96 bg-moss/10"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading eyebrow="The Field" title="Gallery" />
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" v-reveal.stagger>
+          <div v-for="(image, index) in projectData.images.slice(1)" :key="index" v-tilt="6" class="group rounded-2xl overflow-hidden wild-border">
+            <img :src="image" :alt="'Gallery Image ' + (index + 1)" class="w-full object-cover img-zoom" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <footer-component></footer-component>
+    <!-- Challenges -->
+    <section v-if="challenges.length" class="relative py-24 overflow-hidden bg-forest-100">
+      <div class="absolute inset-0 bg-topo opacity-25 pointer-events-none"></div>
+      <div class="orb top-0 left-1/4 w-80 h-80 bg-clay/10"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading eyebrow="On The Trail" title="Highlights" />
+        <div class="max-w-3xl mx-auto space-y-5" v-reveal.stagger>
+          <div v-for="(challenge, index) in challenges" :key="index" v-tilt="3" class="panel wild-border p-7 group">
+            <h3 class="font-condensed uppercase tracking-wide text-lg text-amber mb-2 flex items-start gap-3">
+              <span class="font-display text-bone-dim text-base mt-0.5">{{ String(index + 1).padStart(2, '0') }}</span>
+              {{ typeof challenge === 'string' ? challenge : challenge.title }}
+            </h3>
+            <p v-if="typeof challenge !== 'string'" class="text-bone-muted leading-relaxed">{{ challenge.solution }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section v-if="projectData.link" class="relative py-28 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-amber/10 via-forest to-moss/10"></div>
+      <div class="absolute inset-0 bg-topo opacity-30 pointer-events-none"></div>
+      <div class="orb top-0 left-0 w-72 h-72 bg-amber/10"></div>
+      <div class="orb bottom-0 right-0 w-72 h-72 bg-clay/10"></div>
+      <div class="container mx-auto px-6 text-center relative z-10" v-reveal:scale>
+        <p class="eyebrow mb-4">Go Deeper</p>
+        <h2 class="display-xl text-4xl md:text-6xl text-bone mb-8 text-balance"><span class="gradient-text">Want to explore this project?</span></h2>
+        <a :href="projectData.link" target="_blank" class="btn-wild">Visit Project</a>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script setup>
-import Navigation from '~/components/navigation.vue';
-import FooterComponent from '~/components/footerComponent.vue';
 import { useRoute } from 'vue-router';
 
 // Static employment project data — used when PocketBase doesn't have the project

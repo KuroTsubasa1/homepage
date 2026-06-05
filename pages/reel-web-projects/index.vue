@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import Navigation from "~/components/navigation.vue";
-import FooterComponent from "~/components/footerComponent.vue";
-import ProjectGrid from "~/components/projectGrid.vue";
 import { ref } from 'vue';
 
 useSeoMeta({
@@ -94,184 +91,204 @@ const personalProjects = ref([
   { name: '3DPS Budget Tracker', url: 'https://github.com/KuroTsubasa1/3dps-budget-tracker', description: 'Budget tracker for 3D printing' },
   { name: 'LinkHub', url: 'https://github.com/KuroTsubasa1/linkhub', description: 'Link aggregator' },
 ]);
-
 </script>
 
 <template>
-  <navigation></navigation>
+  <div>
+    <!-- ① Cinematic hero -->
+    <section class="relative min-h-[78vh] flex items-end overflow-hidden bg-forest">
+      <div class="absolute inset-0 bg-topo opacity-30 pointer-events-none"></div>
+      <div class="absolute inset-0 bg-grid opacity-50 pointer-events-none"></div>
+      <div class="absolute inset-0 vignette pointer-events-none"></div>
+      <div class="orb top-10 left-1/4 w-[28rem] h-[28rem] bg-amber/10 animate-drift"></div>
+      <div class="orb bottom-0 right-1/4 w-96 h-96 bg-moss/10 animate-drift-slow"></div>
 
-  <!-- Hero -->
-  <section class="hero relative min-h-screen flex items-center justify-center overflow-hidden">
-    <div class="hero-background absolute inset-0 z-0"></div>
-    <div class="code-animation absolute inset-0 z-0 opacity-20"></div>
-    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px] z-0"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] z-0"></div>
-    <div class="container mx-auto px-6 py-16 z-10 text-center">
-      <h1 class="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 hero-title">
-        <span class="text-white block">Web</span>
-        <span class="gradient-text block mt-2">Development</span>
-      </h1>
-      <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12">
-        I build things for the web. Clean code, great UX, modern stack.
-      </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="#career" class="btn-neon">My Career</a>
-        <a href="#projects" class="btn-neon-outline">Side Projects</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Skills -->
-  <section class="py-20 bg-dark relative overflow-hidden">
-    <div class="bg-grid absolute inset-0 opacity-10"></div>
-    <div class="container mx-auto px-6 relative z-10">
-      <h2 class="section-heading">Tech Stack</h2>
-      <div class="section-divider"></div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        <div v-for="skill in skills" :key="skill.name" class="glass-card rounded-2xl p-5">
-          <h3 class="text-sm font-semibold text-white mb-3">{{ skill.name }}</h3>
-          <div class="w-full bg-dark-300 rounded-full h-2">
-            <div class="h-2 rounded-full transition-all duration-1000" :style="{ width: skill.percentage + '%', backgroundColor: skill.color }"></div>
+      <div class="container mx-auto px-6 pb-20 pt-40 relative z-10">
+        <div class="max-w-4xl" v-reveal:blur>
+          <p class="eyebrow mb-5 flex items-center gap-3">
+            <span class="inline-block w-10 h-px bg-amber"></span>
+            Field Notes · Code
+          </p>
+          <h1 class="display-xl text-bone text-6xl md:text-8xl lg:text-[10rem] mb-6">
+            <span class="block">Web</span>
+            <span class="gradient-text-anim block">Development</span>
+          </h1>
+          <p class="text-lg md:text-2xl text-bone-muted max-w-2xl leading-relaxed mb-10">
+            I build things for the web. Clean code, great UX, a modern stack — tracked across a decade in the field.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a href="#career" class="btn-wild">My Career</a>
+            <a href="#projects" class="btn-wild-outline">Side Projects</a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Career Timeline -->
-  <section id="career" class="py-24 bg-dark-100 relative overflow-hidden">
-    <div class="bg-grid absolute inset-0 opacity-10"></div>
-    <div class="absolute top-0 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-[100px]"></div>
-    <div class="container mx-auto px-6 relative z-10">
-      <h2 class="section-heading">My Journey</h2>
-      <div class="section-divider"></div>
+      <div class="absolute bottom-8 right-8 z-10 hidden md:flex flex-col items-center gap-2">
+        <span class="w-px h-10 bg-gradient-to-b from-amber/70 to-transparent animate-bob"></span>
+      </div>
+    </section>
 
-      <div class="max-w-4xl mx-auto space-y-6">
-        <div v-for="(job, index) in career" :key="index" class="glass-card p-6 md:p-8 relative overflow-hidden group" :class="job.current ? 'neon-border' : ''">
-          <!-- Current badge -->
-          <span v-if="job.current" class="absolute top-4 right-4 text-xs px-2.5 py-1 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/30 animate-pulse">Current</span>
+    <!-- ② Tech stack marquee -->
+    <species-marquee :items="['Vue.js', 'Nuxt', 'TypeScript', 'PHP', 'Symfony', 'Laravel', 'Tailwind', 'Docker', 'PostgreSQL', 'Node.js']" />
 
-          <div class="flex flex-col md:flex-row md:items-start gap-4 mb-5">
-            <div class="md:w-48 flex-shrink-0">
-              <p class="text-neon-green font-mono text-sm">{{ job.period }}</p>
+    <!-- ③ Skills -->
+    <section class="relative py-28 overflow-hidden bg-forest-100">
+      <div class="absolute inset-0 bg-topo opacity-25 pointer-events-none"></div>
+      <div class="orb top-0 right-0 w-96 h-96 bg-amber/10"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading eyebrow="The Toolkit" title="Tech Stack" subtitle="The languages and frameworks I reach for in the field." />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto" v-reveal.stagger>
+          <div v-for="skill in skills" :key="skill.name" v-tilt="5" class="panel wild-border p-6 group">
+            <div class="flex items-baseline justify-between mb-4">
+              <h3 class="font-condensed uppercase tracking-wide text-sm text-bone group-hover:text-amber transition-colors duration-300">{{ skill.name }}</h3>
+              <span class="font-display text-2xl text-amber tabular-nums leading-none">{{ skill.percentage }}<span class="text-bone-dim text-base">%</span></span>
             </div>
-            <div>
-              <h3 class="text-xl font-bold text-white">{{ job.company }}</h3>
-              <p class="text-gray-400 text-sm">{{ job.role }}</p>
+            <div class="w-full bg-forest-300 rounded-full h-1.5 overflow-hidden">
+              <div class="h-1.5 rounded-full bg-gradient-to-r from-amber via-clay to-moss transition-all duration-1000 ease-wild" :style="{ width: skill.percentage + '%' }"></div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <div class="space-y-4 md:ml-52">
-            <NuxtLink v-for="project in job.projects" :key="project.id" :to="`/reel-web-projects/${project.id}`" class="border-l-2 border-neon-green/20 pl-4 block group hover:border-neon-green/50 transition-colors">
-              <h4 class="font-semibold text-white text-sm group-hover:text-neon-green transition-colors">{{ project.name }} <span class="text-neon-green/0 group-hover:text-neon-green/60 text-xs transition-colors">→</span></h4>
-              <p class="text-gray-400 text-sm mt-1">{{ project.desc }}</p>
-              <div class="flex flex-wrap gap-1.5 mt-2">
-                <span v-for="tag in project.tags" :key="tag" class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500 border border-white/5">{{ tag }}</span>
+    <!-- ④ Career Timeline -->
+    <section id="career" class="relative py-28 overflow-hidden bg-forest">
+      <div class="absolute inset-0 bg-grid opacity-50 pointer-events-none"></div>
+      <div class="orb top-0 left-1/4 w-96 h-96 bg-moss/10 animate-drift"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading eyebrow="A Decade in the Field" title="My Journey" subtitle="Ten-plus years tracking enterprise platforms, rewrites and internal tools." />
+
+        <div class="relative max-w-4xl mx-auto">
+          <!-- vertical trail line -->
+          <div class="absolute left-3 md:left-1/2 md:-translate-x-1/2 top-2 bottom-2 w-px bg-gradient-to-b from-amber/50 via-forest-400 to-transparent pointer-events-none"></div>
+
+          <div class="space-y-12 md:space-y-16" v-reveal.stagger>
+            <div
+              v-for="(job, index) in career"
+              :key="index"
+              class="relative pl-12 md:pl-0"
+              :class="(index % 2 === 0) ? 'md:pr-[52%] md:text-right' : 'md:pl-[52%]'"
+            >
+              <!-- node -->
+              <span
+                class="absolute left-3 md:left-1/2 -translate-x-1/2 top-1.5 w-4 h-4 rounded-full border-2 z-10"
+                :class="job.current ? 'bg-amber border-amber animate-glow-pulse' : 'bg-forest-200 border-amber/40'"
+              ></span>
+
+              <p class="font-condensed uppercase tracking-widest2 text-xs text-amber mb-2">{{ job.period }}</p>
+              <div class="panel wild-border p-6 md:p-7 group" :class="job.current ? 'animate-glow-pulse' : ''" v-tilt="4">
+                <div class="flex items-start gap-3 mb-5" :class="(index % 2 === 0) ? 'md:flex-row-reverse md:text-left' : ''">
+                  <div :class="(index % 2 === 0) ? 'md:text-right' : ''">
+                    <div class="flex items-center gap-2 flex-wrap" :class="(index % 2 === 0) ? 'md:justify-end' : ''">
+                      <h3 class="font-display text-xl md:text-2xl uppercase text-bone leading-tight">{{ job.company }}</h3>
+                      <span v-if="job.current" class="text-[10px] font-condensed uppercase tracking-widest2 px-2.5 py-0.5 rounded-full bg-moss/15 text-moss-light border border-moss/25 animate-pulse">Current</span>
+                    </div>
+                    <p class="text-bone-muted text-sm mt-1">{{ job.role }}</p>
+                  </div>
+                </div>
+
+                <div class="space-y-3 text-left">
+                  <NuxtLink
+                    v-for="project in job.projects"
+                    :key="project.id"
+                    :to="`/reel-web-projects/${project.id}`"
+                    class="block border-l-2 border-amber/20 pl-4 py-1 hover:border-amber transition-colors duration-300 group/proj"
+                  >
+                    <h4 class="font-condensed uppercase tracking-wide text-sm text-bone group-hover/proj:text-amber transition-colors">
+                      {{ project.name }}
+                      <span class="text-amber/0 group-hover/proj:text-amber text-xs transition-colors">→</span>
+                    </h4>
+                    <p class="text-bone-muted text-sm mt-1 leading-relaxed">{{ project.desc }}</p>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span v-for="tag in project.tags" :key="tag" class="text-[10px] font-condensed uppercase tracking-wide px-2 py-0.5 rounded-full bg-forest-300 text-bone-dim border border-bone/5">{{ tag }}</span>
+                    </div>
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑤ Things I've Built -->
+    <section id="projects" class="relative py-28 overflow-hidden bg-forest-100">
+      <div class="absolute inset-0 bg-topo opacity-25 pointer-events-none"></div>
+      <div class="orb top-0 right-1/4 w-96 h-96 bg-clay/10 animate-drift-slow"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading eyebrow="The Specimens" title="Things I've Built" subtitle="A field guide to the platforms, portals and tools I've shipped." />
+
+        <!-- Employment project cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" v-reveal.stagger>
+          <template v-for="job in career" :key="job.company">
+            <NuxtLink
+              v-for="project in job.projects"
+              :key="project.id"
+              :to="`/reel-web-projects/${project.id}`"
+              v-tilt="6"
+              class="group relative block rounded-2xl overflow-hidden panel wild-border transition-all duration-500 ease-wild hover:-translate-y-2"
+            >
+              <div class="h-1.5 w-full" :class="job.current ? 'bg-gradient-to-r from-amber via-clay to-moss' : 'bg-forest-300'"></div>
+              <div class="p-6">
+                <div class="flex items-start justify-between gap-2 mb-1">
+                  <h3 class="font-display text-xl md:text-2xl uppercase text-bone group-hover:text-amber transition-colors duration-300 leading-tight">{{ project.name }}</h3>
+                  <span v-if="job.current" class="text-[10px] font-condensed uppercase tracking-widest2 px-2 py-0.5 rounded-full bg-moss/15 text-moss-light border border-moss/25 flex-shrink-0 mt-1">Current</span>
+                </div>
+                <p class="eyebrow text-bone-dim mb-3 normal-case tracking-wide">{{ job.company }} · {{ job.period }}</p>
+                <p class="text-bone-muted text-sm mb-5 leading-relaxed">{{ project.desc }}</p>
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex flex-wrap gap-1.5">
+                    <span v-for="tag in project.tags" :key="tag" class="text-[10px] font-condensed uppercase tracking-wide px-2 py-0.5 rounded-full bg-forest-300 text-bone-dim border border-bone/5">{{ tag }}</span>
+                  </div>
+                  <span class="btn-ghost-wild text-xs opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 whitespace-nowrap">Details →</span>
+                </div>
               </div>
             </NuxtLink>
+          </template>
+        </div>
+
+        <!-- Open source -->
+        <div class="mt-20 text-center" v-reveal>
+          <p class="eyebrow mb-3">Open Source</p>
+          <h3 class="font-display text-3xl md:text-4xl uppercase text-bone mb-3">In the Wild</h3>
+          <p class="text-bone-muted text-sm mb-10 max-w-xl mx-auto">
+            Side projects roaming free on
+            <a href="https://github.com/KuroTsubasa1" target="_blank" rel="noopener noreferrer" class="link-glow text-amber">GitHub</a>.
+          </p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-4xl mx-auto" v-reveal.stagger>
+            <a
+              v-for="project in personalProjects"
+              :key="project.name"
+              :href="project.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              v-tilt="8"
+              class="panel px-4 py-4 group hover:border-amber/40 transition-all duration-300 hover:-translate-y-1 block text-center"
+            >
+              <h4 class="font-condensed uppercase tracking-wide text-sm text-bone group-hover:text-amber transition-colors">{{ project.name }}</h4>
+            </a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Open Source / Side Projects -->
-  <section id="projects" class="py-24 bg-dark relative overflow-hidden">
-    <div class="bg-grid absolute inset-0 opacity-10"></div>
-    <div class="absolute top-0 right-0 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px]"></div>
-    <div class="container mx-auto px-6 relative z-10">
-      <h2 class="section-heading">Things I've Built</h2>
-      <div class="section-divider"></div>
-
-      <!-- Employment projects -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mx-4 md:mx-10 mb-8">
-        <template v-for="job in career" :key="job.company">
-          <NuxtLink v-for="project in job.projects" :key="project.id" :to="`/reel-web-projects/${project.id}`" class="project-card glass-card neon-border overflow-hidden group block">
-            <div class="h-2 w-full" :class="job.current ? 'bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple' : 'bg-dark-300'"></div>
-            <div class="p-6">
-              <div class="flex items-start justify-between gap-2 mb-1">
-                <h3 class="text-xl font-bold text-white group-hover:text-neon-green transition-colors">{{ project.name }}</h3>
-                <span v-if="job.current" class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20 flex-shrink-0 mt-1">Current</span>
-              </div>
-              <p class="text-neon-green/60 text-xs mb-3">{{ job.company }} · {{ job.period }}</p>
-              <p class="text-gray-400 text-sm mb-4">{{ project.desc }}</p>
-              <div class="flex items-center justify-between">
-                <div class="flex flex-wrap gap-1.5">
-                  <span v-for="tag in project.tags" :key="tag" class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500 border border-white/5">{{ tag }}</span>
-                </div>
-                <span class="text-neon-green text-sm opacity-0 group-hover:opacity-100 transition-all duration-300">Details →</span>
-              </div>
-            </div>
-          </NuxtLink>
-        </template>
-      </div>
-
-      <!-- Open source -->
-      <div class="mt-16 text-center">
-        <h3 class="text-xl font-bold text-white mb-2">Open Source</h3>
-        <p class="text-gray-500 text-sm mb-8">
-          Side projects on
-          <a href="https://github.com/KuroTsubasa1" target="_blank" rel="noopener noreferrer" class="text-neon-green hover:underline">GitHub</a>
+    <!-- ⑥ CTA -->
+    <section class="relative py-32 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-amber/10 via-forest to-moss/10"></div>
+      <div class="absolute inset-0 bg-topo opacity-30 pointer-events-none"></div>
+      <div class="orb top-0 left-0 w-72 h-72 bg-amber/10"></div>
+      <div class="orb bottom-0 right-0 w-72 h-72 bg-clay/10"></div>
+      <div class="container mx-auto px-6 text-center relative z-10" v-reveal:scale>
+        <p class="eyebrow mb-4">Let's Build</p>
+        <h2 class="display-xl text-5xl md:text-7xl text-bone mb-6 text-balance">
+          <span class="gradient-text">Interested in working together?</span>
+        </h2>
+        <p class="text-lg text-bone-muted mb-10 max-w-2xl mx-auto leading-relaxed">
+          I'm open to new opportunities and interesting projects. Let's talk.
         </p>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-4xl mx-auto">
-          <a v-for="project in personalProjects" :key="project.name" :href="project.url" target="_blank" rel="noopener noreferrer"
-            class="glass-card px-4 py-3 group hover:border-neon-purple/40 transition-all duration-300 hover:-translate-y-1 block text-center">
-            <h4 class="font-bold text-white text-sm group-hover:text-neon-purple transition-colors">{{ project.name }}</h4>
-          </a>
-        </div>
+        <NuxtLink to="/contact" class="btn-wild">Get in Touch</NuxtLink>
       </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="py-20 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10 relative overflow-hidden">
-    <div class="bg-grid absolute inset-0 opacity-10"></div>
-    <div class="container mx-auto px-6 text-center relative z-10">
-      <h2 class="text-4xl font-bold mb-6"><span class="gradient-text">Interested in working together?</span></h2>
-      <p class="text-xl mb-10 max-w-2xl mx-auto text-gray-300">
-        I'm open to new opportunities and interesting projects. Let's talk.
-      </p>
-      <a href="/contact" class="btn-neon">Get in Touch</a>
-    </div>
-  </section>
-
-  <footer-component></footer-component>
+    </section>
+  </div>
 </template>
-
-<style scoped>
-.hero {
-  background: linear-gradient(to bottom right, #0a0a0f, #16161f);
-}
-
-.hero-background {
-  background: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.08) 0%, rgba(0, 0, 0, 0) 50%);
-}
-
-.code-animation {
-  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='code' patternUnits='userSpaceOnUse' width='100' height='100' patternTransform='scale(0.75) rotate(0)'%3E%3Ctext x='0' y='30' font-family='monospace' font-size='20' fill='%2300ff88'%3E%26lt;/%3E%3Ctext%3E%3Ctext x='50' y='60' font-family='monospace' font-size='20' fill='%2300ff88'%3E%7B%7D%3C/text%3E%3Ctext x='25' y='90' font-family='monospace' font-size='20' fill='%2300ff88'%3E();%3C/text%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23code)'/%3E%3C/svg%3E");
-  animation: slide 20s linear infinite;
-}
-
-@keyframes slide {
-  0% { background-position: 0 0; }
-  100% { background-position: 500px 500px; }
-}
-
-.hero-title {
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  animation: fadeInUp 1s ease-out;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.project-card {
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-.project-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(0, 255, 136, 0.4);
-}
-</style>

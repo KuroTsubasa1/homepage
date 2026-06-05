@@ -2,139 +2,286 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   WILDLIFE — "Dark & Cinematic" design system
+   Palette: moss-black canvas · bone text · amber / moss / clay
+   Type:    Anton (display) · Oswald (condensed) · Inter (body)
+   ============================================================ */
+
 @layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
-        @apply bg-dark text-gray-200 antialiased;
+        @apply bg-forest text-bone antialiased;
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        overflow-x: hidden;
+    }
+
+    /* Condensed display type for headings by default */
+    h1, h2, h3, .font-display {
+        font-family: 'Anton', 'Oswald', Impact, sans-serif;
+        letter-spacing: 0.01em;
     }
 
     ::selection {
-        @apply bg-neon-green/30 text-white;
+        @apply bg-amber/30 text-bone;
     }
 
-    /* Custom scrollbar */
+    /* Custom scrollbar — bark track, amber thumb */
     ::-webkit-scrollbar {
-        width: 8px;
+        width: 10px;
     }
     ::-webkit-scrollbar-track {
-        @apply bg-dark;
+        @apply bg-forest-100;
     }
     ::-webkit-scrollbar-thumb {
-        @apply bg-dark-300 rounded-full;
+        @apply bg-forest-400 rounded-full;
+        border: 2px solid #161a14;
     }
     ::-webkit-scrollbar-thumb:hover {
-        @apply bg-neon-green/50;
+        @apply bg-amber/60;
     }
 }
 
 @layer components {
-    /* Glassmorphism card */
-    .glass-card {
-        @apply bg-dark-100/60 backdrop-blur-xl border border-white/10 rounded-2xl;
+    /* ---------- Surfaces ---------- */
+    /* Bark panel (replaces old glass-card; same class name kept for compat) */
+    .glass-card,
+    .panel {
+        @apply bg-forest-100/70 backdrop-blur-xl border border-bone/10 rounded-2xl;
     }
 
-    /* Neon border glow - now green */
-    .neon-border {
-        @apply border border-neon-green/30;
-        box-shadow: 0 0 15px rgba(0, 255, 136, 0.08), inset 0 0 15px rgba(0, 255, 136, 0.03);
+    /* Warm amber-tinted border + glow (replaces old neon-border) */
+    .neon-border,
+    .wild-border {
+        @apply border border-amber/20;
+        box-shadow: 0 0 18px rgba(217, 138, 61, 0.06), inset 0 0 18px rgba(217, 138, 61, 0.03);
+    }
+    .neon-border:hover,
+    .wild-border:hover {
+        @apply border-amber/50;
+        box-shadow: 0 0 28px rgba(217, 138, 61, 0.16), inset 0 0 28px rgba(217, 138, 61, 0.05);
     }
 
-    .neon-border:hover {
-        @apply border-neon-green/60;
-        box-shadow: 0 0 25px rgba(0, 255, 136, 0.15), inset 0 0 25px rgba(0, 255, 136, 0.05);
-    }
-
-    /* Gradient text - green to cyan to purple */
+    /* ---------- Display type ---------- */
+    /* Warm golden-hour gradient text */
     .gradient-text {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple;
-        background-size: 200% auto;
+        @apply bg-clip-text text-transparent;
+        background-image: linear-gradient(100deg, #ecab63 0%, #d98a3d 35%, #c4663a 70%, #9bb98a 100%);
+        background-size: 220% auto;
+    }
+    .gradient-text-anim {
+        @apply gradient-text;
+        animation: shimmer 6s ease infinite;
     }
 
-    /* Neon glow button - green */
-    .btn-neon {
-        @apply relative px-8 py-3 font-bold text-dark bg-neon-green rounded-xl transition-all duration-300 overflow-hidden;
-        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    /* Big poster-style display heading */
+    .display-xl {
+        font-family: 'Anton', Impact, sans-serif;
+        @apply uppercase leading-[0.92] tracking-tight;
     }
-    .btn-neon:hover {
-        box-shadow: 0 0 40px rgba(0, 255, 136, 0.5), 0 0 80px rgba(0, 255, 136, 0.2);
+
+    /* Eyebrow / kicker label */
+    .eyebrow {
+        font-family: 'Oswald', sans-serif;
+        @apply uppercase text-xs font-medium tracking-mega text-amber/90;
+    }
+
+    /* ---------- Buttons ---------- */
+    /* Primary amber (old .btn-neon kept as alias so legacy markup stays on-brand) */
+    .btn-neon,
+    .btn-wild {
+        font-family: 'Oswald', sans-serif;
+        @apply relative inline-flex items-center justify-center gap-2 px-8 py-3 font-semibold uppercase tracking-widest2 text-forest bg-amber rounded-full transition-all duration-300 ease-wild overflow-hidden;
+        box-shadow: 0 0 22px rgba(217, 138, 61, 0.28);
+    }
+    .btn-neon:hover,
+    .btn-wild:hover {
+        @apply bg-amber-light;
+        box-shadow: 0 0 40px rgba(217, 138, 61, 0.5), 0 0 80px rgba(217, 138, 61, 0.18);
+        transform: translateY(-2px);
+    }
+    .btn-neon:disabled,
+    .btn-wild:disabled {
+        @apply opacity-60 cursor-not-allowed;
+        transform: none;
+    }
+
+    /* Outline (old .btn-neon-outline alias) */
+    .btn-neon-outline,
+    .btn-wild-outline {
+        font-family: 'Oswald', sans-serif;
+        @apply relative inline-flex items-center justify-center gap-2 px-8 py-3 font-semibold uppercase tracking-widest2 text-amber border-2 border-amber/50 rounded-full transition-all duration-300 ease-wild;
+    }
+    .btn-neon-outline:hover,
+    .btn-wild-outline:hover {
+        @apply bg-amber/10 border-amber text-amber-light;
+        box-shadow: 0 0 26px rgba(217, 138, 61, 0.22);
         transform: translateY(-2px);
     }
 
-    /* Neon outline button - green */
-    .btn-neon-outline {
-        @apply relative px-8 py-3 font-bold text-neon-green border-2 border-neon-green/60 rounded-xl transition-all duration-300;
-        box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
-    }
-    .btn-neon-outline:hover {
-        @apply bg-neon-green/10;
-        box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-        transform: translateY(-2px);
+    /* Ghost / moss text button */
+    .btn-ghost-wild {
+        font-family: 'Oswald', sans-serif;
+        @apply inline-flex items-center gap-2 uppercase tracking-widest2 text-sm text-moss-light hover:text-amber transition-colors duration-300;
     }
 
-    /* Section heading */
+    /* ---------- Section scaffolding ---------- */
     .section-heading {
-        @apply text-3xl md:text-4xl font-bold text-center mb-2 text-white;
+        font-family: 'Anton', Impact, sans-serif;
+        @apply text-4xl md:text-5xl uppercase text-center mb-3 text-bone tracking-tight;
     }
-
     .section-divider {
-        @apply w-24 h-1 mx-auto mb-12 rounded-full;
-        background: linear-gradient(90deg, #00ff88, #00f0ff, #8b5cf6);
+        @apply w-24 h-[3px] mx-auto mb-12 rounded-full;
+        background: linear-gradient(90deg, transparent, #d98a3d, #7d9c6b, transparent);
     }
 
-    /* Animated underline for links */
+    /* Animated underline link (warm) */
     .link-glow {
-        @apply relative text-gray-300 transition-colors duration-300;
+        @apply relative text-bone-muted transition-colors duration-300;
     }
     .link-glow:hover {
-        @apply text-neon-green;
-        text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        @apply text-amber;
     }
     .link-glow::after {
         content: '';
-        @apply absolute bottom-0 left-0 w-0 h-0.5 rounded-full transition-all duration-300;
-        background: linear-gradient(90deg, #00ff88, #00f0ff);
+        @apply absolute -bottom-0.5 left-0 w-0 h-0.5 rounded-full transition-all duration-300;
+        background: linear-gradient(90deg, #d98a3d, #7d9c6b);
     }
     .link-glow:hover::after {
         @apply w-full;
     }
+
+    /* Form fields (shared) */
+    .form-input {
+        @apply w-full px-4 py-3 bg-forest-200 border border-bone/10 rounded-xl text-bone placeholder-bone-dim transition-all duration-300;
+    }
+    .form-input:focus {
+        @apply outline-none border-amber/50 bg-forest-300;
+        box-shadow: 0 0 22px rgba(217, 138, 61, 0.12);
+    }
 }
 
 @layer utilities {
-    .masonry {
-        column-gap: 0.5em;
-        column-count: 2;
-    }
-    .masonry-sm {
-        column-gap: 0.5em;
-        column-count: 2;
-    }
-    .masonry-md {
-        column-gap: 0.5em;
-        column-count: 5;
-    }
-    .break-inside {
-        break-inside: avoid;
+    /* ---------- Masonry (legacy gallery support) ---------- */
+    .masonry { column-gap: 0.5em; column-count: 2; }
+    .masonry-sm { column-gap: 0.5em; column-count: 2; }
+    .masonry-md { column-gap: 0.5em; column-count: 5; }
+    .break-inside { break-inside: avoid; }
+
+    /* ---------- Textures ---------- */
+    /* Topographic contour lines — the signature wildlife backdrop */
+    .bg-topo {
+        background-color: transparent;
+        background-image:
+            repeating-radial-gradient(circle at 20% 30%, transparent 0, transparent 38px, rgba(125,156,107,0.05) 39px, transparent 41px),
+            repeating-radial-gradient(circle at 78% 68%, transparent 0, transparent 46px, rgba(217,138,61,0.045) 47px, transparent 49px);
+        background-size: 520px 520px, 640px 640px;
     }
 
-    /* Grid background pattern - green tinted */
+    /* faint contour grid (old .bg-grid kept as a subtle warm version) */
     .bg-grid {
         background-image:
-            linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
-        background-size: 50px 50px;
+            linear-gradient(rgba(125, 156, 107, 0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(125, 156, 107, 0.035) 1px, transparent 1px);
+        background-size: 64px 64px;
     }
 
-    /* Noise texture overlay */
-    .bg-noise {
-        position: relative;
-    }
-    .bg-noise::before {
+    /* Film grain overlay (apply to a fixed/absolute element) */
+    .grain::before {
         content: '';
         position: absolute;
         inset: 0;
-        opacity: 0.03;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        opacity: 0.05;
         pointer-events: none;
-        z-index: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        z-index: 1;
+    }
+
+    /* Cinematic vignette + bottom fade for full-bleed photos */
+    .vignette::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(120% 90% at 50% 35%, transparent 40%, rgba(13,15,12,0.55) 100%),
+            linear-gradient(to top, #0d0f0c 2%, rgba(13,15,12,0.15) 45%, transparent 75%);
+    }
+
+    /* Soft warm ambient orb helper */
+    .orb {
+        @apply absolute rounded-full pointer-events-none blur-[120px];
+    }
+
+    /* Image hover zoom helper */
+    .img-zoom { @apply transition-transform duration-[1200ms] ease-wild; }
+    .group:hover .img-zoom { transform: scale(1.08); }
+
+    /* fade-in helper (legacy pages use .fade-in) */
+    .fade-in { animation: fade-in 1.2s ease forwards; }
+
+    .text-balance { text-wrap: balance; }
+}
+
+/* ============================================================
+   SCROLL REVEAL  (driven by the v-reveal directive / motion plugin)
+   SSR renders fully visible; once JS marks <html class="motion-ready">
+   elements with [data-reveal] start hidden and animate in on view.
+   ============================================================ */
+.motion-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(42px);
+    transition:
+        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+.motion-ready [data-reveal="left"]  { transform: translateX(-48px); }
+.motion-ready [data-reveal="right"] { transform: translateX(48px); }
+.motion-ready [data-reveal="scale"] { transform: scale(0.92); }
+.motion-ready [data-reveal="blur"]  { filter: blur(14px); transform: translateY(28px); }
+
+.motion-ready [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
+/* ============================================================
+   PAGE TRANSITIONS  (Nuxt app.pageTransition name="page")
+   ============================================================ */
+.page-enter-active,
+.page-leave-active {
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.page-enter-from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.995);
+}
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.995);
+}
+
+/* ============================================================
+   REDUCED MOTION  — honor user preference; kill all the motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+    .motion-ready [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
     }
 }

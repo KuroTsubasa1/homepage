@@ -175,6 +175,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
         
         // Call to action section
         cta: {
+          eyebrow: 'Say hello',
           title: "Let's Build Something Together",
           description: "I'm always open to new opportunities, collaborations, and interesting projects. If you like what you see, let's talk.",
           button: 'Get in Touch'
@@ -183,6 +184,33 @@ export default defineNuxtPlugin(({ vueApp }) => {
         // Home page
         home: {
           services: 'What I Do',
+          landing: {
+            kicker: 'Wildlife Photography · FPV · Web — Schleswig-Holstein, Germany',
+            titleA: 'The Wild',
+            titleB: 'North',
+            lead: 'I chase light, patience, and the quiet moments where nature reveals itself — then bring the same eye to drones, 3D prints, and the web.',
+            ctaPhotos: 'Explore the galleries'
+          },
+          intro: {
+            eyebrow: 'Field Notes',
+            title: 'Patience, light, and a deep respect for the wild.',
+            p1: 'Every frame starts long before the shutter — reading the weather, learning behaviour, and waiting in the cold for a single honest moment.',
+            p2: 'Wildlife and landscapes are where I slow down. Drones, 3D printing, and web development are how I keep building the rest of the year.',
+            cta: 'More about me'
+          },
+          featured: {
+            eyebrow: 'Collections',
+            title: 'From the field',
+            subtitle: 'A rotating selection from the galleries — wildlife, wild places, people, and the occasional wedding.',
+            viewAll: 'View all collections'
+          },
+          disciplinesEyebrow: 'What keeps me busy',
+          stat: {
+            species: 'Species photographed',
+            hours: 'Hours in the field',
+            km: 'Drone builds & cams',
+            years: 'Years creating'
+          },
           webDev: {
             title: 'Web Development',
             description: 'I build modern web apps with Vue, Nuxt, and TypeScript. Clean code, great UX, and solid architecture.'
@@ -299,7 +327,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
           feeling: {
             title: 'The feeling',
             p1: 'FPV stands for First Person View. You wear goggles that show a live camera feed from the drone, so you see what the drone sees. It feels like you\'re actually flying.',
-            p2: 'I fly both <span class="text-neon-cyan">freestyle</span> and <span class="text-neon-purple">cinematic</span>. Freestyle is creative expression — flips, rolls, power loops, diving through gaps. Cinematic is smooth, sweeping movements that make footage feel like it came out of a movie.',
+            p2: 'I fly both <span class="text-amber">freestyle</span> and <span class="text-clay">cinematic</span>. Freestyle is creative expression — flips, rolls, power loops, diving through gaps. Cinematic is smooth, sweeping movements that make footage feel like it came out of a movie.',
             p3: "There's a feeling of freedom to it that's hard to describe. When you're locked in, flying a line you've been visualizing, everything else fades away. Just you and the sky."
           },
           building: {
@@ -311,7 +339,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
           sim: {
             title: 'Sim time',
             p1: "Before sending a quad into the sky, I spend hours in simulators. They're the safest and cheapest way to build muscle memory and try new tricks without breaking parts.",
-            p2: '<span class="text-neon-cyan font-medium">Liftoff</span> is my main sim for freestyle practice. The physics feel very close to real life, and the track editor is great for building custom courses. <span class="text-neon-green font-medium">Velocidrone</span> is the go-to for racing — the timing systems and competitive multiplayer make it the closest thing to a real race without leaving the house.',
+            p2: '<span class="text-amber font-medium">Liftoff</span> is my main sim for freestyle practice. The physics feel very close to real life, and the track editor is great for building custom courses. <span class="text-moss-light font-medium">Velocidrone</span> is the go-to for racing — the timing systems and competitive multiplayer make it the closest thing to a real race without leaving the house.',
             p3: 'I plug in my actual radio controller and fly with the same sticks, same rates. When I go outside to fly for real, the transition is seamless.'
           },
           racing: {
@@ -321,9 +349,9 @@ export default defineNuxtPlugin(({ vueApp }) => {
           },
           fleet: {
             title: 'What I fly',
-            p1: 'My <span class="text-neon-cyan font-medium">DJI Air 2S</span> is the go-to for landscape and travel shots. One-inch sensor, gorgeous detail, and intelligent modes that make getting cinematic results easy when I\'m exploring new places.',
-            p2: 'The <span class="text-neon-green font-medium">5" Freestyle quad</span> is custom-built for ripping through the sky. Full manual flight, GoPro mounted on top. There\'s nothing like it.',
-            p3: 'And the <span class="text-neon-purple font-medium">Cinewhoop</span> — ducted props make it safe for indoor flying. I love using it for smooth, slow proximity flights through tight spaces. Perfect for those buttery cinematic shots.'
+            p1: 'My <span class="text-amber font-medium">DJI Air 2S</span> is the go-to for landscape and travel shots. One-inch sensor, gorgeous detail, and intelligent modes that make getting cinematic results easy when I\'m exploring new places.',
+            p2: 'The <span class="text-moss-light font-medium">5" Freestyle quad</span> is custom-built for ripping through the sky. Full manual flight, GoPro mounted on top. There\'s nothing like it.',
+            p3: 'And the <span class="text-clay font-medium">Cinewhoop</span> — ducted props make it safe for indoor flying. I love using it for smooth, slow proximity flights through tight spaces. Perfect for those buttery cinematic shots.'
           },
           footage: {
             title: 'Some footage'
@@ -342,20 +370,20 @@ export default defineNuxtPlugin(({ vueApp }) => {
             title: 'Why I print',
             p1: '3D printing combines everything I love: problem-solving, design, technology, and the satisfaction of building something real. The whole journey from a rough idea to a finished print is endlessly rewarding — sketching a concept, modeling it in CAD, dialing in the slicer settings, and watching layer after layer come to life.',
             p2: "What started as curiosity quickly turned into a full-blown workshop. Whether it's functional parts for around the house, custom enclosures for electronics projects, or purely creative prints just because they look cool — there's always something on the build plate.",
-            p3: 'I also run <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="text-neon-green hover:underline font-medium">3dps.space</a> as a side project where I share more about printing and the maker community.'
+            p3: 'I also run <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="text-moss-light hover:underline font-medium">3dps.space</a> as a side project where I share more about printing and the maker community.'
           },
           cad: {
             title: 'Designing in 3D',
-            p1: 'Every great print starts with a great model. I use <span class="text-neon-purple font-medium">Blender</span> for anything organic, sculptural, or artistically driven — sculpting, subdivision modeling, and quick concept work. When a shape needs to feel alive rather than measured, Blender is where it happens.',
-            p2: 'For anything mechanical or dimensionally precise, I reach for <span class="text-neon-cyan font-medium">Plasticity</span>. It\'s a modern CAD tool that\'s fast and intuitive while delivering the exact, watertight geometry that 3D printing demands. Enclosures, brackets, mounts — anything that needs to fit just right.',
+            p1: 'Every great print starts with a great model. I use <span class="text-clay font-medium">Blender</span> for anything organic, sculptural, or artistically driven — sculpting, subdivision modeling, and quick concept work. When a shape needs to feel alive rather than measured, Blender is where it happens.',
+            p2: 'For anything mechanical or dimensionally precise, I reach for <span class="text-amber font-medium">Plasticity</span>. It\'s a modern CAD tool that\'s fast and intuitive while delivering the exact, watertight geometry that 3D printing demands. Enclosures, brackets, mounts — anything that needs to fit just right.',
             p3: "The two complement each other perfectly. Sometimes a project starts in Plasticity for the precise shell and moves to Blender for decorative details. Other times it's pure Blender from start to finish."
           },
           workshop: {
             title: 'The workshop',
-            p1: 'My main workhorse is the <span class="text-neon-green font-medium">Bambulab X1C</span> — a CoreXY speed machine with multi-material capabilities through the AMS system. It\'s fast, precise, and handles everything from PLA to ABS without breaking a sweat. The built-in lidar and camera monitoring mean I can start a print and walk away knowing it\'ll be fine.',
-            p2: 'Next to it sits the <span class="text-neon-green font-medium">Bambulab P1S</span>, the enclosed everyday printer. Reliable, quiet, and perfect for materials that need a stable temperature. Between the two Bambulab machines, most of my printing happens here.',
-            p3: 'The <span class="text-neon-cyan font-medium">Snapmaker U1</span> is the Swiss Army knife — swappable tool heads let it 3D print, laser engrave, and CNC mill. One machine, endless possibilities. It\'s great for projects that mix disciplines.',
-            p4: 'And when the build plate needs to be big, the <span class="text-neon-purple font-medium">Anycubic Kobra Max 3</span> steps in. Large format printing for oversized projects and pieces that just won\'t fit anywhere else.'
+            p1: 'My main workhorse is the <span class="text-moss-light font-medium">Bambulab X1C</span> — a CoreXY speed machine with multi-material capabilities through the AMS system. It\'s fast, precise, and handles everything from PLA to ABS without breaking a sweat. The built-in lidar and camera monitoring mean I can start a print and walk away knowing it\'ll be fine.',
+            p2: 'Next to it sits the <span class="text-moss-light font-medium">Bambulab P1S</span>, the enclosed everyday printer. Reliable, quiet, and perfect for materials that need a stable temperature. Between the two Bambulab machines, most of my printing happens here.',
+            p3: 'The <span class="text-amber font-medium">Snapmaker U1</span> is the Swiss Army knife — swappable tool heads let it 3D print, laser engrave, and CNC mill. One machine, endless possibilities. It\'s great for projects that mix disciplines.',
+            p4: 'And when the build plate needs to be big, the <span class="text-clay font-medium">Anycubic Kobra Max 3</span> steps in. Large format printing for oversized projects and pieces that just won\'t fit anywhere else.'
           },
           multicolor: {
             title: 'Multi-color printing',
@@ -570,6 +598,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
         
         // Call to action section
         cta: {
+          eyebrow: 'Hallo sagen',
           title: 'Bereit, Ihr Projekt zu starten?',
           description: 'Lassen Sie uns besprechen, wie ich Ihre Vision mit professioneller Webentwicklung, beeindruckender Fotografie oder maßgeschneidertem 3D-Druck zum Leben erwecken kann.',
           button: 'Kontaktieren Sie mich'
@@ -577,7 +606,34 @@ export default defineNuxtPlugin(({ vueApp }) => {
         
         // Home page
         home: {
-          services: 'Professionelle Leistungen',
+          services: 'Was ich mache',
+          landing: {
+            kicker: 'Wildlife-Fotografie · FPV · Web — Schleswig-Holstein, Deutschland',
+            titleA: 'Der Wilde',
+            titleB: 'Norden',
+            lead: 'Ich jage Licht, Geduld und die stillen Momente, in denen sich die Natur zeigt — und bringe denselben Blick in Drohnen, 3D-Druck und das Web.',
+            ctaPhotos: 'Galerien entdecken'
+          },
+          intro: {
+            eyebrow: 'Feldnotizen',
+            title: 'Geduld, Licht und tiefer Respekt vor der Wildnis.',
+            p1: 'Jedes Bild beginnt lange vor dem Auslöser — Wetter lesen, Verhalten verstehen und in der Kälte auf einen einzigen ehrlichen Moment warten.',
+            p2: 'Wildtiere und Landschaften sind, wo ich entschleunige. Drohnen, 3D-Druck und Webentwicklung halten mich den Rest des Jahres beschäftigt.',
+            cta: 'Mehr über mich'
+          },
+          featured: {
+            eyebrow: 'Kollektionen',
+            title: 'Aus dem Feld',
+            subtitle: 'Eine wechselnde Auswahl aus den Galerien — Wildtiere, wilde Orte, Menschen und gelegentlich Hochzeiten.',
+            viewAll: 'Alle Kollektionen ansehen'
+          },
+          disciplinesEyebrow: 'Was mich beschäftigt',
+          stat: {
+            species: 'Fotografierte Arten',
+            hours: 'Stunden im Feld',
+            km: 'Drohnen & Kameras',
+            years: 'Jahre kreativ'
+          },
           webDev: {
             title: 'Webentwicklung',
             description: 'Maßgeschneiderte Websites und Webanwendungen mit modernen Technologien.'
@@ -694,7 +750,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
           feeling: {
             title: 'Das Gefühl',
             p1: 'FPV steht für First Person View. Man trägt eine Brille, die den Live-Kamerafeed der Drohne zeigt — man sieht, was die Drohne sieht. Es fühlt sich an, als würde man selbst fliegen.',
-            p2: 'Ich fliege sowohl <span class="text-neon-cyan">Freestyle</span> als auch <span class="text-neon-purple">Cinematic</span>. Freestyle ist kreativer Ausdruck — Flips, Rolls, Power Loops, das Durchqueren von Lücken. Cinematic sind weiche, schwungvolle Bewegungen, die das Material wie aus einem Film wirken lassen.',
+            p2: 'Ich fliege sowohl <span class="text-amber">Freestyle</span> als auch <span class="text-clay">Cinematic</span>. Freestyle ist kreativer Ausdruck — Flips, Rolls, Power Loops, das Durchqueren von Lücken. Cinematic sind weiche, schwungvolle Bewegungen, die das Material wie aus einem Film wirken lassen.',
             p3: 'Es gibt ein Gefühl von Freiheit, das schwer zu beschreiben ist. Wenn man voll konzentriert ist und eine Linie fliegt, die man sich vorgestellt hat, verblasst alles andere. Nur du und der Himmel.'
           },
           building: {
@@ -706,7 +762,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
           sim: {
             title: 'Sim-Zeit',
             p1: 'Bevor ein Quad in den Himmel geht, verbringe ich Stunden in Simulatoren. Sie sind die sicherste und günstigste Art, Muskelgedächtnis aufzubauen und neue Tricks zu üben, ohne Teile zu zerstören.',
-            p2: '<span class="text-neon-cyan font-medium">Liftoff</span> ist mein Haupt-Sim für Freestyle-Training. Die Physik fühlt sich sehr nah am echten Leben an, und der Streckeneditor ist großartig für eigene Kurse. <span class="text-neon-green font-medium">Velocidrone</span> ist die erste Wahl für Racing — die Timing-Systeme und der kompetitive Multiplayer kommen einem echten Rennen ohne das Haus zu verlassen am nächsten.',
+            p2: '<span class="text-amber font-medium">Liftoff</span> ist mein Haupt-Sim für Freestyle-Training. Die Physik fühlt sich sehr nah am echten Leben an, und der Streckeneditor ist großartig für eigene Kurse. <span class="text-moss-light font-medium">Velocidrone</span> ist die erste Wahl für Racing — die Timing-Systeme und der kompetitive Multiplayer kommen einem echten Rennen ohne das Haus zu verlassen am nächsten.',
             p3: 'Ich schließe meinen echten Funksender an und fliege mit den gleichen Sticks und Rates. Wenn ich dann draußen fliege, ist der Übergang nahtlos.'
           },
           racing: {
@@ -716,9 +772,9 @@ export default defineNuxtPlugin(({ vueApp }) => {
           },
           fleet: {
             title: 'Was ich fliege',
-            p1: 'Meine <span class="text-neon-cyan font-medium">DJI Air 2S</span> ist die erste Wahl für Landschafts- und Reiseaufnahmen. Ein-Zoll-Sensor, wunderschöne Details und intelligente Modi, die Cinematic-Ergebnisse leicht machen, wenn ich neue Orte erkunde.',
-            p2: 'Der <span class="text-neon-green font-medium">5-Zoll-Freestyle-Quad</span> ist maßgeschneidert, um durch den Himmel zu reißen. Vollmanuelles Fliegen, GoPro oben montiert. Es gibt nichts Vergleichbares.',
-            p3: 'Und der <span class="text-neon-purple font-medium">Cinewhoop</span> — ummantelte Props machen ihn sicher für Indoor-Flüge. Ich nutze ihn gerne für sanfte, langsame Proximity-Flüge durch enge Räume. Perfekt für diese butterweichen Cinematic-Shots.'
+            p1: 'Meine <span class="text-amber font-medium">DJI Air 2S</span> ist die erste Wahl für Landschafts- und Reiseaufnahmen. Ein-Zoll-Sensor, wunderschöne Details und intelligente Modi, die Cinematic-Ergebnisse leicht machen, wenn ich neue Orte erkunde.',
+            p2: 'Der <span class="text-moss-light font-medium">5-Zoll-Freestyle-Quad</span> ist maßgeschneidert, um durch den Himmel zu reißen. Vollmanuelles Fliegen, GoPro oben montiert. Es gibt nichts Vergleichbares.',
+            p3: 'Und der <span class="text-clay font-medium">Cinewhoop</span> — ummantelte Props machen ihn sicher für Indoor-Flüge. Ich nutze ihn gerne für sanfte, langsame Proximity-Flüge durch enge Räume. Perfekt für diese butterweichen Cinematic-Shots.'
           },
           footage: {
             title: 'Einige Aufnahmen'
@@ -737,20 +793,20 @@ export default defineNuxtPlugin(({ vueApp }) => {
             title: 'Warum ich drucke',
             p1: '3D-Druck vereint alles, was ich liebe: Problemlösung, Design, Technik und die Befriedigung, etwas Reales zu bauen. Der ganze Weg von einer groben Idee bis zum fertigen Druck ist endlos lohnend — ein Konzept skizzieren, in CAD modellieren, die Slicer-Einstellungen feinjustieren und zusehen, wie Schicht für Schicht zum Leben erwacht.',
             p2: 'Was als Neugier begann, verwandelte sich schnell in eine ausgewachsene Werkstatt. Ob funktionale Teile für den Haushalt, individuelle Gehäuse für Elektronik-Projekte oder rein kreative Drucke, nur weil sie cool aussehen — es ist immer etwas auf dem Druckbett.',
-            p3: 'Ich betreibe auch <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="text-neon-green hover:underline font-medium">3dps.space</a> als Nebenprojekt, wo ich mehr über Druck und die Maker-Community teile.'
+            p3: 'Ich betreibe auch <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="text-moss-light hover:underline font-medium">3dps.space</a> als Nebenprojekt, wo ich mehr über Druck und die Maker-Community teile.'
           },
           cad: {
             title: 'Modellieren in 3D',
-            p1: 'Jeder gute Druck beginnt mit einem guten Modell. Ich nutze <span class="text-neon-purple font-medium">Blender</span> für alles Organische, Skulpturelle oder künstlerisch Getriebene — Sculpting, Subdivision-Modellierung und schnelle Konzeptarbeit. Wenn eine Form eher lebendig als vermessen wirken soll, ist Blender der Ort dafür.',
-            p2: 'Für alles Mechanische oder dimensional Präzise greife ich zu <span class="text-neon-cyan font-medium">Plasticity</span>. Es ist ein modernes CAD-Tool, das schnell und intuitiv ist und dabei die exakte, wasserdichte Geometrie liefert, die der 3D-Druck verlangt. Gehäuse, Halterungen, Befestigungen — alles, was genau passen muss.',
+            p1: 'Jeder gute Druck beginnt mit einem guten Modell. Ich nutze <span class="text-clay font-medium">Blender</span> für alles Organische, Skulpturelle oder künstlerisch Getriebene — Sculpting, Subdivision-Modellierung und schnelle Konzeptarbeit. Wenn eine Form eher lebendig als vermessen wirken soll, ist Blender der Ort dafür.',
+            p2: 'Für alles Mechanische oder dimensional Präzise greife ich zu <span class="text-amber font-medium">Plasticity</span>. Es ist ein modernes CAD-Tool, das schnell und intuitiv ist und dabei die exakte, wasserdichte Geometrie liefert, die der 3D-Druck verlangt. Gehäuse, Halterungen, Befestigungen — alles, was genau passen muss.',
             p3: 'Die beiden ergänzen sich perfekt. Manchmal beginnt ein Projekt in Plasticity für die präzise Hülle und wandert dann zu Blender für dekorative Details. Manchmal ist es von Anfang bis Ende reines Blender.'
           },
           workshop: {
             title: 'Die Werkstatt',
-            p1: 'Mein Hauptarbeitstier ist der <span class="text-neon-green font-medium">Bambulab X1C</span> — eine CoreXY-Speed-Maschine mit Multi-Material-Fähigkeiten durch das AMS-System. Er ist schnell, präzise und verarbeitet alles von PLA bis ABS ohne Schwierigkeiten. Das eingebaute Lidar und die Kameraüberwachung bedeuten, dass ich einen Druck starten und weggehen kann, in dem Wissen, dass alles gut geht.',
-            p2: 'Daneben steht der <span class="text-neon-green font-medium">Bambulab P1S</span>, der geschlossene Alltagsdrucker. Zuverlässig, leise und perfekt für Materialien, die eine stabile Temperatur brauchen. Zwischen den beiden Bambulab-Maschinen findet der Großteil meines Druckens hier statt.',
-            p3: 'Der <span class="text-neon-cyan font-medium">Snapmaker U1</span> ist das Schweizer Taschenmesser — austauschbare Werkzeugköpfe erlauben 3D-Druck, Lasergravur und CNC-Fräsen. Eine Maschine, endlose Möglichkeiten. Ideal für Projekte, die verschiedene Disziplinen vereinen.',
-            p4: 'Und wenn die Druckplatte groß sein muss, kommt der <span class="text-neon-purple font-medium">Anycubic Kobra Max 3</span> zum Einsatz. Großformatdruck für übergroße Projekte und Teile, die einfach nirgendwo sonst hineinpassen.'
+            p1: 'Mein Hauptarbeitstier ist der <span class="text-moss-light font-medium">Bambulab X1C</span> — eine CoreXY-Speed-Maschine mit Multi-Material-Fähigkeiten durch das AMS-System. Er ist schnell, präzise und verarbeitet alles von PLA bis ABS ohne Schwierigkeiten. Das eingebaute Lidar und die Kameraüberwachung bedeuten, dass ich einen Druck starten und weggehen kann, in dem Wissen, dass alles gut geht.',
+            p2: 'Daneben steht der <span class="text-moss-light font-medium">Bambulab P1S</span>, der geschlossene Alltagsdrucker. Zuverlässig, leise und perfekt für Materialien, die eine stabile Temperatur brauchen. Zwischen den beiden Bambulab-Maschinen findet der Großteil meines Druckens hier statt.',
+            p3: 'Der <span class="text-amber font-medium">Snapmaker U1</span> ist das Schweizer Taschenmesser — austauschbare Werkzeugköpfe erlauben 3D-Druck, Lasergravur und CNC-Fräsen. Eine Maschine, endlose Möglichkeiten. Ideal für Projekte, die verschiedene Disziplinen vereinen.',
+            p4: 'Und wenn die Druckplatte groß sein muss, kommt der <span class="text-clay font-medium">Anycubic Kobra Max 3</span> zum Einsatz. Großformatdruck für übergroße Projekte und Teile, die einfach nirgendwo sonst hineinpassen.'
           },
           multicolor: {
             title: 'Mehrfarbdruck',

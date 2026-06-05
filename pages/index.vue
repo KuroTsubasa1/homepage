@@ -1,236 +1,267 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+const { listUrl, fileUrl } = usePocketbase();
+
 useSeoMeta({
-  title: 'Lasse Harm | Web Developer, Photographer & Maker',
-  ogTitle: 'Lasse Harm | Web Developer, Photographer & Maker',
-  description: 'Hi, I\'m Lasse Harm — a web developer based in Germany. I build modern web apps, fly FPV drones, shoot wildlife & wedding photography, and tinker with 3D printers.',
-  ogDescription: 'Hi, I\'m Lasse Harm — a web developer based in Germany. I build modern web apps, fly FPV drones, shoot wildlife & wedding photography, and tinker with 3D printers.',
-  ogImage: 'https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/q8dewf7gwhbqpk2/20240319_182201_N85s671DEL.jpg?thumb=960x0',
+  title: 'Lasse Harm | Wildlife Photographer, FPV Pilot & Web Developer',
+  ogTitle: 'Lasse Harm | Wildlife Photographer, FPV Pilot & Web Developer',
+  description: 'Into the wild with Lasse Harm — wildlife & landscape photography, FPV drone flying, 3D printing, and modern web development from Schleswig-Holstein, Germany.',
+  ogDescription: 'Into the wild with Lasse Harm — wildlife & landscape photography, FPV drone flying, 3D printing, and modern web development from Schleswig-Holstein, Germany.',
+  ogImage: 'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/o3s31u9eem15ygo/20220929_173927_original_cb7wKgT60N.JPG?thumb=1200x0',
   twitterCard: 'summary_large_image',
-  keywords: 'Lasse Harm, web developer, Germany, Vue.js, Nuxt, photographer, FPV drone pilot, 3D printing',
+  keywords: 'Lasse Harm, wildlife photography, nature, FPV drone pilot, Germany, web developer, Vue, Nuxt, 3D printing',
 });
 
-const techStack = [
-  'Vue.js', 'Nuxt', 'TypeScript', 'PHP', 'Symfony', 'Laravel', 'Tailwind', 'MySQL', 'Docker', 'Git'
+// Featured gallery covers (server-side, parallel)
+const featured = [
+  { key: 'wildlife', api: 'wildlife', path: '/photography/wildlife' },
+  { key: 'landscape', api: 'nature', path: '/photography/landscape-nature' },
+  { key: 'portraits', api: 'people', path: '/photography/portraits-people' },
+  { key: 'weddings', api: 'weddings', path: '/photography/weddings' },
 ];
+
+const { data: covers } = await useAsyncData('home-covers', async () => {
+  const out: Record<string, string> = {};
+  await Promise.all(featured.map(async (c) => {
+    try {
+      const res: any = await $fetch(listUrl('portfolio_images', { filter: `(category='${c.api}')`, perPage: 1 }));
+      const item = res.items?.[0];
+      if (item) out[c.key] = fileUrl(item, item.image, 'thumb=900x0');
+    } catch (e) { /* ignore */ }
+  }));
+  return out;
+}, { default: () => ({}) });
+
+const techStack = ['Vue.js', 'Nuxt', 'TypeScript', 'PHP', 'Symfony', 'Laravel', 'Tailwind', 'Docker'];
 </script>
 
 <template>
   <div>
-    <background-image-slider></background-image-slider>
+    <!-- ① Cinematic hero -->
+    <background-image-slider />
 
-    <!-- Quick Impact Strip — currently at + tech -->
-    <section class="py-10 bg-dark-100 border-y border-white/5 relative overflow-hidden">
-      <div class="absolute inset-0 bg-grid opacity-10"></div>
-      <div class="container mx-auto px-4 relative z-10">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-          <!-- Currently at -->
-          <div class="flex items-center gap-4">
-            <div class="w-3 h-3 rounded-full bg-neon-green animate-pulse shadow-[0_0_10px_rgba(0,255,136,0.6)]"></div>
-            <div>
-              <p class="text-gray-500 text-xs uppercase tracking-widest">{{ $t('home.currentlyAt') }}</p>
-              <p class="text-white font-bold">DIU MarTech Solutions GmbH</p>
-            </div>
+    <!-- ② Species marquee -->
+    <species-marquee />
+
+    <!-- ③ Field note intro -->
+    <section class="relative py-28 overflow-hidden">
+      <div class="absolute inset-0 bg-topo opacity-30 pointer-events-none"></div>
+      <div class="orb top-0 right-0 w-96 h-96 bg-moss/10"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-14 items-center">
+          <div v-reveal:left>
+            <p class="eyebrow mb-5">{{ t('home.intro.eyebrow') }}</p>
+            <h2 class="display-xl text-4xl md:text-6xl text-bone mb-7 text-balance">
+              {{ t('home.intro.title') }}
+            </h2>
+            <p class="text-lg text-bone-muted leading-relaxed mb-5">{{ t('home.intro.p1') }}</p>
+            <p class="text-lg text-bone-muted leading-relaxed mb-8">{{ t('home.intro.p2') }}</p>
+            <NuxtLink to="/about" class="btn-ghost-wild">
+              {{ t('home.intro.cta') }}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </NuxtLink>
           </div>
-          <!-- Tech marquee -->
-          <div class="flex flex-wrap justify-center gap-2">
-            <span v-for="tech in techStack" :key="tech" class="px-3 py-1 text-xs rounded-full border border-white/10 text-gray-400 hover:border-neon-green/30 hover:text-neon-green transition-all duration-300">{{ tech }}</span>
+
+          <!-- stacked parallax photos -->
+          <div v-reveal:right class="relative h-[460px] hidden lg:block">
+            <div v-parallax="-0.06" class="absolute top-0 right-0 w-2/3 h-72 rounded-2xl overflow-hidden wild-border group">
+              <img v-if="covers.wildlife" :src="covers.wildlife" alt="Wildlife" class="w-full h-full object-cover img-zoom" />
+              <div v-else class="w-full h-full bg-forest-200"></div>
+            </div>
+            <div v-parallax="0.1" class="absolute bottom-0 left-0 w-2/3 h-72 rounded-2xl overflow-hidden wild-border group shadow-2xl shadow-black/50">
+              <img v-if="covers.landscape" :src="covers.landscape" alt="Landscape" class="w-full h-full object-cover img-zoom" />
+              <div v-else class="w-full h-full bg-forest-200"></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Featured Current Work -->
-    <section class="py-16 bg-dark relative overflow-hidden">
-      <div class="absolute inset-0 bg-grid opacity-10"></div>
-      <div class="absolute top-0 right-0 w-80 h-80 bg-neon-green/5 rounded-full blur-[100px]"></div>
-      <div class="container mx-auto px-4 relative z-10">
-        <div class="max-w-4xl mx-auto">
-          <p class="text-gray-500 text-xs uppercase tracking-widest mb-6 text-center">{{ $t('home.workingOnTitle') }}</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <NuxtLink to="/reel-web-projects/suzuki-hit" class="glass-card neon-border p-6 group block hover:-translate-y-1 transition-all duration-300">
-              <div class="flex items-start justify-between mb-3">
-                <h3 class="text-lg font-bold text-white group-hover:text-neon-green transition-colors">Suzuki HIT</h3>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20">{{ $t('home.current') }}</span>
-              </div>
-              <p class="text-gray-400 text-sm mb-3">{{ $t('home.featuredHitDesc') }}</p>
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500">Vue.js</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500">Enterprise</span>
-                <span class="text-neon-green text-xs ml-auto opacity-0 group-hover:opacity-100 transition-opacity">Details →</span>
-              </div>
-            </NuxtLink>
-            <NuxtLink to="/reel-web-projects/suzuki-ssbp-nxt" class="glass-card neon-border p-6 group block hover:-translate-y-1 transition-all duration-300">
-              <div class="flex items-start justify-between mb-3">
-                <h3 class="text-lg font-bold text-white group-hover:text-neon-green transition-colors">Suzuki SSBP-Nxt</h3>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20">{{ $t('home.current') }}</span>
-              </div>
-              <p class="text-gray-400 text-sm mb-3">{{ $t('home.featuredSsbpDesc') }}</p>
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500">Vue.js</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-dark-300 text-gray-500">Rewrite</span>
-                <span class="text-neon-green text-xs ml-auto opacity-0 group-hover:opacity-100 transition-opacity">Details →</span>
-              </div>
-            </NuxtLink>
-          </div>
-          <div class="text-center mt-6">
-            <NuxtLink to="/reel-web-projects" class="text-neon-green text-sm font-medium hover:underline">{{ $t('home.seeAllProjects') }} →</NuxtLink>
-          </div>
+    <!-- ④ Featured collections -->
+    <section class="relative py-24 bg-forest-100 overflow-hidden">
+      <div class="absolute inset-0 bg-grid opacity-60 pointer-events-none"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading :eyebrow="t('home.featured.eyebrow')" :title="t('home.featured.title')" :subtitle="t('home.featured.subtitle')" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5" v-reveal.stagger>
+          <NuxtLink
+            v-for="(c, i) in featured"
+            :key="c.key"
+            :to="c.path"
+            v-tilt="6"
+            :class="['group relative overflow-hidden rounded-2xl wild-border block',
+                     (i === 0) ? 'lg:col-span-2 lg:row-span-2 h-72 lg:h-[512px]' : 'h-72']"
+          >
+            <img v-if="covers[c.key]" :src="covers[c.key]" :alt="t(`photography.categories.${c.key}.title`)" class="absolute inset-0 w-full h-full object-cover img-zoom" />
+            <div v-else class="absolute inset-0 bg-gradient-to-br from-forest-200 to-forest-300"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-forest via-forest/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <span class="eyebrow text-amber">{{ String(i + 1).padStart(2, '0') }}</span>
+              <h3 class="font-display text-2xl md:text-3xl uppercase text-bone mt-1 group-hover:text-amber transition-colors duration-300">
+                {{ t(`photography.categories.${c.key}.title`) }}
+              </h3>
+              <p class="text-sm text-bone-muted mt-1 max-h-0 opacity-0 group-hover:max-h-24 group-hover:opacity-100 overflow-hidden transition-all duration-500">
+                {{ t(`photography.categories.${c.key}.description`) }}
+              </p>
+            </div>
+          </NuxtLink>
+        </div>
+
+        <div class="text-center mt-12" v-reveal>
+          <NuxtLink to="/photography" class="btn-wild-outline">{{ t('home.featured.viewAll') }}</NuxtLink>
         </div>
       </div>
     </section>
 
-    <!-- What I Do Section -->
-    <section class="py-24 bg-dark-100 relative overflow-hidden">
-      <div class="absolute inset-0 bg-grid opacity-20"></div>
-      <div class="absolute top-0 left-1/3 w-80 h-80 bg-neon-green/5 rounded-full blur-[100px]"></div>
-      <div class="absolute bottom-0 right-1/3 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px]"></div>
+    <!-- ⑤ Stats -->
+    <section class="relative py-20 overflow-hidden border-y border-bone/5">
+      <div class="orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-64 bg-amber/5"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+          <stat-counter :value="120" suffix="+" :label="t('home.stat.species')" />
+          <stat-counter :value="2400" suffix="+" :label="t('home.stat.hours')" />
+          <stat-counter :value="38" :label="t('home.stat.km')" />
+          <stat-counter :value="11" :label="t('home.stat.years')" />
+        </div>
+      </div>
+    </section>
 
-      <div class="container mx-auto px-4 relative z-10">
-        <h2 class="section-heading">{{ $t('home.services') }}</h2>
-        <div class="section-divider"></div>
+    <!-- ⑥ What I do -->
+    <section class="relative py-28 overflow-hidden">
+      <div class="absolute inset-0 bg-topo opacity-25 pointer-events-none"></div>
+      <div class="orb bottom-0 left-1/4 w-96 h-96 bg-moss/10"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading :eyebrow="t('home.disciplinesEyebrow')" :title="t('home.services')" />
 
-        <!-- Web Dev - Featured large card -->
-        <NuxtLink to="/reel-web-projects" class="featured-card glass-card neon-border p-8 md:p-10 mb-8 block group relative overflow-hidden">
-          <div class="card-glow-featured"></div>
-          <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div class="w-16 h-16 rounded-2xl bg-neon-green/10 flex items-center justify-center flex-shrink-0 group-hover:bg-neon-green/20 transition-colors duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-              </svg>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center gap-3 mb-2">
-                <h3 class="text-2xl font-bold text-white group-hover:text-neon-green transition-colors duration-300">{{ $t('home.webDev.title') }}</h3>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20">{{ $t('home.mainFocus') }}</span>
-              </div>
-              <p class="text-gray-400 leading-relaxed mb-3">{{ $t('home.webDev.description') }}</p>
-              <span class="text-neon-green text-sm font-medium flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-300">
-                {{ $t('home.viewProjects') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-              </span>
-            </div>
+        <!-- Photography — featured -->
+        <NuxtLink to="/photography" v-reveal v-tilt="3" class="relative block rounded-3xl overflow-hidden wild-border mb-6 group min-h-[280px]">
+          <img v-if="covers.wildlife" :src="covers.wildlife" alt="" class="absolute inset-0 w-full h-full object-cover img-zoom opacity-60" />
+          <div class="absolute inset-0 bg-gradient-to-r from-forest via-forest/80 to-forest/30"></div>
+          <div class="relative z-10 p-8 md:p-12 max-w-2xl">
+            <span class="eyebrow text-amber">{{ t('home.mainFocus') }}</span>
+            <h3 class="font-display text-4xl md:text-5xl uppercase text-bone mt-2 mb-4 group-hover:text-amber transition-colors duration-300">{{ t('home.photography.title') }}</h3>
+            <p class="text-bone-muted leading-relaxed mb-5">{{ t('home.photography.description') }}</p>
+            <span class="btn-ghost-wild">
+              {{ t('home.explorePortfolio') }}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </span>
           </div>
         </NuxtLink>
 
-        <!-- Hobbies -->
-        <p class="text-center text-gray-500 text-sm uppercase tracking-widest mb-6">{{ $t('home.hobbies') }}</p>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <NuxtLink to="/photography" class="service-card group">
-            <div class="card-glow card-glow-purple"></div>
-            <div class="relative z-10">
-              <div class="w-14 h-14 rounded-xl bg-neon-purple/10 flex items-center justify-center mb-5 group-hover:bg-neon-purple/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-neon-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neon-purple transition-colors duration-300">{{ $t('home.photography.title') }}</h3>
-              <p class="text-gray-400 text-sm leading-relaxed mb-4">{{ $t('home.photography.description') }}</p>
-              <span class="text-neon-purple text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                {{ $t('home.explorePortfolio') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-              </span>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6" v-reveal.stagger>
+          <NuxtLink to="/drone" class="discipline-card group">
+            <div class="icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-4.5-6.5L15 8" /></svg></div>
+            <h3 class="card-title">{{ t('home.drone.title') }}</h3>
+            <p class="card-desc">{{ t('home.drone.description') }}</p>
+            <span class="card-link">{{ t('home.learnMore') }} →</span>
           </NuxtLink>
 
-          <NuxtLink to="/drone" class="service-card group">
-            <div class="card-glow card-glow-cyan"></div>
-            <div class="relative z-10">
-              <div class="w-14 h-14 rounded-xl bg-neon-cyan/10 flex items-center justify-center mb-5 group-hover:bg-neon-cyan/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-neon-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-4.5-6.5L15 8" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neon-cyan transition-colors duration-300">{{ $t('home.drone.title') }}</h3>
-              <p class="text-gray-400 text-sm leading-relaxed mb-4">{{ $t('home.drone.description') }}</p>
-              <span class="text-neon-cyan text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                {{ $t('home.learnMore') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-              </span>
-            </div>
-          </NuxtLink>
-
-          <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="service-card group">
-            <div class="card-glow card-glow-magenta"></div>
-            <div class="relative z-10">
-              <div class="w-14 h-14 rounded-xl bg-neon-magenta/10 flex items-center justify-center mb-5 group-hover:bg-neon-magenta/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-neon-magenta" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neon-magenta transition-colors duration-300">{{ $t('home.printing.title') }}</h3>
-              <p class="text-gray-400 text-sm leading-relaxed mb-4">{{ $t('home.printing.description') }}</p>
-              <span class="text-neon-magenta text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                {{ $t('home.exploreServices') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-              </span>
-            </div>
+          <a href="https://3dps.space/" target="_blank" rel="noopener noreferrer" class="discipline-card group">
+            <div class="icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg></div>
+            <h3 class="card-title">{{ t('home.printing.title') }}</h3>
+            <p class="card-desc">{{ t('home.printing.description') }}</p>
+            <span class="card-link">{{ t('home.exploreServices') }} →</span>
           </a>
+
+          <NuxtLink to="/reel-web-projects" class="discipline-card group">
+            <div class="icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg></div>
+            <h3 class="card-title">{{ t('home.webDev.title') }}</h3>
+            <p class="card-desc">{{ t('home.webDev.description') }}</p>
+            <span class="card-link">{{ t('home.viewProjects') }} →</span>
+          </NuxtLink>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="py-24 relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-dark to-neon-purple/10"></div>
-      <div class="absolute inset-0 bg-grid opacity-10"></div>
-      <div class="absolute top-0 left-0 w-64 h-64 bg-neon-green/10 rounded-full blur-[80px]"></div>
-      <div class="absolute bottom-0 right-0 w-64 h-64 bg-neon-purple/10 rounded-full blur-[80px]"></div>
+    <!-- ⑦ Current work strip -->
+    <section class="relative py-16 bg-forest-100 border-y border-bone/5 overflow-hidden">
+      <div class="container mx-auto px-6 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+          <div class="flex items-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-moss animate-pulse shadow-[0_0_10px_rgba(125,156,107,0.7)]"></span>
+            <div>
+              <p class="eyebrow text-bone-dim">{{ t('home.currentlyAt') }}</p>
+              <p class="font-condensed text-lg text-bone uppercase tracking-wide">DIU MarTech Solutions GmbH</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span v-for="tech in techStack" :key="tech" class="px-3 py-1 text-xs font-condensed uppercase tracking-wide rounded-full border border-bone/10 text-bone-dim hover:border-amber/40 hover:text-amber transition-all duration-300">{{ tech }}</span>
+          </div>
+        </div>
 
-      <div class="container mx-auto px-4 text-center relative z-10">
-        <h2 class="text-3xl md:text-5xl font-black mb-6">
-          <span class="gradient-text">{{ $t('cta.title') }}</span>
+        <div class="grid md:grid-cols-2 gap-5" v-reveal.stagger>
+          <NuxtLink to="/reel-web-projects/suzuki-hit" class="work-card group">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-condensed text-lg uppercase tracking-wide text-bone group-hover:text-amber transition-colors">Suzuki HIT</h4>
+              <span class="tag">{{ t('home.current') }}</span>
+            </div>
+            <p class="text-sm text-bone-muted">{{ t('home.featuredHitDesc') }}</p>
+          </NuxtLink>
+          <NuxtLink to="/reel-web-projects/suzuki-ssbp-nxt" class="work-card group">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-condensed text-lg uppercase tracking-wide text-bone group-hover:text-amber transition-colors">Suzuki SSBP-Nxt</h4>
+              <span class="tag">{{ t('home.current') }}</span>
+            </div>
+            <p class="text-sm text-bone-muted">{{ t('home.featuredSsbpDesc') }}</p>
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑧ CTA -->
+    <section class="relative py-32 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-amber/10 via-forest to-moss/10"></div>
+      <div class="absolute inset-0 bg-topo opacity-30 pointer-events-none"></div>
+      <div class="orb top-0 left-0 w-72 h-72 bg-amber/10"></div>
+      <div class="orb bottom-0 right-0 w-72 h-72 bg-clay/10"></div>
+      <div class="container mx-auto px-6 text-center relative z-10" v-reveal:scale>
+        <p class="eyebrow mb-4">{{ t('cta.eyebrow') }}</p>
+        <h2 class="display-xl text-5xl md:text-7xl text-bone mb-6 text-balance">
+          <span class="gradient-text">{{ t('cta.title') }}</span>
         </h2>
-        <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">{{ $t('cta.description') }}</p>
-        <NuxtLink to="/contact" class="btn-neon inline-block">
-          {{ $t('cta.button') }}
-        </NuxtLink>
+        <p class="text-lg text-bone-muted mb-10 max-w-2xl mx-auto">{{ t('cta.description') }}</p>
+        <NuxtLink to="/contact" class="btn-wild">{{ t('cta.button') }}</NuxtLink>
       </div>
     </section>
   </div>
 </template>
 
 <style scoped>
-.featured-card {
-  transition: transform 0.3s ease, border-color 0.3s ease;
+.discipline-card {
+  @apply relative block p-7 rounded-2xl bg-forest-100/70 border border-bone/10 overflow-hidden transition-all duration-500 ease-wild;
 }
-.featured-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(0, 255, 136, 0.4);
+.discipline-card:hover {
+  @apply border-amber/40 -translate-y-1.5;
+  box-shadow: 0 16px 40px -12px rgba(0,0,0,0.6), 0 0 30px rgba(217,138,61,0.08);
 }
+.icon-wrap {
+  @apply w-14 h-14 rounded-xl bg-amber/10 text-amber flex items-center justify-center mb-5 transition-all duration-300;
+}
+.discipline-card:hover .icon-wrap {
+  @apply bg-amber/20 scale-110 -rotate-6;
+}
+.card-title {
+  font-family: 'Anton', sans-serif;
+  @apply text-2xl uppercase text-bone mb-3 transition-colors duration-300;
+}
+.discipline-card:hover .card-title { @apply text-amber; }
+.card-desc { @apply text-sm text-bone-muted leading-relaxed mb-4; }
+.card-link {
+  font-family: 'Oswald', sans-serif;
+  @apply uppercase tracking-widest2 text-xs text-moss-light opacity-0 -translate-x-2 transition-all duration-300;
+}
+.discipline-card:hover .card-link { @apply opacity-100 translate-x-0; }
 
-.card-glow-featured {
-  @apply absolute -top-20 -right-20 w-60 h-60 rounded-full blur-[80px] bg-neon-green/10 opacity-0 transition-opacity duration-500;
+.work-card {
+  @apply block p-6 rounded-2xl bg-forest-200/60 border border-bone/10 transition-all duration-300;
 }
-.featured-card:hover .card-glow-featured {
-  @apply opacity-100;
+.work-card:hover {
+  @apply border-amber/40 -translate-y-1;
 }
-
-.service-card {
-  @apply relative bg-dark-100/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 overflow-hidden transition-all duration-500 cursor-pointer block;
-}
-.service-card:hover {
-  @apply border-white/20;
-  transform: translateY(-5px);
-}
-
-.card-glow {
-  @apply absolute -top-20 -right-20 w-40 h-40 rounded-full blur-[60px] opacity-0 transition-opacity duration-500;
-}
-.service-card:hover .card-glow {
-  @apply opacity-100;
-}
-
-.card-glow-cyan { @apply bg-neon-cyan/20; }
-.card-glow-magenta { @apply bg-neon-magenta/20; }
-.card-glow-purple { @apply bg-neon-purple/20; }
-.card-glow-green { @apply bg-neon-green/20; }
-
-.project-card {
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-.project-card:hover {
-  border-color: rgba(0, 255, 136, 0.4);
+.tag {
+  font-family: 'Oswald', sans-serif;
+  @apply text-[10px] uppercase tracking-widest2 px-2.5 py-0.5 rounded-full bg-moss/15 text-moss-light border border-moss/25;
 }
 </style>

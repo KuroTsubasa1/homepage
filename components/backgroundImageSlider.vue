@@ -1,27 +1,30 @@
 <script lang="ts" setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
 const images = ref([
-  'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/o3s31u9eem15ygo/20220929_173927_original_cb7wKgT60N.JPG?thumb=1440x810f',
-  'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/c5a4iw9elmabgfp/p6190657_topaz_denoiseraw_sharpen_WvbG0DdlWy.jpg?thumb=1440x810f',
-  'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/q47q19ee8liuqio/img_5685_x2pwFemQCR.jpeg?thumb=1440x810f',
-  'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/fg4bsxfdpuaor7i/20220602_211051_topaz_original_g3pXStc64A.JPG?thumb=1440x810f',
+  'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/o3s31u9eem15ygo/20220929_173927_original_cb7wKgT60N.JPG?thumb=1920x1080f',
+  'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/c5a4iw9elmabgfp/p6190657_topaz_denoiseraw_sharpen_WvbG0DdlWy.jpg?thumb=1920x1080f',
+  'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/q47q19ee8liuqio/img_5685_x2pwFemQCR.jpeg?thumb=1920x1080f',
+  'https://pocket.lasseharm.space/api/files/g2y50g4h40yjol9/fg4bsxfdpuaor7i/20220602_211051_topaz_original_g3pXStc64A.JPG?thumb=1920x1080f',
 ]);
 
 const currentImageIndex = ref(0);
+let timer: ReturnType<typeof setInterval> | null = null;
+
+const go = (i: number) => { currentImageIndex.value = (i + images.value.length) % images.value.length; };
 
 onMounted(() => {
-  setInterval(() => {
-    currentImageIndex.value = (currentImageIndex.value + 1) % images.value.length;
-  }, 5000);
+  timer = setInterval(() => go(currentImageIndex.value + 1), 6000);
 });
+onBeforeUnmount(() => { if (timer) clearInterval(timer); });
 </script>
 
 <template>
-  <div class="relative min-h-screen w-full overflow-hidden">
-    <!-- Background slides -->
+  <section class="relative min-h-[100svh] w-full overflow-hidden bg-forest">
+    <!-- Background slides (Ken Burns) -->
     <div
       v-for="(image, index) in images"
       :key="index"
@@ -29,81 +32,85 @@ onMounted(() => {
       :style="{ backgroundImage: 'url(' + image + ')' }"
     ></div>
 
-    <!-- Dark overlay with gradient -->
-    <div class="absolute inset-0 bg-gradient-to-b from-dark/70 via-dark/50 to-dark z-10"></div>
+    <!-- Cinematic grading: vignette + bottom fade -->
+    <div class="absolute inset-0 z-10 pointer-events-none vignette"></div>
+    <div class="absolute inset-0 z-10 pointer-events-none bg-gradient-to-r from-forest/80 via-transparent to-forest/40"></div>
 
-    <!-- Grid pattern overlay -->
-    <div class="absolute inset-0 bg-grid z-10 opacity-30"></div>
-
-    <!-- Ambient glow effects -->
-    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-green/10 rounded-full blur-[120px] z-10"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-magenta/10 rounded-full blur-[120px] z-10"></div>
+    <!-- Topographic texture + ambient drift orbs -->
+    <div class="absolute inset-0 z-10 bg-topo opacity-30 pointer-events-none"></div>
+    <div class="orb top-1/4 left-1/4 w-96 h-96 bg-amber/10 animate-drift-slow z-10"></div>
+    <div class="orb bottom-1/4 right-1/4 w-96 h-96 bg-moss/10 animate-drift z-10"></div>
 
     <!-- Content -->
-    <div class="relative z-20 flex flex-col items-center justify-center min-h-screen px-4">
-      <!-- Avatar -->
-      <div class="mb-8 animate-float">
-        <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-neon-green/50 shadow-[0_0_30px_rgba(0,240,255,0.3)]">
-          <img
-            alt="Lasse Harm"
-            class="w-full h-full object-cover"
-            loading="lazy"
-            src="https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/apekawb8my5xl5w/img_9077_topaz_denoiseraw_sharpen_no3Chl3kmx.jpg?thumb=300x300"
-          >
-        </div>
-      </div>
-
-      <!-- Text -->
-      <div class="text-center max-w-2xl">
-        <h1 class="text-5xl md:text-7xl font-black mb-4 animate-slide-up">
-          <span class="gradient-text">{{ $t('hero.greeting') }}</span>
-        </h1>
-        <p class="text-lg md:text-xl text-gray-300 mb-10 animate-slide-up" style="animation-delay: 0.15s;">
-          {{ $t('hero.tagline') }}
+    <div class="relative z-20 flex flex-col justify-center min-h-[100svh] container mx-auto px-6">
+      <div class="max-w-3xl">
+        <p class="eyebrow mb-6 flex items-center gap-3 animate-slide-up">
+          <span class="inline-block w-10 h-px bg-amber"></span>
+          {{ t('home.landing.kicker') }}
         </p>
 
-        <div class="flex flex-wrap justify-center gap-4 animate-slide-up" style="animation-delay: 0.3s;">
-          <NuxtLink to="/reel-web-projects" class="btn-neon">
-            {{ $t('hero.watchWork') }}
-          </NuxtLink>
-          <NuxtLink to="/contact" class="btn-neon-outline">
-            {{ $t('nav.contact') }}
-          </NuxtLink>
+        <h1 class="display-xl text-bone text-[18vw] sm:text-[15vw] md:text-[11rem] lg:text-[13rem]">
+          <span class="block overflow-hidden">
+            <span class="inline-block animate-slide-up" style="animation-delay:.05s">{{ t('home.landing.titleA') }}</span>
+          </span>
+          <span class="block overflow-hidden">
+            <span class="inline-block gradient-text-anim animate-slide-up" style="animation-delay:.18s">{{ t('home.landing.titleB') }}</span>
+          </span>
+        </h1>
+
+        <p class="mt-6 text-lg md:text-xl text-bone-muted max-w-xl leading-relaxed animate-slide-up" style="animation-delay:.32s">
+          {{ t('home.landing.lead') }}
+        </p>
+
+        <div class="mt-10 flex flex-wrap items-center gap-4 animate-slide-up" style="animation-delay:.45s">
+          <NuxtLink to="/photography" class="btn-wild">{{ t('home.landing.ctaPhotos') }}</NuxtLink>
+          <NuxtLink to="/contact" class="btn-wild-outline">{{ t('nav.contact') }}</NuxtLink>
         </div>
       </div>
+    </div>
 
-      <!-- Social row at bottom -->
-      <div class="absolute bottom-10 z-20">
-        <social-row></social-row>
-      </div>
-
-      <!-- Scroll indicator -->
-      <div class="absolute bottom-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500 text-xs uppercase tracking-widest">
-        <div class="w-px h-8 bg-gradient-to-b from-transparent to-neon-green/50"></div>
+    <!-- Slide indicators -->
+    <div class="absolute bottom-10 right-6 md:right-10 z-30 flex flex-col items-end gap-3">
+      <social-row class="!justify-end mb-2" />
+      <div class="flex gap-2">
+        <button
+          v-for="(_, i) in images"
+          :key="i"
+          @click="go(i)"
+          :aria-label="`Slide ${i + 1}`"
+          class="h-1 rounded-full transition-all duration-500"
+          :class="currentImageIndex === i ? 'w-10 bg-amber shadow-[0_0_10px_rgba(217,138,61,0.6)]' : 'w-4 bg-bone/30 hover:bg-bone/60'"
+        ></button>
       </div>
     </div>
-  </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
+      <span class="eyebrow text-[10px] text-bone-dim">Scroll</span>
+      <span class="w-px h-12 bg-gradient-to-b from-amber/70 to-transparent animate-bob"></span>
+    </div>
+  </section>
 </template>
 
 <style scoped>
 .slide {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
-  position: absolute;
-  transition: opacity 1.5s ease-in-out;
   opacity: 0;
-  transform: scale(1.05);
+  transform: scale(1.06);
+  transition: opacity 1.6s ease-in-out;
 }
-
 .slide.active {
   opacity: 1;
-  animation: ken-burns 8s ease-in-out forwards;
+  animation: ken-burns 9s ease-out forwards;
 }
-
 @keyframes ken-burns {
-  0% { transform: scale(1.05); }
-  100% { transform: scale(1.12); }
+  0% { transform: scale(1.06) translate(0, 0); }
+  100% { transform: scale(1.16) translate(-1.5%, -1.5%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slide.active { animation: none; transform: scale(1.02); }
 }
 </style>

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import FooterComponent from "~/components/footerComponent.vue";
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -16,26 +15,36 @@ useSeoMeta({
 </script>
 
 <template>
-  <navigation></navigation>
+  <div>
+    <!-- ① Cinematic hero -->
+    <section class="relative min-h-[60vh] md:min-h-[70vh] overflow-hidden bg-forest flex items-end">
+      <div class="absolute inset-0 bg-gradient-to-br from-amber/10 via-forest to-moss/10 pointer-events-none"></div>
+      <div class="absolute inset-0 bg-topo opacity-25 pointer-events-none"></div>
+      <div class="absolute inset-0 vignette pointer-events-none"></div>
+      <div class="orb top-1/4 left-1/4 w-80 h-80 bg-amber/10 animate-drift"></div>
+      <div class="orb bottom-0 right-1/4 w-80 h-80 bg-clay/10 animate-drift-slow"></div>
 
-  <!-- Hero Section -->
-  <section class="relative py-32 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 via-dark to-neon-magenta/10"></div>
-    <div class="absolute inset-0 bg-grid opacity-20"></div>
-    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-cyan/10 rounded-full blur-[100px]"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-neon-magenta/10 rounded-full blur-[100px]"></div>
+      <div class="relative z-10 container mx-auto px-6 pb-20 pt-32">
+        <div class="max-w-3xl" v-reveal>
+          <p class="eyebrow mb-5 flex items-center gap-3">
+            <span class="inline-block w-10 h-px bg-amber"></span>
+            {{ t('contactSection.title') }}
+          </p>
+          <h1 class="display-xl text-bone text-6xl md:text-8xl lg:text-9xl">
+            <span class="gradient-text">{{ t('contact.hero.title') }}</span>
+          </h1>
+          <p class="mt-6 text-lg md:text-xl text-bone-muted max-w-2xl leading-relaxed">
+            {{ t('contact.hero.subtitle') }}
+          </p>
+        </div>
+      </div>
 
-    <div class="container mx-auto px-4 text-center relative z-10 pt-10">
-      <h1 class="text-4xl md:text-6xl font-black mb-4">
-        <span class="gradient-text">{{ t('contact.hero.title') }}</span>
-      </h1>
-      <p class="text-lg text-gray-400 max-w-2xl mx-auto">{{ t('contact.hero.subtitle') }}</p>
-    </div>
-  </section>
+      <div class="absolute bottom-8 right-8 z-10 hidden md:flex flex-col items-center gap-2">
+        <span class="w-px h-10 bg-gradient-to-b from-amber/70 to-transparent animate-bob"></span>
+      </div>
+    </section>
 
-  <!-- Contact Form Section -->
-  <contact-section></contact-section>
-
-  <footer-component></footer-component>
+    <!-- ② Contact form section -->
+    <contact-section></contact-section>
+  </div>
 </template>
-

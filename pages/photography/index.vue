@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import FooterComponent from "~/components/footerComponent.vue";
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -94,445 +93,260 @@ const introImages = computed(() =>
     alt: t(`photography.categories.${c.i18nKey}.title`),
   })),
 );
-
-
 </script>
 
 <template>
-  <navigation></navigation>
+  <div>
+    <!-- ① Cinematic hero — Ken Burns intro images + giant Anton title -->
+    <section class="relative min-h-[82vh] md:min-h-[92vh] overflow-hidden bg-forest flex items-end">
+      <!-- Cross-fading Ken Burns slides -->
+      <div class="absolute inset-0">
+        <div
+          v-for="(image, index) in introImages"
+          :key="index"
+          class="hero-slide absolute inset-0 bg-cover bg-center opacity-0"
+          :style="{ backgroundImage: `url(${image.src})`, animationDelay: `${index * 5}s` }"
+        ></div>
+        <!-- fallback canvas when no covers loaded -->
+        <div v-if="!introImages.length" class="absolute inset-0 bg-gradient-to-br from-forest-200 to-forest"></div>
+      </div>
 
-  <!-- Hero Section -->
-  <section class="hero relative overflow-hidden">
-    <div class="hero-slider absolute inset-0">
-      <div v-for="(image, index) in introImages" :key="index" class="hero-slide absolute inset-0 opacity-0"
-           :style="{ backgroundImage: `url(${image.src})`, animationDelay: `${index * 5}s` }">
-        <div class="absolute inset-0 bg-black/60"></div>
-      </div>
-    </div>
-    <!-- Glow orbs in hero -->
-    <div class="absolute top-20 left-10 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-20 right-10 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 h-full flex items-center relative z-10">
-      <div class="text-center mx-auto max-w-3xl">
-        <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 hero-title">
-          {{ t('photography.hero.titlePrefix') }} <span class="gradient-text">{{ t('photography.hero.titleHighlight') }}</span>
-        </h1>
-        <p class="text-xl text-gray-300 mb-8">{{ t('photography.hero.subtitle') }}</p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="#categories" class="btn-neon">{{ t('photography.hero.browse') }}</a>
-        </div>
-      </div>
-    </div>
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-      <div class="scroll-indicator">
-        <div class="mouse">
-          <div class="wheel"></div>
-        </div>
-        <div class="arrows">
-          <span class="arrow-down"></span>
-          <span class="arrow-down"></span>
-        </div>
-      </div>
-    </div>
-  </section>
+      <!-- Cinematic grading -->
+      <div class="absolute inset-0 vignette pointer-events-none"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-forest via-forest/50 to-forest/20 pointer-events-none"></div>
+      <div class="absolute inset-0 bg-topo opacity-20 pointer-events-none"></div>
+      <div class="orb top-24 left-10 w-96 h-96 bg-amber/10 animate-drift pointer-events-none"></div>
+      <div class="orb bottom-0 right-1/4 w-[28rem] h-64 bg-moss/10 animate-drift-slow pointer-events-none"></div>
 
-  <!-- Introduction Section -->
-  <section class="py-16 bg-dark relative overflow-hidden">
-    <!-- Grid overlay -->
-    <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
-    <!-- Glow orbs -->
-    <div class="absolute top-0 right-0 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 w-80 h-80 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-        <div>
-          <h2 class="text-3xl font-bold text-white mb-6">{{ t('photography.about.title') }}</h2>
-          <p class="text-lg text-gray-300 mb-4">{{ t('photography.about.p1') }}</p>
-          <p class="text-lg text-gray-300 mb-6">{{ t('photography.about.p2') }}</p>
-          <div class="flex flex-wrap gap-4">
-            <a href="/about" class="inline-flex items-center text-neon-cyan font-semibold hover:drop-shadow-[0_0_8px_rgba(0,240,255,0.5)] transition-all">
-              <span>{{ t('photography.about.learnMore') }}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+      <!-- Content -->
+      <div class="relative z-20 container mx-auto px-6 pb-24 pt-36">
+        <div class="max-w-4xl" v-reveal>
+          <p class="eyebrow mb-5 flex items-center gap-3">
+            <span class="inline-block w-10 h-px bg-amber"></span>
+            {{ t('photography.hero.subtitle') }}
+          </p>
+          <h1 class="display-xl text-bone text-6xl md:text-8xl lg:text-[8.5rem] leading-[0.92] mb-8">
+            {{ t('photography.hero.titlePrefix') }}
+            <span class="gradient-text-anim block">{{ t('photography.hero.titleHighlight') }}</span>
+          </h1>
+          <a href="#collections" class="btn-wild">
+            {{ t('photography.hero.browse') }}
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Scroll cue -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2">
+        <span class="eyebrow text-bone-dim text-[10px]">Scroll</span>
+        <span class="w-px h-12 bg-gradient-to-b from-amber/80 to-transparent animate-bob"></span>
+      </div>
+    </section>
+
+    <!-- ② Species marquee -->
+    <species-marquee />
+
+    <!-- ③ Intro — parallax collage + editorial copy -->
+    <section class="relative py-28 overflow-hidden">
+      <div class="absolute inset-0 bg-topo opacity-25 pointer-events-none"></div>
+      <div class="orb top-0 right-0 w-96 h-96 bg-moss/10 pointer-events-none"></div>
+      <div class="orb bottom-10 left-0 w-80 h-80 bg-clay/10 pointer-events-none"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+          <div v-reveal:left>
+            <p class="eyebrow mb-5">{{ t('photography.collections.subtitle') }}</p>
+            <h2 class="display-xl text-4xl md:text-6xl text-bone mb-7 text-balance">
+              {{ t('photography.about.title') }}
+            </h2>
+            <div class="section-divider !mx-0 !mb-7"></div>
+            <p class="text-lg text-bone-muted leading-relaxed mb-5">{{ t('photography.about.p1') }}</p>
+            <p class="text-lg text-bone-muted leading-relaxed mb-8">{{ t('photography.about.p2') }}</p>
+            <NuxtLink to="/about" class="btn-ghost-wild">
+              {{ t('photography.about.learnMore') }}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </NuxtLink>
+          </div>
+
+          <!-- parallax photo collage -->
+          <div v-reveal:right class="relative grid grid-cols-2 gap-5 h-[540px]">
+            <div class="flex flex-col gap-5">
+              <div v-parallax="-0.05" class="rounded-2xl overflow-hidden wild-border group h-72">
+                <img v-if="introImages[0]" :src="introImages[0].src" :alt="introImages[0].alt" class="w-full h-full object-cover img-zoom" />
+                <div v-else class="w-full h-full bg-gradient-to-br from-forest-200 to-forest-300"></div>
+              </div>
+              <div v-parallax="0.08" class="rounded-2xl overflow-hidden wild-border group h-52">
+                <img v-if="introImages[1]" :src="introImages[1].src" :alt="introImages[1].alt" class="w-full h-full object-cover img-zoom" />
+                <div v-else class="w-full h-full bg-gradient-to-br from-forest-200 to-forest-300"></div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-5 pt-12">
+              <div v-parallax="0.1" class="rounded-2xl overflow-hidden wild-border group h-52">
+                <img v-if="introImages[2]" :src="introImages[2].src" :alt="introImages[2].alt" class="w-full h-full object-cover img-zoom" />
+                <div v-else class="w-full h-full bg-gradient-to-br from-forest-200 to-forest-300"></div>
+              </div>
+              <div v-parallax="-0.07" class="rounded-2xl overflow-hidden wild-border group h-72">
+                <img v-if="introImages[3]" :src="introImages[3].src" :alt="introImages[3].alt" class="w-full h-full object-cover img-zoom" />
+                <div v-else class="w-full h-full bg-gradient-to-br from-forest-200 to-forest-300"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ Collections grid — asymmetric, big featured first tile -->
+    <section id="collections" class="relative py-28 bg-forest-100 overflow-hidden scroll-mt-24">
+      <div class="absolute inset-0 bg-grid opacity-50 pointer-events-none"></div>
+      <div class="orb top-20 right-1/4 w-96 h-96 bg-amber/10 pointer-events-none"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading
+          :eyebrow="t('photography.hero.subtitle')"
+          :title="t('photography.collections.title')"
+          :subtitle="t('photography.collections.subtitle')"
+        />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" v-reveal.stagger>
+          <NuxtLink
+            v-for="(category, i) in photographyCategories"
+            :key="category.i18nKey"
+            :to="category.path"
+            v-tilt="6"
+            :class="['group relative overflow-hidden rounded-2xl wild-border block',
+                     (i === 0) ? 'sm:col-span-2 lg:row-span-2 h-72 lg:h-[544px]' : 'h-72']"
+          >
+            <img
+              v-if="category.image"
+              :src="category.image"
+              :alt="t(`photography.categories.${category.i18nKey}.title`)"
+              class="absolute inset-0 w-full h-full object-cover img-zoom"
+            />
+            <div v-else class="absolute inset-0 bg-gradient-to-br from-forest-200 to-forest-300"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-forest via-forest/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <span class="eyebrow text-amber">{{ String(i + 1).padStart(2, '0') }}</span>
+              <h3 :class="['font-display uppercase text-bone mt-1 group-hover:text-amber transition-colors duration-300',
+                           (i === 0) ? 'text-3xl md:text-5xl' : 'text-2xl md:text-3xl']">
+                {{ t(`photography.categories.${category.i18nKey}.title`) }}
+              </h3>
+              <p class="text-sm text-bone-muted mt-1 max-h-0 opacity-0 group-hover:max-h-28 group-hover:opacity-100 overflow-hidden transition-all duration-500">
+                {{ t(`photography.categories.${category.i18nKey}.description`) }}
+              </p>
+            </div>
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑤ Wedding feature — the one bookable service -->
+    <section class="relative py-28 overflow-hidden">
+      <div
+        class="absolute inset-0 opacity-[0.07] pointer-events-none bg-cover bg-center"
+        :style="photographyCategories[4]?.image ? { backgroundImage: `url(${photographyCategories[4].image})` } : {}"
+      ></div>
+      <div class="absolute inset-0 bg-topo opacity-25 pointer-events-none"></div>
+      <div class="orb top-10 right-20 w-96 h-96 bg-clay/10 pointer-events-none"></div>
+      <div class="orb bottom-10 left-20 w-80 h-80 bg-amber/10 pointer-events-none"></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <section-heading
+          :eyebrow="t('photography.weddingSection.seeGallery')"
+          :title="t('photography.weddingSection.title')"
+          :subtitle="t('photography.weddingSection.subtitle')"
+        />
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14" v-reveal.stagger>
+          <div v-tilt="4" class="wedding-feature panel rounded-2xl p-8 text-center">
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-            </a>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="space-y-4">
-            <div class="overflow-hidden rounded-2xl border border-white/10 transform translate-y-8">
-              <img v-if="introImages[0]" :src="introImages[0].src" :alt="introImages[0].alt"
-                   class="w-full h-64 object-cover hover:scale-110 transition-transform duration-700">
-              <div v-else class="w-full h-64 bg-gradient-to-br from-dark-200 to-dark-300"></div>
             </div>
-            <div class="overflow-hidden rounded-2xl border border-white/10">
-              <img v-if="introImages[1]" :src="introImages[1].src" :alt="introImages[1].alt"
-                   class="w-full h-48 object-cover hover:scale-110 transition-transform duration-700">
-              <div v-else class="w-full h-48 bg-gradient-to-br from-dark-200 to-dark-300"></div>
+            <h3 class="font-display text-2xl uppercase text-bone mb-3">{{ t('photography.weddingSection.features.engagement.title') }}</h3>
+            <p class="text-bone-muted leading-relaxed">{{ t('photography.weddingSection.features.engagement.description') }}</p>
+          </div>
+
+          <div v-tilt="4" class="wedding-feature panel rounded-2xl p-8 text-center">
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
             </div>
+            <h3 class="font-display text-2xl uppercase text-bone mb-3">{{ t('photography.weddingSection.features.fullDay.title') }}</h3>
+            <p class="text-bone-muted leading-relaxed">{{ t('photography.weddingSection.features.fullDay.description') }}</p>
           </div>
-          <div class="space-y-4">
-            <div class="overflow-hidden rounded-2xl border border-white/10">
-              <img v-if="introImages[2]" :src="introImages[2].src" :alt="introImages[2].alt"
-                   class="w-full h-48 object-cover hover:scale-110 transition-transform duration-700">
-              <div v-else class="w-full h-48 bg-gradient-to-br from-dark-200 to-dark-300"></div>
+
+          <div v-tilt="4" class="wedding-feature panel rounded-2xl p-8 text-center">
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
             </div>
-            <div class="overflow-hidden rounded-2xl border border-white/10 transform translate-y-8">
-              <img v-if="introImages[3]" :src="introImages[3].src" :alt="introImages[3].alt"
-                   class="w-full h-64 object-cover hover:scale-110 transition-transform duration-700">
-              <div v-else class="w-full h-64 bg-gradient-to-br from-dark-200 to-dark-300"></div>
-            </div>
+            <h3 class="font-display text-2xl uppercase text-bone mb-3">{{ t('photography.weddingSection.features.albums.title') }}</h3>
+            <p class="text-bone-muted leading-relaxed">{{ t('photography.weddingSection.features.albums.description') }}</p>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Featured Categories Section -->
-  <section id="categories" class="py-16 bg-dark-100 relative overflow-hidden">
-    <!-- Grid overlay -->
-    <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
-    <!-- Glow orbs -->
-    <div class="absolute top-20 left-20 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-20 right-20 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="text-center mb-12">
-        <h2 class="section-heading text-4xl font-bold text-white mb-4">{{ t('photography.collections.title') }}</h2>
-        <div class="section-divider mx-auto mb-6"></div>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-          {{ t('photography.collections.subtitle') }}
-        </p>
-      </div>
-
-      <!-- Categories Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <a v-for="category in photographyCategories"
-             :key="category.i18nKey"
-             :href="category.path"
-             class="category-card relative overflow-hidden rounded-2xl border border-white/10 h-64 group transition-all duration-300 block hover:border-neon-green/30">
-          <img v-if="category.image" :src="category.image" :alt="t(`photography.categories.${category.i18nKey}.title`)" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-          <div v-else class="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-400"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent"></div>
-          <div class="absolute bottom-0 left-0 right-0 p-5">
-            <h3 class="text-xl font-bold text-white mb-1">{{ t(`photography.categories.${category.i18nKey}.title`) }}</h3>
-            <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">{{ t(`photography.categories.${category.i18nKey}.description`) }}</p>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Wedding Photography Feature Section -->
-  <section class="py-20 bg-dark relative overflow-hidden">
-    <div class="absolute top-0 left-0 w-full h-full opacity-5" :style="photographyCategories[4]?.image ? { backgroundImage: `url(${photographyCategories[4].image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}"></div>
-    <!-- Grid overlay -->
-    <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
-    <!-- Glow orbs -->
-    <div class="absolute top-10 right-20 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-10 left-20 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="text-center mb-10">
-        <h2 class="section-heading text-4xl font-bold text-white mb-4">{{ t('photography.weddingSection.title') }}</h2>
-        <div class="section-divider mx-auto mb-6"></div>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-10">
-          {{ t('photography.weddingSection.subtitle') }}
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
-          <div class="w-16 h-16 rounded-full bg-neon-cyan/10 border border-neon-cyan/30 flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">{{ t('photography.weddingSection.features.engagement.title') }}</h3>
-          <p class="text-gray-400">{{ t('photography.weddingSection.features.engagement.description') }}</p>
-        </div>
-
-        <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
-          <div class="w-16 h-16 rounded-full bg-neon-magenta/10 border border-neon-magenta/30 flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-magenta" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">{{ t('photography.weddingSection.features.fullDay.title') }}</h3>
-          <p class="text-gray-400">{{ t('photography.weddingSection.features.fullDay.description') }}</p>
-        </div>
-
-        <div class="wedding-feature glass-card neon-border rounded-2xl p-6 text-center">
-          <div class="w-16 h-16 rounded-full bg-neon-purple/10 border border-neon-purple/30 flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neon-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">{{ t('photography.weddingSection.features.albums.title') }}</h3>
-          <p class="text-gray-400">{{ t('photography.weddingSection.features.albums.description') }}</p>
+        <div class="text-center" v-reveal>
+          <NuxtLink to="/photography/weddings" class="btn-wild-outline">
+            {{ t('photography.weddingSection.seeGallery') }}
+          </NuxtLink>
         </div>
       </div>
+    </section>
 
-      <div class="text-center">
-        <a href="/photography/weddings" class="btn-neon">
-          {{ t('photography.weddingSection.seeGallery') }}
-        </a>
+    <!-- ⑥ Closing CTA -->
+    <section class="relative py-32 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-amber/10 via-forest to-moss/10"></div>
+      <div class="absolute inset-0 bg-topo opacity-30 pointer-events-none"></div>
+      <div class="orb top-0 left-0 w-72 h-72 bg-amber/10 pointer-events-none"></div>
+      <div class="orb bottom-0 right-0 w-72 h-72 bg-clay/10 pointer-events-none"></div>
+      <div class="container mx-auto px-6 text-center relative z-10" v-reveal:scale>
+        <p class="eyebrow mb-4">{{ t('photography.hero.titleHighlight') }}</p>
+        <h2 class="display-xl text-5xl md:text-7xl text-bone mb-6 text-balance">
+          <span class="gradient-text">{{ t('photography.ctaBlock.title') }}</span>
+        </h2>
+        <p class="text-lg text-bone-muted mb-10 max-w-2xl mx-auto">{{ t('photography.ctaBlock.subtitle') }}</p>
+        <NuxtLink to="/contact" class="btn-wild">{{ t('photography.ctaBlock.button') }}</NuxtLink>
       </div>
-    </div>
-  </section>
-
-  <!-- Call to Action Section -->
-  <section class="py-20 bg-gradient-to-br from-neon-cyan/10 via-dark to-neon-magenta/10 text-white text-center relative overflow-hidden">
-    <!-- Grid overlay -->
-    <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
-    <!-- Glow orbs -->
-    <div class="absolute top-10 left-1/4 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-neon-magenta/5 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <h2 class="text-4xl font-bold mb-6 gradient-text">{{ t('photography.ctaBlock.title') }}</h2>
-      <p class="text-xl mb-10 max-w-3xl mx-auto text-gray-300">
-        {{ t('photography.ctaBlock.subtitle') }}
-      </p>
-      <a href="/contact" class="btn-neon">
-        {{ t('photography.ctaBlock.button') }}
-      </a>
-    </div>
-  </section>
-
-  <footer-component></footer-component>
+    </section>
+  </div>
 </template>
 
 <style scoped>
-/* Hero section styles */
-.hero {
-  height: 100vh;
-  min-height: 600px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  color: white;
-  background-color: #0a0a0f;
-}
-
+/* Cross-fading Ken Burns hero slides */
 .hero-slide {
-  background-size: cover;
-  background-position: center;
-  animation: slideFade 20s infinite;
+  animation: heroSlideFade 20s infinite;
 }
-
 .hero-slide:nth-child(1) { animation-delay: 0s; }
 .hero-slide:nth-child(2) { animation-delay: 5s; }
 .hero-slide:nth-child(3) { animation-delay: 10s; }
 .hero-slide:nth-child(4) { animation-delay: 15s; }
 
-@keyframes slideFade {
-  0%, 15%, 100% { opacity: 0; }
-  20%, 35% { opacity: 1; }
+@keyframes heroSlideFade {
+  0%, 15%, 100% { opacity: 0; transform: scale(1.05); }
+  20%, 35% { opacity: 1; transform: scale(1.12); }
 }
 
-.hero-title {
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-/* Dark theme backgrounds */
-.bg-dark {
-  background-color: #0a0a0f;
-}
-
-.bg-dark-100 {
-  background-color: #16161f;
-}
-
-/* Grid pattern overlay */
-.bg-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-/* Glass card */
-.glass-card {
-  background: rgba(22, 22, 31, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-}
-
-/* Neon border glow */
-.neon-border {
-  border: 1px solid rgba(0, 240, 255, 0.2);
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.05), inset 0 0 15px rgba(0, 240, 255, 0.02);
-}
-
-/* Section heading */
-.section-heading {
-  color: white;
-  text-align: center;
-  font-weight: bold;
-}
-
-/* Section divider - gradient line */
-.section-divider {
-  width: 6rem;
-  height: 3px;
-  background: linear-gradient(to right, #00f0ff, #8b5cf6, #ff00aa);
-  border-radius: 2px;
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(to right, #00f0ff, #8b5cf6, #ff00aa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Neon accent colors */
-.text-neon-cyan { color: #00f0ff; }
-.text-neon-magenta { color: #ff00aa; }
-.text-neon-purple { color: #8b5cf6; }
-.text-neon-green { color: #39ff14; }
-
-/* Buttons */
-.btn-neon {
-  background-color: #00f0ff;
-  color: #0a0a0f;
-  font-weight: bold;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  transition: all 0.3s ease;
-  display: inline-block;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.1);
-}
-
-.btn-neon:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.5), 0 0 60px rgba(0, 240, 255, 0.2);
-  background-color: #33f3ff;
-}
-
-.btn-neon-outline {
-  background-color: transparent;
-  color: #00f0ff;
-  font-weight: bold;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  border: 2px solid #00f0ff;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.btn-neon-outline:hover {
-  background-color: rgba(0, 240, 255, 0.1);
-  transform: translateY(-3px);
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.1);
-}
-
-/* Scroll indicator */
-.scroll-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.mouse {
-  width: 30px;
-  height: 50px;
-  border: 2px solid rgba(0, 240, 255, 0.5);
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 5px;
-}
-
-.wheel {
-  width: 4px;
-  height: 8px;
-  background: #00f0ff;
-  border-radius: 2px;
-  margin-top: 10px;
-  animation: scroll 1.5s infinite;
-}
-
-@keyframes scroll {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(15px); opacity: 0; }
-}
-
-.arrows {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.arrow-down {
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid rgba(0, 240, 255, 0.5);
-  border-bottom: 2px solid rgba(0, 240, 255, 0.5);
-  transform: rotate(45deg);
-  margin: 0 0 3px 0;
-  animation: arrow 1.5s infinite;
-}
-
-.arrow-down:nth-child(2) {
-  animation-delay: 0.3s;
-}
-
-@keyframes arrow {
-  0% { opacity: 0; }
-  50% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* Testimonial Slider */
-.testimonial-slide {
-  transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
-/* Category cards animation */
-.category-pill {
-  cursor: pointer;
-}
-
-/* Wedding feature animations */
 .wedding-feature {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
 }
-
 .wedding-feature:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
-  border-color: rgba(0, 240, 255, 0.3);
+  border-color: rgba(217, 138, 61, 0.4);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6), 0 0 30px rgba(217, 138, 61, 0.1);
+}
+.feature-icon {
+  @apply w-16 h-16 rounded-full bg-amber/10 border border-amber/30 text-amber flex items-center justify-center mx-auto mb-5 transition-all duration-300;
+}
+.wedding-feature:hover .feature-icon {
+  @apply bg-amber/20 scale-110;
 }
 
-.wedding-feature .w-16 {
-  transition: transform 0.3s ease;
-}
-
-.wedding-feature:hover .w-16 {
-  transform: scale(1.1);
-}
-
-/* Pricing card hover */
-.pricing-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.pricing-card:hover {
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
-  border-color: rgba(0, 240, 255, 0.3);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .hero {
-    min-height: 500px;
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide {
+    animation: none;
   }
-
-  .hero-title {
-    font-size: 2.5rem;
+  .hero-slide:first-child {
+    opacity: 1;
   }
 }
 </style>
