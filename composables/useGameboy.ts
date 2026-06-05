@@ -38,6 +38,7 @@ const palette = ref<GbPalette>('night')
 const muted = ref(false)        // master sound switch (audio still gated by browser gesture)
 const volume = ref(0.6)         // master volume 0..1 (the DMG volume wheel)
 const musicOn = ref(true)       // background chiptune on/off
+const musicTrack = ref<'auto' | 'party' | 'rpg-town' | 'rpg-battle'>('auto') // active track selector
 const deckOpen = ref(true)      // bottom control deck expanded/collapsed
 const secretUnlocked = ref(false) // Konami code found -> secret palettes available
 const menuOpen = ref(false)
@@ -123,7 +124,8 @@ const sfx = {
    loops seamlessly regardless of timer jitter.
    ---------------------------------------------------------------------- */
 const NT = {
-  F2: 87.31, G2: 98.0, A2: 110.0, C3: 130.81, D3: 146.83, E3: 164.81, G3: 196.0,
+  E2: 82.41, F2: 87.31, G2: 98.0, A2: 110.0, C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.0,
+  C4: 261.63, E4: 329.63,
   G4: 392.0, A4: 440.0, B4: 493.88,
   C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.0, B5: 987.77,
   C6: 1046.5, D6: 1174.66,
@@ -163,6 +165,32 @@ const C_CHORDS = [
   [NT.C5, NT.E5, NT.G5], [NT.D5, NT.G5, NT.B5], [NT.A4, NT.C5, NT.E5], [NT.A4, NT.C5, NT.F5],
 ]
 const C_ROOTS = [NT.C3, NT.G2, NT.A2, NT.F2]
+
+/* ---- RPG TOWN theme: gentle, adventurous, C · G · Am · F (4 bars) ---- */
+const TOWN_STEP = 0.2
+const TOWN_LEAD = [
+  NT.G5, NT.E5, NT.C5, NT.E5, NT.G5, 0, NT.E5, 0,   // C
+  NT.G5, NT.D5, NT.B4, NT.D5, NT.G5, 0, NT.D5, 0,   // G
+  NT.A5, NT.E5, NT.C5, NT.E5, NT.A4, 0, NT.C5, 0,   // Am
+  NT.A5, NT.F5, NT.C5, NT.F5, NT.A4, 0, NT.C5, 0,   // F
+]
+const TOWN_CHORDS = [
+  [NT.C5, NT.E5, NT.G5], [NT.D5, NT.G5, NT.B4], [NT.A4, NT.C5, NT.E5], [NT.A4, NT.C5, NT.F5],
+]
+const TOWN_ROOTS = [NT.C3, NT.G2, NT.A2, NT.F2]
+
+/* ---- RPG BATTLE theme: fast, driving, minor Am · F · G · Em (4 bars) ---- */
+const BATTLE_STEP = 0.11
+const BATTLE_LEAD = [
+  NT.A4, NT.C5, NT.E5, NT.A5, NT.E5, NT.C5, NT.E5, NT.C5,   // Am
+  NT.A4, NT.C5, NT.F5, NT.A5, NT.F5, NT.C5, NT.F5, NT.C5,   // F
+  NT.B4, NT.D5, NT.G5, NT.B5, NT.G5, NT.D5, NT.G5, NT.D5,   // G
+  NT.B4, NT.E5, NT.G5, NT.B5, NT.E5, NT.G5, NT.E5, NT.B4,   // Em
+]
+const BATTLE_CHORDS = [
+  [NT.A4, NT.C5, NT.E5], [NT.A4, NT.C5, NT.F5], [NT.B4, NT.D5, NT.G5], [NT.B4, NT.E5, NT.G5],
+]
+const BATTLE_ROOTS = [NT.A2, NT.F2, NT.G2, NT.E2]
 
 let musicTimer: any = null
 let nextNoteTime = 0
@@ -239,13 +267,49 @@ function scheduleCheatStep(idx: number, t: number) {
   if (beat % 2 === 0) musicNote(70, 0.07, 'triangle', 0.07, t)                   // 8 kick
 }
 
+// Gentle RPG overworld theme.
+function scheduleTownStep(idx: number, t: number) {
+  const s = idx % TOWN_LEAD.length
+  const bar = (s / 8) | 0
+  const beat = s % 8
+  const lead = TOWN_LEAD[s]
+  if (lead) musicNote(lead, TOWN_STEP * 0.85, 'square', 0.05, t)
+  const chord = TOWN_CHORDS[bar]
+  if (beat % 2 === 1) musicNote(chord[s % chord.length], TOWN_STEP * 0.5, 'square', 0.014, t)
+  if (beat % 4 === 0) musicNote(TOWN_ROOTS[bar], TOWN_STEP * 3.2, 'triangle', 0.055, t)
+}
+
+// Fast, driving RPG battle theme.
+function scheduleBattleStep(idx: number, t: number) {
+  const s = idx % BATTLE_LEAD.length
+  const bar = (s / 8) | 0
+  const beat = s % 8
+  const root = BATTLE_ROOTS[bar]
+  const lead = BATTLE_LEAD[s]
+  if (lead) musicNote(lead, BATTLE_STEP * 0.9, 'square', 0.05, t)
+  musicNote(BATTLE_CHORDS[bar][s % 3], BATTLE_STEP * 0.5, 'square', 0.018, t)
+  if (beat % 2 === 0) musicNote(root, BATTLE_STEP * 1.1, 'triangle', 0.06, t)
+  if (beat % 2 === 1) musicNote(root * 2, BATTLE_STEP * 0.8, 'triangle', 0.038, t)
+  noiseHit(t, 0.025, beat % 2 === 1 ? 0.02 : 0.011)
+  if (beat % 2 === 0) musicNote(68, 0.07, 'triangle', 0.07, t)
+}
+
+function resolveTrack(): 'default' | 'party' | 'rpg-town' | 'rpg-battle' {
+  if (musicTrack.value !== 'auto') return musicTrack.value
+  return palette.value === 'rainbow' ? 'party' : 'default'
+}
+function trackStep(tr: string) {
+  return tr === 'party' ? CHEAT_STEP : tr === 'rpg-town' ? TOWN_STEP : tr === 'rpg-battle' ? BATTLE_STEP : STEP_DUR
+}
 function musicLoop() {
   if (!audioCtx) return
   while (nextNoteTime < audioCtx.currentTime + LOOKAHEAD) {
-    const party = palette.value === 'rainbow'
-    if (party) scheduleCheatStep(stepIndex, nextNoteTime)
+    const tr = resolveTrack()
+    if (tr === 'party') scheduleCheatStep(stepIndex, nextNoteTime)
+    else if (tr === 'rpg-town') scheduleTownStep(stepIndex, nextNoteTime)
+    else if (tr === 'rpg-battle') scheduleBattleStep(stepIndex, nextNoteTime)
     else scheduleNormalStep(stepIndex, nextNoteTime)
-    nextNoteTime += party ? CHEAT_STEP : STEP_DUR
+    nextNoteTime += trackStep(tr)
     stepIndex += 1
   }
 }
@@ -316,6 +380,13 @@ function hydrate() {
 
 export function useGameboy() {
   const setPalette = (p: GbPalette) => { palette.value = p; applyPaletteToDom() }
+  // Swap the active music track (used by the minigames). 'auto' = page music.
+  const setMusicTrack = (t: 'auto' | 'party' | 'rpg-town' | 'rpg-battle') => {
+    if (musicTrack.value === t) return
+    musicTrack.value = t
+    if (musicTimer) stepIndex = 0                       // restart pattern from the top
+    else if (!muted.value && musicOn.value) { ensureCtx(); startMusic() }
+  }
   const unlockSecret = () => { secretUnlocked.value = true }
   // DMG volume wheel — sets master + music gain (0..1).
   const setVolume = (v: number) => {
@@ -397,6 +468,7 @@ export function useGameboy() {
     hydrate,
     setPalette,
     setVolume,
+    setMusicTrack,
     cyclePalette,
     unlockSecret,
     cheatParty,

@@ -106,7 +106,8 @@ const input = (d: 'up' | 'down' | 'left' | 'right') => {
   nextDir = nd
 }
 const action = () => { if (!running.value || over.value) start() } // A = (re)start
-defineExpose({ input, action })
+// unified shell interface: confirm = A, cancel returns false so B exits the game
+defineExpose({ input, confirm: action, cancel: () => false })
 
 onMounted(() => {
   ctx = canvas.value?.getContext('2d') ?? null

@@ -71,7 +71,7 @@ const navTo = (path: string) => { gb.sfx.select(); photoOpen.value = false; rout
    Unified menu (START button + mobile hamburger + D-pad)
    A flat list of actionable items so the D-pad can drive everything.
    ---------------------------------------------------------------------- */
-type MenuItem = { label: string; kind: 'route' | 'lang' | 'palette' | 'sound' | 'music' | 'game'; path?: string; indent?: boolean }
+type MenuItem = { label: string; kind: 'route' | 'lang' | 'palette' | 'sound' | 'music' | 'game'; path?: string; indent?: boolean; game?: 'snake' | 'rpg' }
 const menuItems = computed<MenuItem[]>(() => [
   ...gb.routes.map(r => ({ label: r.label, kind: 'route' as const, path: r.path })),
   { label: t('photoCategories.wildlife'), kind: 'route', path: '/photography/wildlife', indent: true },
@@ -80,7 +80,10 @@ const menuItems = computed<MenuItem[]>(() => [
   { label: `PALETTE: ${gb.palette.value.toUpperCase()}`, kind: 'palette' },
   { label: `SOUND: ${gb.muted.value ? 'OFF' : 'ON'}`, kind: 'sound' },
   { label: `MUSIC: ${gb.musicOn.value ? 'ON' : 'OFF'}`, kind: 'music' },
-  ...(gb.secretUnlocked.value ? [{ label: '★ SNAKE', kind: 'game' as const }] : []),
+  ...(gb.secretUnlocked.value ? [
+    { label: '★ MONSTA QUEST', kind: 'game' as const, game: 'rpg' as const },
+    { label: '★ SNAKE', kind: 'game' as const, game: 'snake' as const },
+  ] : []),
 ])
 const menuIndex = ref(0)
 
@@ -96,7 +99,7 @@ const runMenuItem = (item: MenuItem) => {
     case 'palette': gb.cyclePalette(); break
     case 'sound': gb.toggleMute(); break
     case 'music': gb.toggleMusic(); break
-    case 'game': gb.closeMenu(); openGame(); break
+    case 'game': gb.closeMenu(); openGame(item.game ?? 'rpg'); break
   }
 }
 
@@ -124,7 +127,7 @@ const goRelative = (delta: number) => {
 
 const onDir = (dir: 'up' | 'down' | 'left' | 'right') => {
   flash(dir)
-  if (gameOpen.value) { snakeRef.value?.input(dir); return }
+  if (gameOpen.value) { gameRef.value?.input(dir); return }
   if (feedKonami(dir)) return
   if (gb.menuOpen.value) {
     const len = menuItems.value.length
@@ -139,14 +142,14 @@ const onDir = (dir: 'up' | 'down' | 'left' | 'right') => {
 }
 const onA = () => {
   flash('a')
-  if (gameOpen.value) { snakeRef.value?.action(); return }
+  if (gameOpen.value) { gameRef.value?.confirm?.(); return }
   if (feedKonami('a')) return
   if (gb.menuOpen.value) { runMenuItem(menuItems.value[menuIndex.value]); return }
   gb.sfx.select(); scrollTop()
 }
 const onB = () => {
   flash('b')
-  if (gameOpen.value) { closeGame(); return }
+  if (gameOpen.value) { if (!gameRef.value?.cancel?.()) closeGame(); return }
   if (feedKonami('b')) return
   if (gb.menuOpen.value) { gb.closeMenu(); return }
   gb.sfx.back()
@@ -257,8 +260,9 @@ const resetIdle = () => {
 
 // Secret SNAKE minigame
 const gameOpen = ref(false)
-const snakeRef = ref<any>(null)
-const openGame = () => { gb.unlockAudio(); gb.sfx.select(); idle.value = false; gameOpen.value = true }
+const gameRef = ref<any>(null)
+const currentGame = ref<'snake' | 'rpg'>('rpg')
+const openGame = (which: 'snake' | 'rpg' = 'rpg') => { currentGame.value = which; gb.unlockAudio(); gb.sfx.select(); idle.value = false; gameOpen.value = true }
 const closeGame = () => { gb.sfx.back(); gameOpen.value = false }
 watch(gameOpen, (v) => lockScroll(v))
 // hidden trigger: triple-click the "DOT MATRIX WITH STEREO SOUND" label
@@ -268,7 +272,7 @@ const onLabelClick = () => {
   labelClicks += 1
   clearTimeout(labelTimer)
   labelTimer = setTimeout(() => { labelClicks = 0 }, 700)
-  if (labelClicks >= 3) { labelClicks = 0; openGame() }
+  if (labelClicks >= 3) { labelClicks = 0; openGame('rpg') }
 }
 
 const onKey = (e: KeyboardEvent) => {
@@ -280,12 +284,13 @@ const onKey = (e: KeyboardEvent) => {
   // minigame captures input
   if (gameOpen.value) {
     switch (e.key) {
-      case 'ArrowUp': e.preventDefault(); snakeRef.value?.input('up'); break
-      case 'ArrowDown': e.preventDefault(); snakeRef.value?.input('down'); break
-      case 'ArrowLeft': e.preventDefault(); snakeRef.value?.input('left'); break
-      case 'ArrowRight': e.preventDefault(); snakeRef.value?.input('right'); break
-      case 'Enter': snakeRef.value?.action(); break
-      case 'Escape': case 'Backspace': e.preventDefault(); closeGame(); break
+      case 'ArrowUp': e.preventDefault(); gameRef.value?.input('up'); break
+      case 'ArrowDown': e.preventDefault(); gameRef.value?.input('down'); break
+      case 'ArrowLeft': e.preventDefault(); gameRef.value?.input('left'); break
+      case 'ArrowRight': e.preventDefault(); gameRef.value?.input('right'); break
+      case 'Enter': gameRef.value?.confirm?.(); break
+      case 'Escape': e.preventDefault(); closeGame(); break
+      case 'Backspace': e.preventDefault(); if (!gameRef.value?.cancel?.()) closeGame(); break
     }
     return
   }
@@ -575,8 +580,9 @@ watch(() => route.path, () => { gb.closeMenu(); photoOpen.value = false })
     <transition name="menu-fade">
       <div v-if="gameOpen" class="gb-game-overlay" @click.self="closeGame">
         <div class="gb-game shell-surface">
-          <GbSnake ref="snakeRef" />
-          <button class="gb-game-close font-pixel" @click="closeGame">✕ EXIT (B)</button>
+          <GbRpg v-if="currentGame === 'rpg'" ref="gameRef" />
+          <GbSnake v-else ref="gameRef" />
+          <button class="gb-game-close font-pixel" @click="closeGame">✕ EXIT</button>
         </div>
       </div>
     </transition>
